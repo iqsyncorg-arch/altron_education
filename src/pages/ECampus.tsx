@@ -1,13 +1,4 @@
-import { Monitor, BookOpen, Award, Users, Wifi, Lock } from 'lucide-react';
 
-const features = [
-    { icon: Monitor, title: 'Access Anywhere', desc: 'Study from home, office, or on the go. Our e-Campus is accessible on any device — desktop, tablet, or mobile.' },
-    { icon: BookOpen, title: 'Comprehensive Curriculum', desc: 'All course materials, notes, and reference documents are available in digital format for offline and online access.' },
-    { icon: Award, title: 'Recorded Lectures', desc: 'Miss a class? Watch recorded video lectures at your own pace. Every session is recorded and archived.' },
-    { icon: Users, title: 'Live Doubt Sessions', desc: 'Participate in scheduled live doubt-clearing sessions with faculty through our integrated video conferencing.' },
-    { icon: Monitor, title: 'Online Assessments', desc: 'Take chapter-wise tests and mock exams digitally. Instant results with detailed performance analytics.' },
-    { icon: Wifi, title: 'Learning Analytics', desc: 'Track your progress, study hours, and performance metrics to understand and improve your learning journey.' },
-];
 
 export default function ECampus() {
     return (

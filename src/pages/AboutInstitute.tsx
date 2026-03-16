@@ -1,4 +1,3 @@
-import PageHero from '../components/PageHero';
 import { Shield, BookOpen, Users, Lightbulb, CheckCircle, Home } from 'lucide-react';
 import { motion } from 'framer-motion';
 

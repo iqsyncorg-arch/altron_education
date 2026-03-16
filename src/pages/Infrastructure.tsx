@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Shield, Monitor, Layout, Cpu, CheckCircle, Users, Home } from 'lucide-react';
 

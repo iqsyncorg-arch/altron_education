@@ -1,4 +1,3 @@
-import PageHero from '../components/PageHero';
 import { CheckCircle, Clock, Award, Fingerprint } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -27,11 +26,7 @@ const curriculum = [
 export default function AccessBiometricTraining() {
     return (
         <div>
-            {/* <PageHero
-                title="Access  & Biometrics"
-                subtitle="Master the latest biometric and access control technologies for high-security environments"
-                breadcrumbs={['Courses', 'Access & Biometrics']}
-            /> */}
+
 
             <section
                 className="relative h-[300px] flex items-center justify-center bg-fixed bg-center bg-cover"

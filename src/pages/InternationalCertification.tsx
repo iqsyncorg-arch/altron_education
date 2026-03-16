@@ -1,4 +1,3 @@
-import PageHero from '../components/PageHero';
 import { Award, CheckCircle, Globe, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
