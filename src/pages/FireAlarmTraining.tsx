@@ -1,120 +1,76 @@
-import PageHero from '../components/PageHero';
-import { CheckCircle, Clock, Award, Flame } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
-const curriculum = [
-    'Introduction to Fire Safety Standards',
-    'Types of Fire Alarm Systems',
-    'Smoke and Heat Detectors',
-    'Manual Call Points & Sounders',
-    'Fire Alarm Control Panels',
-    'Cable Installation & Routing',
-    'Zone Configuration & Programming',
-    'Testing and Commissioning',
-    'Emergency Response Procedures',
-    'Compliance and Documentation',
-];
-
-const careerOpportunities = [
-    'Fire Alarm Technician', 'Fire Safety Engineer', 'Commissioning Engineer',
-    'Fire Consultant', 'Maintenance Technician', 'Project Coordinator',
-];
-
-const whyImportant = [
-    { title: 'Life Safety', desc: 'Fire alarm systems are the first line of defense in saving lives during emergencies.' },
-    { title: 'Legal Compliance', desc: 'All commercial and residential buildings are mandated to have certified fire alarm systems.' },
-    { title: 'Growing Demand', desc: 'Smart city initiatives and new construction drive continuous demand for qualified technicians.' },
-    { title: 'High Salaries', desc: 'Certified fire alarm engineers command premium salaries in the job market.' },
-];
+import PageHero from "../components/PageHero";
 
 export default function FireAlarmTraining() {
     return (
         <div>
+
+            {/* Header with Video */}
             <PageHero
                 title="Fire Alarm Training"
-                subtitle="Become a certified fire alarm installation and maintenance technician"
-                breadcrumbs={['Courses', 'Fire Alarm Training']}
+                subtitle="Become a certified fire alarm installation technician"
+                breadcrumbs={["Courses", "Fire Alarm Training"]}
+                image="https://res.cloudinary.com/dq6gr5zjc/video/upload/v1773556726/Video_Generation_Request_Fulfilled_xmmohj.mp4"
             />
-            <div className="max-w-7xl mx-auto px-4 py-20">
-                {/* Why Important */}
-                <div className="mb-16">
-                    <div className="text-center mb-10">
-                        <h2 className="text-3xl font-bold text-white">Why Fire Alarm Training Matters</h2>
-                        <p className="text-gray-400 mt-3 max-w-2xl mx-auto">
-                            Fire alarm technicians play a critical role in protecting life and property. With mandatory fire safety regulations and rapid urbanization, this is one of the fastest-growing career fields.
-                        </p>
-                    </div>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {whyImportant.map((item, i) => (
-                            <div key={i} className="glass-card border border-orange-500/20 hover-lift">
-                                <Flame className="w-8 h-8 text-orange-400 mb-3" />
-                                <h3 className="text-white font-semibold mb-2">{item.title}</h3>
-                                <p className="text-gray-400 text-sm">{item.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
 
-                {/* Course Details */}
-                <div className="grid lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2 space-y-8">
-                        <div>
-                            <h2 className="text-2xl font-bold text-white mb-4">Course Overview</h2>
-                            <div className="space-y-4 text-gray-400 leading-relaxed">
-                                <p>
-                                    Our <strong className="text-white">Diploma Course in Fire Alarm System</strong> provides comprehensive training on all aspects of fire detection and alarm systems. From selecting appropriate detectors to programming complex fire panels, students gain expertise through hands-on lab sessions.
-                                </p>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-bold text-white mb-6">Curriculum</h3>
-                            <div className="grid md:grid-cols-2 gap-3">
-                                {curriculum.map((item, i) => (
-                                    <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/3 border border-white/5 hover:bg-white/5 transition-colors">
-                                        <div className="w-6 h-6 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-xs font-bold flex-shrink-0">
-                                            {i + 1}
-                                        </div>
-                                        <span className="text-gray-300 text-sm">{item}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-bold text-white mb-4">Career Opportunities</h3>
-                            <div className="flex flex-wrap gap-3">
-                                {careerOpportunities.map((role) => (
-                                    <span key={role} className="bg-orange-500/10 border border-orange-500/20 text-orange-300 px-4 py-2 rounded-full text-sm">{role}</span>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+            <div className="max-w-6xl mx-auto px-4 py-20 text-black leading-relaxed">
 
-                    {/* Sidebar */}
-                    <div className="space-y-6">
-                        <div className="glass rounded-2xl p-6 border border-orange-500/20">
-                            <h3 className="text-white font-bold text-lg mb-4">Course Details</h3>
-                            <div className="space-y-4">
-                                {[
-                                    { label: 'Duration', value: '5 Days', icon: Clock },
-                                    { label: 'Eligibility', value: 'SSLC / HSC / Diploma / Degree', icon: CheckCircle },
-                                    { label: 'Certification', value: 'BSA-JAS-ANZ International', icon: Award },
-                                ].map((detail, i) => (
-                                    <div key={i} className="flex items-start gap-3">
-                                        <detail.icon className="w-4 h-4 text-orange-400 mt-0.5 flex-shrink-0" />
-                                        <div>
-                                            <div className="text-gray-500 text-xs">{detail.label}</div>
-                                            <div className="text-white text-sm font-medium">{detail.value}</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <Link to="/contact" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl w-full text-center block mt-6 transition-all">
-                                Enquire Now
-                            </Link>
-                        </div>
-                    </div>
-                </div>
+                {/* FIRE ALARM */}
+                <h2 className="text-2xl font-bold text-red-600 mb-4">
+                    FIRE ALARM:
+                </h2>
+
+                <p className="mb-8">
+                    Fire Alarm is usually used to detect signs for fire like smoke and heat and alert people by producing sound to signal them about the upcoming hazards. Every building needs to be installed with fire alarms to ensure safety and security. Nowadays, as people start to realise the importance of safety, Fire Alarms are becoming a priority material to be fixed in all kinds of residential spaces and commercial spaces.
+                </p>
+
+                {/* TRAINING */}
+                <h3 className="text-xl font-bold text-red-600 mb-4">
+                    FIRE ALARM INSTALLATION TRAINING:
+                </h3>
+
+                <p className="mb-6">
+                    As it becomes important to install fire alarms to buildings, the scope for Fire Alarm technicians is also increasing. It results in the emergence of a lot of Fire Alarm Installation Training Institutions which are offering <b>Fire Alarm Installation Training in Chennai</b> at different durations and schedules.
+                </p>
+
+                <p className="mb-8">
+                    Though there are many such institutions functioning and new ones are emerging every day, Altron Education is operating as the best and No.1 <b>Fire Alarm Installation Training Institute in Chennai</b> for various reasons.
+                </p>
+
+                {/* WHY ALTRON */}
+                <h3 className="text-xl font-bold text-red-600 mb-4">
+                    WHY ALTRON EDUCATION?
+                </h3>
+
+                <p className="mb-6">
+                    Altron Education has been functioning as the best Fire Alarm Training in Chennai, for various reasons. Some of the significant ones are listed below.
+                </p>
+
+                <ol className="space-y-5 list-decimal pl-6">
+
+                    <li>
+                        <b>Experience:</b> As Altron Education has started in 2008, we are having a strong reputation and experience in providing Fire Alarm installation training to people in and around Chennai.
+                    </li>
+
+                    <li>
+                        <b>Professionalism:</b> As we are having trained professionals to teach our students, we can assure our students can learn the techniques in detail, with no doubts and with full clarity.
+                    </li>
+
+                    <li>
+                        <b>Courses and Fee structure:</b> As we are having various kinds of Fire Alarm Installation Training courses in different schedules and fee structures, students can join as per their needs and requirements. You can check Duration, Eligibility & Fees page for further clarification and more details.
+                    </li>
+
+                    <li>
+                        <b>Our Guidance:</b> We are not only engaged in providing best Fire Alarm Installation Training, but also giving our students guidance about governmental and non-governmental job opportunities that the students can try for after completion of this course. This serves the students to get a proper vision on their future goals and assists them to avoid confusions on what to do next. You can check our Employment page for more details.
+                    </li>
+
+                </ol>
+
+                <p className="mt-10">
+                    Thus, you can choose the best Fire Alarm Installation training from us, based on your choice to upgrade yourself to gain the knowledge on fire alarm systems and installation.
+                </p>
+
             </div>
+
         </div>
     );
 }

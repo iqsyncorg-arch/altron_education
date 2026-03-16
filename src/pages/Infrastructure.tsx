@@ -1,87 +1,186 @@
-import PageHero from '../components/PageHero';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Shield, Monitor, Layout, Cpu, CheckCircle, Users, Home } from 'lucide-react';
 
 const facilities = [
     {
-        icon: '👨‍🏫',
+        icon: Users,
         title: 'Well Trained Faculty',
-        desc: 'Our faculty members are seasoned professionals with 15+ years of hands-on experience in the security industry. They bring real-world knowledge into every classroom session, ensuring students learn both theory and practical application.',
+        desc: 'Our faculty members are seasoned professionals with 15+ years of hands-on experience in the security industry. They bring real-world knowledge into every classroom session.',
         highlights: ['Industry veterans as instructors', '15+ years average experience', 'Regular training and upskilling', 'Dedicated mentorship program'],
+        image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80'
     },
     {
-        icon: '🏛️',
+        icon: Layout,
         title: 'Neat & Modern Classrooms',
-        desc: 'Our classrooms are designed for optimal learning with modern audio-visual equipment, comfortable seating, and an environment that promotes concentration and collaboration. Each classroom is equipped with projectors, smart boards, and AC facilities.',
+        desc: 'Our classrooms are designed for optimal learning with modern audio-visual equipment, comfortable seating, and an environment that promotes concentration.',
         highlights: ['Air-conditioned classrooms', 'Smart boards & projectors', 'Comfortable seating for 30 students', 'Natural lighting & ventilation'],
+        image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80'
     },
     {
-        icon: '🔬',
+        icon: Cpu,
         title: 'State-of-the-Art Lab',
-        desc: 'Our labs are equipped with the latest industry-standard equipment including IP cameras, DVR/NVR systems, fire alarm panels, biometric devices, and access control systems. Students get hands-on experience with real equipment used in the field.',
+        desc: 'Our labs are equipped with the latest industry-standard equipment including IP cameras, DVR/NVR systems, fire alarm panels, and biometric devices.',
         highlights: ['IP & Analog CCTV systems', 'Fire alarm panels & sensors', 'Biometric & access control devices', 'Live network configuration setups'],
+        image: 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773062591/ChatGPT_Image_Mar_9_2026_06_42_27_PM_iihcoo.png'
     },
 ];
 
 export default function Infrastructure() {
     return (
-        <div>
-            <PageHero
-                title="Our Infrastructure"
-                subtitle="World-class learning environment built to produce industry-ready professionals"
-                breadcrumbs={['Academy', 'Infrastructure']}
-            />
+        <div className="bg-white min-h-screen">
 
-            <div className="max-w-7xl mx-auto px-4 py-20">
-                <div className="text-center mb-16">
-                    <p className="section-subtitle">Facilities</p>
-                    <h2 className="text-3xl font-bold text-white mb-4">Learning Environment at Altron Academy</h2>
-                    <p className="text-gray-400 max-w-2xl mx-auto">
-                        We believe that the quality of training directly depends on the quality of infrastructure. That's why we invest continuously in upgrading our facilities to match industry standards.
+            {/* Header Section */}
+            <section
+                className="relative h-[500px] flex items-center bg-center bg-cover"
+                style={{
+                    backgroundImage: `url('https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773059569/ChatGPT_Image_Mar_9_2026_06_01_00_PM_bqqwpu.png')`
+                }}
+            >
+                {/* Better Overlay (image visible) */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/70"></div>
+
+                <div className="container mx-auto px-6 relative z-10 flex justify-between items-center">
+
+                    <motion.h1
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-5xl font-bold text-white uppercase tracking-tight"
+                    >
+                        Infrastructure
+                    </motion.h1>
+
+                    <nav className="bg-black/40 backdrop-blur px-6 py-3 flex items-center gap-4 text-white rounded-sm border border-white/10">
+                        <span className="flex items-center gap-2 text-xs font-bold tracking-widest cursor-pointer hover:text-red-500 transition-colors">
+                            <Home size={14} className="text-red-500" /> HOME
+                        </span>
+
+                        <span className="text-white/30 text-[10px]">○</span>
+
+                        <span className="text-xs font-bold tracking-widest border-b border-red-600 pb-0.5">
+                            ACADEMY
+                        </span>
+                    </nav>
+
+                </div>
+            </section>
+
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-6 py-24 relative z-10">
+
+                {/* Title */}
+                <div className="text-center mb-24">
+                    <span className="text-red-600 font-bold tracking-[0.3em] uppercase text-xs">Facilities</span>
+
+                    <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-4 mb-6 uppercase tracking-tighter">
+                        Learning Environment
+                    </h2>
+
+                    <div className="w-24 h-1 bg-red-600 mx-auto mb-8" />
+
+                    <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
+                        Top-tier equipment and expert guidance. We bridge the gap between classroom theory and real-world security engineering.
                     </p>
                 </div>
 
-                <div className="space-y-12">
+                {/* Facilities */}
+                <div className="space-y-32">
                     {facilities.map((facility, i) => (
-                        <div key={i} className={`grid lg:grid-cols-2 gap-10 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
-                            <div className={`${i % 2 === 1 ? 'lg:order-2' : ''}`}>
-                                <div className="text-6xl mb-6">{facility.icon}</div>
-                                <h3 className="text-2xl font-bold text-white mb-4">{facility.title}</h3>
-                                <p className="text-gray-400 leading-relaxed mb-6">{facility.desc}</p>
-                                <ul className="space-y-3">
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className={`flex flex-col ${i % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-16 items-center`}
+                        >
+
+                            <div className="flex-1">
+
+                                <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-red-50 text-red-600 mb-8 border border-red-100 shadow-sm">
+                                    <facility.icon size={28} />
+                                </div>
+
+                                <h3 className="text-3xl font-bold text-slate-900 mb-6 uppercase tracking-tight">
+                                    {facility.title}
+                                </h3>
+
+                                <p className="text-slate-600 text-lg leading-relaxed mb-8">
+                                    {facility.desc}
+                                </p>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
                                     {facility.highlights.map((hl, j) => (
-                                        <li key={j} className="flex items-center gap-3 text-gray-300 text-sm">
-                                            <div className="w-2 h-2 rounded-full bg-blue-400 flex-shrink-0" />
-                                            {hl}
-                                        </li>
+                                        <div key={j} className="flex items-center gap-3 text-slate-800">
+                                            <CheckCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
+                                            <span className="text-sm font-bold uppercase tracking-tight">{hl}</span>
+                                        </div>
                                     ))}
-                                </ul>
+                                </div>
+
                             </div>
-                            <div className={`${i % 2 === 1 ? 'lg:order-1' : ''}`}>
-                                <div className="glass rounded-2xl p-10 border border-brand-500/20 bg-gradient-to-br from-brand-900/20 to-brand-900/10 text-center">
-                                    <div className="text-8xl mb-4">{facility.icon}</div>
-                                    <p className="text-brand-400 font-semibold">{facility.title}</p>
-                                    <p className="text-gray-500 text-sm mt-2">World-Class Facility</p>
+
+                            <div className="flex-1 w-full">
+                                <div className="relative group">
+                                    <div className="absolute -inset-2 bg-red-600/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition duration-500" />
+
+                                    <div className="relative overflow-hidden rounded-xl border border-gray-200 shadow-2xl aspect-video bg-white">
+                                        <img
+                                            src={facility.image}
+                                            alt={facility.title}
+                                            className="w-full h-full object-cover transform group-hover:scale-105 transition duration-700"
+                                        />
+                                    </div>
                                 </div>
                             </div>
+
+                        </motion.div>
+                    ))}
+                </div>
+
+                {/* Stats */}
+                <div className="mt-40 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {[
+                        { value: '3', label: 'Modern Labs', icon: Cpu },
+                        { value: '5', label: 'Campuses', icon: Layout },
+                        { value: '30+', label: 'Workstations', icon: Monitor },
+                        { value: '100%', label: 'Hands-on', icon: Shield },
+                    ].map((stat, i) => (
+                        <div key={i} className="bg-red-600 p-10 rounded-sm text-center shadow-lg transform hover:-translate-y-1 transition-all duration-300">
+
+                            <div className="text-3xl font-black text-white mb-1 tracking-tighter">
+                                {stat.value}
+                            </div>
+
+                            <div className="text-white/80 text-[10px] font-bold uppercase tracking-[0.2em]">
+                                {stat.label}
+                            </div>
+
                         </div>
                     ))}
                 </div>
 
-                {/* Infrastructure Stats */}
-                <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6">
-                    {[
-                        { value: '3', label: 'State-of-the-Art Labs', icon: '🔬' },
-                        { value: '5', label: 'Training Centers', icon: '🏢' },
-                        { value: '30+', label: 'Lab Workstations', icon: '💻' },
-                        { value: '100%', label: 'Modern Equipment', icon: '⚡' },
-                    ].map((stat, i) => (
-                        <div key={i} className="glass-card text-center hover-lift">
-                            <div className="text-3xl mb-3">{stat.icon}</div>
-                            <div className="text-3xl font-black text-white">{stat.value}</div>
-                            <div className="text-gray-400 text-sm mt-1">{stat.label}</div>
-                        </div>
-                    ))}
+            </div>
+
+            {/* CTA */}
+            <div className="bg-slate-900 py-20">
+                <div className="max-w-4xl mx-auto px-6 text-center">
+
+                    <h2 className="text-3xl font-bold text-white mb-4 uppercase tracking-tight">
+                        Visit Our Academy
+                    </h2>
+
+                    <p className="text-gray-400 mb-10 text-lg">
+                        We welcome parents and students to tour our facilities between 9 AM and 6 PM.
+                    </p>
+
+                    <button className="bg-red-600 hover:bg-red-700 text-white px-10 py-4 font-bold text-sm uppercase tracking-widest transition-all rounded-sm shadow-xl">
+                        Book a Tour
+                    </button>
+
                 </div>
             </div>
+
         </div>
     );
 }

@@ -1,28 +1,4 @@
 import PageHero from '../components/PageHero';
-import { CheckCircle, TrendingUp, Users, Briefcase } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
-const features = [
-    { icon: CheckCircle, title: '100% Placement Support', desc: 'Every eligible student gets dedicated placement assistance from our job cell.' },
-    { icon: TrendingUp, title: 'Industry Connections', desc: 'Tie-ups with 200+ security companies across India for direct placement.' },
-    { icon: Users, title: 'Career Counseling', desc: 'Personalized career guidance sessions and resume building workshops.' },
-    { icon: Briefcase, title: 'Interview Preparation', desc: 'Mock interviews and technical assessments to prepare you for top companies.' },
-];
-
-const companies = [
-    'TechGuard India', 'SecureZone Pvt Ltd', 'BuildSafe Systems', 'CityWatch Security',
-    'GuardPro Solutions', 'SafeVision Technologies', 'FireShield Corp', 'AccessMasters',
-    'NexGen Security', 'ProAlert India', 'VisionTech Systems', 'SafeNet India',
-];
-
-const jobRoles = [
-    { role: 'CCTV Technician', salary: '₹15,000 - ₹35,000/month', demand: 'Very High' },
-    { role: 'Fire Alarm Engineer', salary: '₹18,000 - ₹40,000/month', demand: 'High' },
-    { role: 'Biometric Systems Specialist', salary: '₹20,000 - ₹45,000/month', demand: 'Very High' },
-    { role: 'Security Project Manager', salary: '₹35,000 - ₹80,000/month', demand: 'High' },
-    { role: 'Technical Sales Engineer', salary: '₹25,000 - ₹55,000/month', demand: 'Medium' },
-    { role: 'International Technician (Gulf)', salary: '₹50,000 - ₹1,20,000/month', demand: 'Very High' },
-];
 
 export default function Employment() {
     return (
@@ -32,81 +8,150 @@ export default function Employment() {
                 subtitle="Your career success is our ultimate goal — 100% placement support for all eligible students"
                 breadcrumbs={['Employment']}
             />
-            <div className="max-w-7xl mx-auto px-4 py-20">
-                {/* Features */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-                    {features.map((f, i) => (
-                        <div key={i} className="glass-card hover-lift text-center">
-                            <div className="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center mx-auto mb-4">
-                                <f.icon className="w-6 h-6 text-brand-500" />
-                            </div>
-                            <h3 className="text-white font-semibold mb-2">{f.title}</h3>
-                            <p className="text-gray-400 text-sm">{f.desc}</p>
-                        </div>
-                    ))}
-                </div>
 
-                {/* Job Roles */}
-                <div className="mb-20">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-white">Career Opportunities & Salaries</h2>
-                    </div>
-                    <div className="glass rounded-2xl overflow-hidden border border-white/10">
-                        <table className="w-full">
-                            <thead className="bg-brand-500/10 border-b border-white/10">
-                                <tr>
-                                    <th className="text-left py-4 px-6 text-brand-400 text-sm font-semibold">Job Role</th>
-                                    <th className="text-left py-4 px-6 text-brand-400 text-sm font-semibold">Expected Salary</th>
-                                    <th className="text-left py-4 px-6 text-brand-400 text-sm font-semibold">Market Demand</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {jobRoles.map((job, i) => (
-                                    <tr key={i} className="border-b border-white/5 hover:bg-white/3 transition-colors">
-                                        <td className="py-4 px-6 text-white font-medium text-sm">{job.role}</td>
-                                        <td className="py-4 px-6 text-green-400 font-semibold text-sm">{job.salary}</td>
-                                        <td className="py-4 px-6">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${job.demand === 'Very High' ? 'bg-green-500/10 text-green-400 border border-green-500/20' :
-                                                    job.demand === 'High' ? 'bg-brand-500/10 text-brand-500 border border-brand-500/20' :
-                                                        'bg-amber-500/10 text-brand-500 border border-brand-200'
-                                                }`}>
-                                                {job.demand}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div className="max-w-6xl mx-auto px-4 py-20">
 
-                {/* Companies */}
-                <div className="mb-20">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold text-white">Our Placement Partners</h2>
-                        <p className="text-gray-400 mt-3">Companies that have hired Altron Academy graduates</p>
+                {/* Employment Section */}
+                <div className="grid md:grid-cols-2 gap-10 items-start mb-16">
+
+                    {/* Image */}
+                    <div>
+                        <img
+                            src="https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773552911/Screenshot_2026-03-15_at_11.04.45_AM_ap4xtx.png"
+                            alt="Employment"
+                            className="rounded-xl w-full"
+                        />
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        {companies.map((company, i) => (
-                            <div key={i} className="glass-card text-center hover-lift">
-                                <div className="text-2xl mb-2">🏢</div>
-                                <p className="text-gray-300 text-sm font-medium">{company}</p>
-                            </div>
-                        ))}
+
+                    {/* Text */}
+                    <div>
+                        <h2 className="text-3xl font-bold text-black mb-6">Employment</h2>
+                        <h4 className="text-brand-400 mb-6">Future & Career Opportunities</h4>
+
+                        <ul className="space-y-4 text-black">
+                            <li>
+                                All Government & Non Government Institutions & Organizations are appointing
+                                Safety & Security Technicians, Security Officers, Safety Supervisors,
+                                Installation Engineers, Service Engineers, Customer Support Engineers,
+                                Project Managers, etc.
+                            </li>
+
+                            <li>
+                                All Multinational Companies & Public / Private Enterprises are on
+                                recruitment drive to take Safety & Security System Professionals.
+                            </li>
+
+                            <li>
+                                It is mandatory for all Public & High rise Buildings & Infrastructures
+                                to have CCTV Surveillance Systems, Fire Safety System,
+                                Access Control Systems, Public Address System and Building
+                                Management Systems (BMS) as per law.
+                            </li>
+
+                            <li>
+                                Entrepreneurs can take up this as business ventures in this fast
+                                & widely growing industry as Safety & Security Consultants
+                                and market Safety & Security Products.
+                            </li>
+
+                            <li>
+                                Excellent job opportunities abroad in this field.
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                {/* Skill Dev CTA */}
-                <div className="glass rounded-2xl p-10 border border-brand-500/20 text-center">
-                    <h2 className="text-3xl font-bold text-white mb-4">Skill Development for Tomorrow's Leaders</h2>
-                    <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-                        The security industry is growing rapidly. Equip yourself with the skills that employers are looking for right now and secure your future with an internationally recognized certification.
+                {/* Benefits */}
+                <div className="mb-16">
+                    <h3 className="text-2xl font-semibold text-black mb-6">Benefits :</h3>
+
+                    <p className="text-black mb-6">
+                        After successful completion of this course initially we will give you placement
+                        as an Installation Engineer for one of reputed companies. From here you can
+                        improve yourself by acquiring expertise and enrich your skill sets to go up
+                        in the career ladder. All depends upon your hard work, passion to perform
+                        and diehard dedication.
                     </p>
-                    <div className="flex flex-wrap gap-4 justify-center">
-                        <Link to="/courses" className="btn-primary px-8 py-4">Browse Courses</Link>
-                        <Link to="/contact" className="btn-secondary px-8 py-4">Talk to Counselor</Link>
+
+                    <ul className="space-y-3 text-black">
+                        <li>• Installation Engineers</li>
+                        <li>• Service Engineers</li>
+                        <li>• Customer Support Engineers</li>
+                        <li>• Project Engineers</li>
+                        <li>• Project Managers</li>
+                        <li>• Sales Managers</li>
+                        <li>• Starting own entrepreneurial business ventures</li>
+                    </ul>
+                </div>
+
+                {/* Consultancy */}
+                <div>
+                    <h3 className="text-2xl font-semibold text-black mb-6">Consultancy :</h3>
+
+                    <div className="space-y-6 text-black">
+
+                        <div>
+                            <h4 className="text-brand-400 font-semibold mb-2">
+                                Training & Placement – Dubai (Engineer Category)
+                            </h4>
+                            <p>
+                                We are providing jobs for experienced candidates in Safety and
+                                Security Field in abroad for persons who had completed BE – IT,
+                                Electrical and Computer Science for the designation of
+                                CCTV Engineer and Fire Alarm Engineer.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 className="text-brand-400 font-semibold mb-2">
+                                Technician Category
+                            </h4>
+                            <p>
+                                We are providing jobs for experienced candidates in Safety and
+                                Security Field in abroad for persons who had completed
+                                ITI / Diploma (Electrical and Plumber) for the designation
+                                of CCTV Technician and Fire Alarm Technician.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 className="text-brand-400 font-semibold mb-2">
+                                Department of Protective System by Dubai Police
+                            </h4>
+                            <p>
+                                We are providing Training to get CCTV Engineer Card / Fire Alarm
+                                Engineer Card / CCTV Technician Card in Department of Protective
+                                System by Dubai Police for eligible candidates.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 className="text-brand-400 font-semibold mb-2">
+                                Freshers
+                            </h4>
+                            <p>
+                                We are providing Training for Safety and Security Products in our
+                                Institute. After Course Completion we are providing job placement
+                                in abroad depends upon your eligibility.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 className="text-brand-400 font-semibold mb-2">
+                                Tamilnadu
+                            </h4>
+                            <p>
+                                We are providing Professional Course in CCTV Surveillance
+                                Engineering / Diploma Course in CCTV Surveillance Training
+                                for persons who had completed 10th and 12th Std.
+                                After completion of course they will be getting placements
+                                in Tamilnadu and also Overseas.
+                            </p>
+                        </div>
+
                     </div>
                 </div>
+
             </div>
         </div>
     );

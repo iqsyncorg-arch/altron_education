@@ -22,9 +22,11 @@ const navItems: NavItem[] = [
     {
         label: 'Courses',
         children: [
-            { label: 'CCTV Installation', path: '/courses', desc: 'Surveillance expertise' },
-            { label: 'Fire Alarm Training', path: '/fire-alarm-training', desc: 'Safety systems' },
-            { label: 'Access & Biometrics', path: '/access-biometric-training', desc: 'Security protocols' },
+            { label: 'Fire Alarm', path: '/fire-alarm-training', desc: 'Safety systems training' },
+            { label: 'Access & Biometric', path: '/access-biometric-training', desc: 'Security protocols' },
+            { label: 'Duration, Eligibility & Fees', path: '/fees-eligibility', desc: 'Course details' },
+            { label: 'Demand & Benefits of Course', path: '/world-scenario', desc: 'Industry insights' },
+            { label: 'Bank Details', path: '/bank-details', desc: 'Payment information' },
         ],
     },
     { label: 'Fees', path: '/fees-eligibility' },
@@ -37,6 +39,8 @@ const navItems: NavItem[] = [
         ],
     },
     { label: 'Employment', path: '/employment' },
+    { label: 'FAQ', path: '/faq' },
+    { label: 'Centers', path: '/centers' },
     { label: 'Contact', path: '/contact' },
 ]
 
@@ -108,7 +112,7 @@ export default function Navbar() {
 
                                 {item.children ? (
                                     <button
-                                        className={`flex items-center gap-1 px-4 py-2 text-sm font-semibold rounded-full transition
+                                        className={`flex items-center gap-1 px-4 py-2 text-xs font-semibold rounded-full transition
                                             ${activeDropdown === item.label
                                                 ? 'bg-slate-100 text-slate-900'
                                                 : 'text-slate-600 hover:text-slate-900'
@@ -125,7 +129,7 @@ export default function Navbar() {
                                 ) : (
                                     <Link
                                         to={item.path!}
-                                        className={`px-4 py-2 text-sm font-semibold rounded-full transition
+                                        className={`px-4 py-2 text-xs font-semibold rounded-full transition
                                             ${location.pathname === item.path
                                                 ? 'bg-brand-50 text-brand-700'
                                                 : 'text-slate-600 hover:text-slate-900'
@@ -147,7 +151,7 @@ export default function Navbar() {
                                                     to={child.path}
                                                     className="group flex flex-col px-4 py-3 rounded-xl hover:bg-slate-50 transition"
                                                 >
-                                                    <span className="text-sm font-bold text-slate-900 group-hover:text-brand-600">
+                                                    <span className="text-xs font-bold text-slate-900 group-hover:text-brand-600">
                                                         {child.label}
                                                     </span>
 
@@ -217,7 +221,7 @@ export default function Navbar() {
                                 ) : (
                                     <Link
                                         to={item.path!}
-                                        className="block px-4 py-3 text-lg font-bold"
+                                        className="block px-4 py-3 text-sm font-bold"
                                     >
                                         {item.label}
                                     </Link>
