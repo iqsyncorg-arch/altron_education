@@ -1,4 +1,3 @@
-import React from 'react';
 import { CheckCircle, Clock, Award, Fingerprint, Shield, Users, Settings, Cpu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

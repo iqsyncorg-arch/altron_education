@@ -1,4 +1,3 @@
-import React from 'react';
 import { TrendingUp, Award, Briefcase, CheckCircle, Settings, Users, Headphones, BarChart, Rocket } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

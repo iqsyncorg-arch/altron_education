@@ -68,7 +68,7 @@ export default function FranchisePartner() {
                         </span>
                     </h1>
                     <p className="text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
-                        Join India's fastest growing security training institute network. Leverage our 15+ years of excellence to establish a thriving educational center in your city.
+                        Join India's fastest growing security training institute network. Leverage our 20+ years of excellence to establish a thriving educational center in your city.
                     </p>
                 </div>
             </section>

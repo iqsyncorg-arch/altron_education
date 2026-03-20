@@ -5,8 +5,8 @@ const facilities = [
     {
         icon: Users,
         title: 'Well Trained Faculty',
-        desc: 'Our faculty members are seasoned professionals with 15+ years of hands-on experience in the security industry. They bring real-world knowledge into every classroom session.',
-        highlights: ['Industry veterans as instructors', '15+ years average experience', 'Regular training and upskilling', 'Dedicated mentorship program'],
+        desc: 'Our faculty members are seasoned professionals with 20+ years of hands-on experience in the security industry. They bring real-world knowledge into every classroom session.',
+        highlights: ['Industry veterans as instructors', '20+ years average experience', 'Regular training and upskilling', 'Dedicated mentorship program'],
         image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80'
     },
     {

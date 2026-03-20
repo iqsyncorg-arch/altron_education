@@ -1,4 +1,3 @@
-import React from 'react';
 import { ShieldAlert, Flame, Briefcase, GraduationCap, Settings, CheckCircle, Clock, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 

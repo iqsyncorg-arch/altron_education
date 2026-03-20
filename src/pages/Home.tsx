@@ -2,10 +2,7 @@ import { useState, useEffect } from 'react';
 import {
     ChevronLeft,
     ChevronRight,
-    Menu,
-    X,
     Star,
-    MessageSquare,
     ShieldCheck,
     Globe,
     GraduationCap,
