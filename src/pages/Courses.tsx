@@ -44,7 +44,7 @@ export default function Courses() {
                                     From foundational concepts to advanced IP networking for cameras, this course covers everything a professional CCTV engineer needs to know. Students work with actual industry equipment in our state-of-the-art labs.
                                 </p>
                                 <p>
-                                    Upon completion, students receive a BSA-JAS-ANZ internationally recognized certificate that is accepted by employers in India and across 40+ countries.
+                                    Upon completion, students receive a government-recognized certificate that is highly valued by employers across India.
                                 </p>
                             </div>
                         </div>
@@ -83,7 +83,7 @@ export default function Courses() {
                                 {[
                                     { label: 'Duration', value: '10 Days (Regular)\n1 Month (Fast Track)', icon: Clock },
                                     { label: 'Eligibility', value: 'SSLC / HSC / Diploma / Degree', icon: CheckCircle },
-                                    { label: 'Certification', value: 'BSA-JAS-ANZ International', icon: Award },
+                                    { label: 'Certification', value: 'Government Recognized', icon: Award },
                                     { label: 'Mode', value: 'Classroom + Lab (Hands-on)', icon: CheckCircle },
                                 ].map((detail, i) => (
                                     <div key={i} className="flex items-start gap-3">
@@ -105,8 +105,8 @@ export default function Courses() {
 
                         <div className="glass rounded-2xl p-6 border border-brand-200">
                             <div className="text-3xl mb-3">🏆</div>
-                            <h3 className="text-white font-semibold mb-2">BSA-JAS-ANZ Certified</h3>
-                            <p className="text-gray-400 text-sm">Internationally recognized certificate valid in 40+ countries.</p>
+                            <h3 className="text-white font-semibold mb-2">Government Recognized</h3>
+                            <p className="text-gray-400 text-sm">Official MSME affiliated certifications.</p>
                         </div>
                     </div>
                 </div>

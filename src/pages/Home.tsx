@@ -178,7 +178,7 @@ export default function Home() {
                         <div className="w-full lg:w-1/2 flex flex-col items-start">
                             <span className="text-[#b3433a] font-bold tracking-[0.3em] uppercase text-sm mb-4">The Academy</span>
                             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-[1.1] tracking-tight mb-8">
-                                Altron Institute of Safety and Security Technologies.
+                                Altron Safety & Security Academy
                             </h2>
                             <p className="text-gray-500 text-lg md:text-xl leading-relaxed mb-10 font-light">
                                 We specialize in equipping the world with the expertise to utilize the latest technologies, ensuring profoundly safe and secure surveillance environments globally.
@@ -215,7 +215,7 @@ export default function Home() {
                                     <Globe strokeWidth={1.5} size={32} />
                                 </div>
                                 <h4 className="text-2xl font-bold text-gray-900 mb-3 tracking-tight">Altrox World Corp</h4>
-                                <p className="text-gray-500 leading-relaxed font-light lg:max-w-[280px]">Global manufacturing of next-generation, AI-powered surveillance hardware.</p>
+                                <p className="text-gray-500 leading-relaxed font-light lg:max-w-[280px]">Advanced manufacturing of next-generation, AI-powered surveillance hardware.</p>
                             </div>
                         </div>
 
@@ -237,7 +237,7 @@ export default function Home() {
                                     <GraduationCap strokeWidth={1.5} size={32} />
                                 </div>
                                 <h4 className="text-2xl font-bold text-gray-900 mb-3 tracking-tight">Altron Institute</h4>
-                                <p className="text-gray-500 leading-relaxed font-light lg:max-w-[280px]">Elite vocational training and international certifications in safety technologies.</p>
+                                <p className="text-gray-500 leading-relaxed font-light lg:max-w-[280px]">Elite vocational training and government-recognized certifications in safety technologies.</p>
                             </div>
                             <div className="group flex flex-col items-start">
                                 <div className="mb-6 p-4 bg-white shadow-sm border border-gray-100 rounded-full text-gray-400 group-hover:text-[#BA442E] group-hover:border-[#BA442E]/30 transition-all duration-300">
@@ -334,7 +334,7 @@ export default function Home() {
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="mb-16">
                         <span className="text-[#BA442E] font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Success Stories</span>
-                        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">Hear from our alumni.</h2>
+                        <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">Hear from our founder and alumni.</h2>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

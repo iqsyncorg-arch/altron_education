@@ -8,8 +8,8 @@ const faqs = [
         a: "The CCTV Surveillance System course offers two options: a 10-day regular batch and a 1-month fast-track intensive program. Classes are held on weekdays, with weekend batches also available.",
     },
     {
-        q: "Is the certificate internationally valid?",
-        a: "Yes! All Altron Academy certificates are accredited by BSA-JAS-ANZ, an internationally recognized certification body from New Zealand and Australia. Our certificates are accepted by employers in 40+ countries.",
+        q: "Is the certificate government recognized?",
+        a: "Yes! Altron Academy certificates are recognized by the Government of India through MSME and NIESBUD. Our certifications are highly valued by security companies and government contractors.",
     },
     {
         q: "Do you provide job assistance after course completion?",
@@ -69,8 +69,8 @@ export default function FAQ() {
                             <div
                                 key={i}
                                 className={`rounded-xl border transition-all duration-300 ease-in-out overflow-hidden ${isOpen
-                                        ? "border-red-300 bg-red-50 shadow-sm"
-                                        : "border-gray-200 bg-white hover:border-gray-300"
+                                    ? "border-red-300 bg-red-50 shadow-sm"
+                                    : "border-gray-200 bg-white hover:border-gray-300"
                                     }`}
                             >
                                 <button
@@ -94,8 +94,8 @@ export default function FAQ() {
                                 {/* Animated Content Wrapper */}
                                 <div
                                     className={`grid transition-all duration-300 ease-in-out ${isOpen
-                                            ? "grid-rows-[1fr] opacity-100"
-                                            : "grid-rows-[0fr] opacity-0"
+                                        ? "grid-rows-[1fr] opacity-100"
+                                        : "grid-rows-[0fr] opacity-0"
                                         }`}
                                 >
                                     <div className="overflow-hidden">

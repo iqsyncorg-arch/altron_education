@@ -80,7 +80,7 @@ export default function FranchisePartner() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         {[
                             { value: '15+', label: 'Years of Excellence' },
-                            { value: '10K+', label: 'Students Trained' },
+                            { value: '1300+', label: 'Students Trained' },
                             { value: '5+', label: 'Active Centers' },
                             { value: '100%', label: 'Support Provided' },
                         ].map((stat, i) => (

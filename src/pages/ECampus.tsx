@@ -101,12 +101,12 @@ export default function ECampus() {
                     </p>
 
                     <div className="space-y-2">
-                        <p className="font-semibold">International Certifications</p>
+                        <p className="font-semibold">Professional Certifications</p>
                         <p>CE (Conformité Européene)</p>
                         <p>FCC (Federal Communications Commission)</p>
                         <p>RoHS (Restriction of Hazardous Substances)</p>
                         <p>STQC (Standardization, Testing and Quality Certification)</p>
-                        <p>ISO 9001:2015 (International Organization for Standardization)</p>
+                        <p>ISO 9001:2015 Certification</p>
                     </div>
 
                     <p>
@@ -123,7 +123,7 @@ export default function ECampus() {
                     </h2>
 
                     <p>
-                        Altron Institute of Safety & Security Technology has been producing
+                        Altron Safety & Security Academy has been producing
                         professionals in Safety & Security Systems since 2008.
                     </p>
 
@@ -132,13 +132,12 @@ export default function ECampus() {
                         <p>• Creating awareness about Safety & Security Systems</p>
                         <p>• Conducting seminars and demonstrations on new technologies</p>
                         <p>• Organizing training courses in security technologies</p>
-                        <p>• International affiliations and accreditations</p>
+                        <p>• Government affiliations and accreditations</p>
                         <p>• Encouraging R&D in Safety & Security Technology</p>
                     </div>
 
                     <div className="space-y-2">
                         <p className="font-semibold">Accreditations</p>
-                        <p>NIESBUD – Ministry of Skill Development and Entrepreneurship</p>
                         <p>MSME – Government of India</p>
                         <p>ISO 9001:2008 Certified Institute (BSA – JAS-ANZ)</p>
                     </div>

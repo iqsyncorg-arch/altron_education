@@ -7,7 +7,7 @@ import FloatingButtons from './components/FloatingButtons';
 import Home from './pages/Home';
 import AboutInstitute from './pages/AboutInstitute';
 import Infrastructure from './pages/Infrastructure';
-import InternationalCertification from './pages/InternationalCertification';
+import ProfessionalCertification from './pages/ProfessionalCertification';
 import WorldScenario from './pages/WorldScenario';
 import Courses from './pages/Courses';
 import FireAlarmTraining from './pages/FireAlarmTraining';
@@ -35,7 +35,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about-institute" element={<AboutInstitute />} />
             <Route path="/infrastructure" element={<Infrastructure />} />
-            <Route path="/international-certification" element={<InternationalCertification />} />
+            <Route path="/professional-certification" element={<ProfessionalCertification />} />
             <Route path="/world-scenario" element={<WorldScenario />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/fire-alarm-training" element={<FireAlarmTraining />} />

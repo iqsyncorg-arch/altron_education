@@ -13,7 +13,7 @@ const videoTestimonials = [
 const textTestimonials = [
     { name: 'Suresh Babu', course: 'CCTV Installation', stars: 5, text: 'Excellent training with hands-on experience. Got placed within 2 weeks of completing the course! The faculty was very supportive throughout.' },
     { name: 'Lakshmi N.', course: 'Fire Alarm Training', stars: 5, text: 'The course was very practical and job-oriented. I learned everything from theory to actual installation. Highly recommended!' },
-    { name: 'Karthik P.', course: 'Access & Biometrics', stars: 5, text: 'International certification is a huge advantage. I am now working in Dubai with a top security firm, all thanks to Altron Academy.' },
+    { name: 'Karthik P.', course: 'Access & Biometrics', stars: 5, text: 'Professional certification is a huge advantage. I am now working with a top security firm, all thanks to Altron Academy.' },
 ];
 
 export default function Testimonials() {

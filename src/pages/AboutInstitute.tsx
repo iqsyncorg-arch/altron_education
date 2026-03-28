@@ -10,11 +10,11 @@ const objectives = [
 
 const activities = [
     'CCTV Surveillance System Installation Training',
-    'Fire Alarm System Installation and Maintenance Training',
+    'Fire Alarm System Installation Training',
     'Access Control and Biometric Systems Training',
-    'Professional Safety & Security Engineering Programs',
+    'Professional Safety & Security Engineering Training',
     'Industry Placement Assistance',
-    'International Certification Facilitation',
+    'Professional Certification Facilitation',
     'Franchise Partner Development',
     'Online Learning via Altron e-Campus',
 ];
@@ -73,10 +73,10 @@ export default function AboutInstitute() {
                                 Altron Academy was established in 2008 with a singular vision: to create a world-class training institution that bridges the gap between academic learning and industry requirements in the safety and security sector.
                             </p>
                             <p>
-                                Over the years, we have grown into one of South India's most reputed institutes for security system training, accredited by the prestigious <strong className="text-brand-600 font-bold">BSA-JAS-ANZ</strong> certification body from New Zealand and Australia.
+                                Over the years, we have grown into one of South India's most reputed institutes for security system training, with internationally recognized certifications.
                             </p>
                             <p>
-                                Our institute is also recognized by the Government of India through affiliations with <strong className="text-brand-600 font-bold">MSME</strong> and <strong className="text-brand-600 font-bold">NIESBUD</strong>, making our certifications valuable and credible in both domestic and international job markets.
+                                Our institute is also recognized by the Government of India through affiliations with <strong className="text-brand-600 font-bold">MSME</strong> and <strong className="text-brand-600 font-bold">NIESBUD</strong>, making our certifications valuable and credible in the domestic job market.
                             </p>
                         </div>
                     </div>
@@ -84,16 +84,16 @@ export default function AboutInstitute() {
                     <div className="space-y-6">
                         <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
                             <div className="text-4xl mb-4 text-brand-500">🏆</div>
-                            <h3 className="text-slate-900 font-bold text-2xl mb-3">International Recognition</h3>
+                            <h3 className="text-slate-900 font-bold text-2xl mb-3">Professional Recognition</h3>
                             <p className="text-slate-600 leading-relaxed">
-                                Proudly certified by <strong className="text-brand-600">BSA-JAS-ANZ</strong>, an internationally recognized accreditation body. Our certificates are verifiable worldwide and accepted by global employers.
+                                Proudly offers government-approved accreditation through MSME and NIESBUD. Our certificates are verifiable online and widely accepted by employers.
                             </p>
                         </div>
 
                         <div className="grid grid-cols-3 gap-4">
                             {[
                                 { value: '2008', label: 'Founded' },
-                                { value: '10K+', label: 'Alumni' },
+                                { value: '1300+', label: 'Alumni' },
                                 { value: '100%', label: 'Placement' },
                             ].map((stat) => (
                                 <div key={stat.label} className="bg-brand-600 p-6 rounded-2xl text-center shadow-lg transform hover:-translate-y-1 transition-transform">

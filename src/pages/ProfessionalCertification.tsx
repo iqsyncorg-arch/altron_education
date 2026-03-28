@@ -1,7 +1,7 @@
-import { Award, CheckCircle, Globe, Shield } from 'lucide-react';
+import { Award, CheckCircle, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export default function InternationalCertification() {
+export default function ProfessionalCertification() {
     return (
         <div className="bg-white">
 
@@ -19,15 +19,15 @@ export default function InternationalCertification() {
                 <div className="relative z-10 text-center max-w-3xl px-4">
 
                     <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
-                        International Certification
+                        Professional Certification
                     </h1>
 
                     <p className="text-lg text-white/90">
-                        Globally recognized credentials that open doors to opportunities worldwide
+                        Government recognized credentials that validate your expertise in security systems
                     </p>
 
                     <div className="text-sm text-white/70 mt-4">
-                        Academy / International Certification
+                        Academy / Professional Certification
                     </div>
 
                 </div>
@@ -42,31 +42,31 @@ export default function InternationalCertification() {
                     {/* LEFT */}
                     <div>
 
-                        <div className="inline-flex items-center gap-2 bg-amber-100 border border-amber-300 rounded-full px-4 py-2 text-black text-sm mb-6">
-                            <Globe className="w-4 h-4" /> International Accreditation
+                        <div className="inline-flex items-center gap-2 bg-blue-100 border border-blue-300 rounded-full px-4 py-2 text-black text-sm mb-6">
+                            <Shield className="w-4 h-4" /> Government Recognized
                         </div>
 
                         <h2 className="text-3xl md:text-4xl font-bold text-black mb-6 tracking-tight">
-                            BSA-JAS-ANZ Certification
+                            MSME Certification
                         </h2>
 
                         <div className="space-y-5 text-gray-700 leading-relaxed text-[15px]">
 
                             <p>
-                                Altron Academy is proudly certified by
-                                <strong className="text-black"> BSA-JAS-ANZ</strong>, a prestigious international
-                                accreditation body based in <strong className="text-black">New Zealand and Australia</strong>.
+                                Altron Academy is proudly recognized by the
+                                <strong className="text-black"> Government of India</strong> through affiliations with
+                                <strong className="text-black"> MSME</strong> and <strong className="text-black"> NIESBUD</strong>.
                             </p>
 
                             <p>
                                 This certification ensures that our course curriculum, teaching methodology,
-                                infrastructure, and faculty meet international standards. Students who complete
-                                our programs receive certificates that are recognized globally.
+                                and infrastructure meet national industry standards. Students who complete
+                                our programs receive certificates that are highly valued by employers.
                             </p>
 
                             <p>
-                                The BSA-JAS-ANZ certification validates the authenticity of our training programs
-                                and assures employers worldwide of the quality and credibility of our graduates.
+                                These government-approved certifications validate the authenticity of our training programs
+                                and assure employers across India of the quality and credibility of our graduates.
                             </p>
 
                         </div>
@@ -89,7 +89,7 @@ export default function InternationalCertification() {
                         </div>
 
                         <div className="text-black font-bold text-2xl mb-1 tracking-tight">
-                            BSA-JAS-ANZ
+                            Government Approved
                         </div>
 
                         <div className="text-gray-800 font-semibold mb-1">
@@ -97,16 +97,16 @@ export default function InternationalCertification() {
                         </div>
 
                         <div className="text-gray-600 text-sm mb-8">
-                            New Zealand & Australia
+                            MSME Recognition
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
-                            {['New Zealand', 'Australia', 'India', 'International'].map((country) => (
+                            {['MSME', 'Govt of India', 'Industry Leaders'].map((type) => (
                                 <div
-                                    key={country}
-                                    className="bg-white border border-amber-200 rounded-lg py-2 px-3 text-black text-xs font-medium shadow-sm"
+                                    key={type}
+                                    className="bg-white border border-blue-200 rounded-lg py-2 px-3 text-black text-xs font-medium shadow-sm"
                                 >
-                                    ✓ {country}
+                                    ✓ {type}
                                 </div>
                             ))}
                         </div>
@@ -122,19 +122,19 @@ export default function InternationalCertification() {
 
                     <div className="text-center mb-14">
                         <h2 className="text-3xl md:text-4xl font-bold text-black tracking-tight">
-                            Benefits of International Certification
+                            Benefits of Professional Certification
                         </h2>
                     </div>
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
                         {[
-                            { title: 'Globally Recognized', desc: 'Certificates accepted by employers in 40+ countries worldwide.', icon: Globe },
-                            { title: 'Higher Employability', desc: 'International certification gives you an edge over non-certified candidates.', icon: Award },
+                            { title: 'Industry Recognized', desc: 'Certificates highly valued by security companies across India.', icon: Shield },
+                            { title: 'Higher Employability', desc: 'Professional certification gives you an edge over non-certified candidates.', icon: Award },
                             { title: 'Authentic Credentials', desc: 'Every certificate has a unique roll number verifiable online.', icon: Shield },
                             { title: 'Career Advancement', desc: 'Opens doors to senior technical and management positions.', icon: CheckCircle },
-                            { title: 'Industry Recognition', desc: 'Recognized by top security companies in India and abroad.', icon: Award },
-                            { title: 'MSME & NIESBUD', desc: 'Additional government recognition adds further credibility.', icon: Shield },
+                            { title: 'Govt. Affiliated', desc: 'Recognized by MSME and NIESBUD, adding massive credibility.', icon: Shield },
+                            { title: 'Skill Validation', desc: 'Ensures your practical skills match current industry requirements.', icon: Award },
                         ].map((benefit, i) => (
                             <div
                                 key={i}

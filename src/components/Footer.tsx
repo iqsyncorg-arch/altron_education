@@ -10,7 +10,7 @@ export default function Footer() {
 
     const quickLinks = [
         { label: 'About Institute', path: '/about-institute' },
-        { label: 'International Certification', path: '/international-certification' },
+        { label: 'Professional Certification', path: '/professional-certification' },
         { label: 'Fees & Eligibility', path: '/fees-eligibility' },
         { label: 'Employment', path: '/employment' },
         { label: 'Gallery', path: '/gallery' },
@@ -24,7 +24,7 @@ export default function Footer() {
                 <div className="max-w-7xl mx-auto px-4 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
                     <div>
                         <h3 className="text-white text-2xl font-bold">Ready to Start Your Career in Security Systems?</h3>
-                        <p className="text-brand-200 mt-1">Join 10,000+ certified professionals trained by Altron Academy</p>
+                        <p className="text-brand-200 mt-1">Join 1000+ certified professionals trained by Altron Academy</p>
                     </div>
                     <div className="flex gap-4">
                         <Link to="/contact" className="bg-white text-brand-700 font-semibold px-6 py-3 rounded-xl hover:bg-brand-50 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap">
@@ -52,7 +52,7 @@ export default function Footer() {
                             </div>
                         </Link>
                         <p className="text-brand-200 text-sm leading-relaxed mb-5">
-                            India's premier institute for CCTV, Fire Alarm, and Security System training since 2008. Internationally certified by BSA-JAS-ANZ, New Zealand & Australia.
+                            India's Unique & Premier Academy Training Institute for CCTV Surveillance, Fire Alarm, Access with Biometric Attendance and Smart Home Security System Since 2008.
                         </p>
                         <div className="flex gap-3">
                             <a href="#" className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-brand-200 hover:text-white hover:border-white/40 transition-all">
@@ -121,8 +121,8 @@ export default function Footer() {
                             </li>
                         </ul>
                         <div className="mt-5 p-3 rounded-xl bg-white/10 border border-white/20">
-                            <p className="text-white text-xs font-medium">🏆 BSA-JAS-ANZ Certified</p>
-                            <p className="text-brand-200 text-xs mt-0.5">International Accreditation from New Zealand & Australia</p>
+                            <p className="text-white text-xs font-medium">🏆 Government Recognized</p>
+                            <p className="text-brand-200 text-xs mt-0.5">MSME Affiliated Certification</p>
                         </div>
                     </div>
                 </div>

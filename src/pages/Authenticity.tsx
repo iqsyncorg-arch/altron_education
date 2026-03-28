@@ -141,7 +141,7 @@ export default function Authenticity() {
                                     </div>
                                     <div>
                                         <h3 className="text-green-800 font-bold text-lg">Identity Verified</h3>
-                                        <p className="text-green-600 text-xs font-semibold tracking-wider uppercase">Authentic Altron Academy Graduate</p>
+                                        <p className="text-green-600 text-xs font-semibold tracking-wider uppercase">Official Altron Academy Graduate</p>
                                     </div>
                                 </div>
                                 <div className="mt-4 md:mt-0 text-gray-400 text-xs font-mono">
@@ -174,7 +174,7 @@ export default function Authenticity() {
 
                                 <div className="mt-10 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-6">
                                     <div className="text-gray-400 text-[11px] leading-relaxed max-w-sm">
-                                        *This digital verification serves as an official confirmation of the candidate's academic standing at Altron Academy. Accreditation: BSA-JAS-ANZ.
+                                        *This digital verification serves as an official confirmation of the candidate's academic standing at Altron Academy.
                                     </div>
                                     <div className="bg-white border-2 border-gray-900 px-6 py-2 rounded-lg font-bold text-gray-900 text-xs tracking-widest uppercase">
                                         Official Record

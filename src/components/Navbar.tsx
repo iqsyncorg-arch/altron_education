@@ -15,7 +15,7 @@ const navItems: NavItem[] = [
         children: [
             { label: 'About Institute', path: '/about-institute', desc: 'Our legacy and mission' },
             { label: 'Infrastructure', path: '/infrastructure', desc: 'Modern lab facilities' },
-            { label: 'Certification', path: '/international-certification', desc: 'Global recognition' },
+            { label: 'Certification', path: '/professional-certification', desc: 'Government recognized' },
             { label: 'World Scenario', path: '/world-scenario', desc: 'Industry insights' },
         ],
     },
@@ -70,7 +70,7 @@ export default function Navbar() {
 
                         <span className="flex items-center gap-1.5">
                             <Shield className="w-3 h-3 text-brand-600" />
-                            BSA-JAS-ANZ Certified
+                            Government Recognized
                         </span>
                     </div>
 

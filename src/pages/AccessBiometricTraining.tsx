@@ -89,7 +89,7 @@ export default function AccessBiometricTraining() {
                                 <div className="text-gray-500 text-xs uppercase tracking-wider">Practical Lab</div>
                             </div>
                             <div className="text-center p-4">
-                                <div className="text-brand-500 text-3xl font-bold mb-1">JAS-ANZ</div>
+                                <div className="text-brand-500 text-3xl font-bold mb-1">PRO</div>
                                 <div className="text-gray-500 text-xs uppercase tracking-wider">Certified</div>
                             </div>
                             <div className="text-center p-4">
@@ -146,7 +146,7 @@ export default function AccessBiometricTraining() {
                                     {[
                                         { label: 'Duration', value: '1 Month Intensive', icon: Clock },
                                         { label: 'Eligibility', value: 'SSLC / HSC / Diploma / Degree', icon: CheckCircle },
-                                        { label: 'Certification', value: 'BSA-JAS-ANZ International', icon: Award },
+                                        { label: 'Certification', value: 'Government Recognized', icon: Award },
                                     ].map((detail, i) => (
                                         <div key={i} className="flex items-start gap-4">
                                             <div className="p-2 rounded-lg bg-brand-500/10">

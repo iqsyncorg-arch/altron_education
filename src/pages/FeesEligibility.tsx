@@ -68,7 +68,7 @@ export default function FeesEligibility() {
                 <div className="mb-20 max-w-4xl mx-auto text-black leading-relaxed space-y-6 text-[15px]">
 
                     <p>
-                        Altron Institute of Safety & Security Practical Training understands the industry
+                        Altron Safety & Security Academy understands the industry
                         needs of the ever-growing security system sector. Our CCTV Course is designed in
                         an easy and practical way so students can learn through real hands-on experience.
                     </p>
