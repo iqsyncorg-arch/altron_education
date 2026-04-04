@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const API_BASE = 'http://127.0.0.1:5050/api';
+const API_BASE = 'http://api.altroneducation.com/api';
 
 export function useApi<T>(endpoint: string, initialData: T[] = []) {
     const [data, setData] = useState<T[]>(initialData);

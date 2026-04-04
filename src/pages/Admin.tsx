@@ -14,7 +14,7 @@ import FranchiseManagement from '../admin/FranchiseManagement';
 import { NotificationProvider, useNotification } from '../components/AdminUI/NotificationProvider';
 
 
-const API_BASE = 'http://127.0.0.1:5050/api';
+const API_BASE = 'http://api.altroneducation.com/api';
 
 function AdminContent({ token, onLogout, role }: { token: string; onLogout: () => void; role: string }) {
 
