@@ -1,4 +1,3 @@
-import PageHero from '../components/PageHero';
 import { Star } from 'lucide-react';
 import { useApi } from '../hooks/useApi';
 

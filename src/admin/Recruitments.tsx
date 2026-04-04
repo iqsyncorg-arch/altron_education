@@ -1,4 +1,3 @@
-import React from 'react';
 import { Building, Mail, Phone, Calendar, Trash2, CheckCircle, Info } from 'lucide-react';
 
 interface RecruitmentsProps {

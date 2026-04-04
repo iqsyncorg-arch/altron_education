@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState, useRef } from 'react';
+import type { ChangeEvent } from 'react';
 import {
     User,
     Trash2,
@@ -94,10 +95,10 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
     const [searchTerm, setSearchTerm] = useState('');
     const [uploading, setUploading] = useState(false);
     const [selectedAdmission, setSelectedAdmission] = useState<any | null>(null);
-    const fileInputRef = React.useRef<HTMLInputElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
 
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 

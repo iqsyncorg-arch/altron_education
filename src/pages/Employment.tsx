@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PageHero from '../components/PageHero';
 import { Briefcase, CheckCircle, Send, Info, FileText, ShieldCheck } from 'lucide-react';
 
 export default function Employment() {

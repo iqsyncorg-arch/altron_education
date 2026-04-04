@@ -1,4 +1,3 @@
-import PageHero from '../components/PageHero';
 import { useApi } from '../hooks/useApi';
 
 export default function Gallery() {
