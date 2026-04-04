@@ -1,5 +1,6 @@
 import { ShieldAlert, Flame, Briefcase, GraduationCap, Settings, CheckCircle, Clock, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useApi } from '../hooks/useApi';
 
 const technologies = [
     {
@@ -25,6 +26,11 @@ const technologies = [
 ];
 
 export default function FireAlarmTraining() {
+    const { data: courses, loading } = useApi<any>('/courses');
+    const course = courses.find((c: any) => c.slug === 'fire-alarm-training');
+
+    if (loading) return <div className="flex items-center justify-center min-h-screen bg-[#0a0a0a]"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div></div>;
+    if (!course) return <div className="text-white text-center py-20 bg-[#0a0a0a]">Course not found.</div>;
     return (
         <div className="bg-[#0a0a0a] min-h-screen font-sans text-gray-200">
             {/* Hero Section with Video Background - Removed border-b for seamless transition */}
@@ -146,9 +152,9 @@ export default function FireAlarmTraining() {
                                 <h3 className="text-white font-bold text-xl mb-6">Course Quick Facts</h3>
                                 <div className="space-y-6">
                                     {[
-                                        { label: 'Duration', value: 'Flexible Schedules', icon: Clock },
-                                        { label: 'Eligibility', value: 'Open to All Seekers', icon: CheckCircle },
-                                        { label: 'Goal', value: 'Professional Certification', icon: Award },
+                                        { label: 'Duration', value: course.duration, icon: Clock },
+                                        { label: 'Eligibility', value: course.eligibility, icon: CheckCircle },
+                                        { label: 'Fees', value: `₹${course.fees.offer} (Offer)`, icon: Award },
                                     ].map((detail, i) => (
                                         <div key={i} className="flex items-start gap-4">
                                             <div className="p-2 rounded-lg bg-red-500/10">

@@ -8,7 +8,7 @@ const faqs = [
         a: "The CCTV Surveillance System course offers two options: a 10-day regular batch and a 1-month fast-track intensive program. Classes are held on weekdays, with weekend batches also available.",
     },
     {
-        q: "Is the certificate government recognized?",
+        q: "Is the certificate Online Verified Certification?",
         a: "Yes! Altron Academy certificates are recognized by the Government of India through MSME and NIESBUD. Our certifications are highly valued by security companies and government contractors.",
     },
     {

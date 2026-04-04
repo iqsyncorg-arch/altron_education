@@ -1,4 +1,4 @@
-
+import { ArrowRight } from 'lucide-react';
 
 export default function ECampus() {
     return (
@@ -28,28 +28,31 @@ export default function ECampus() {
                 {/* Intro */}
                 <div className="space-y-4">
                     <p className="font-semibold">
-                        ALTRON SECURITY ENGINEERING PVT. LTD. (Electronic Safety & Security Integration Solutions)
+                        <a href="https://altronindia.com/" target="_blank" rel="noopener noreferrer" className="text-slate-900 hover:text-red-600 transition-colors">ALTRON SECURITY ENGINEERING PVT. LTD.</a> (Electronic Safety & Security Integration Solutions)
                     </p>
                     <p className="font-semibold">
-                        ALTROX WORLD CORP. (CCTV Surveillance System Manufacturer)
+                        <a href="https://altroxworld.com/" target="_blank" rel="noopener noreferrer" className="text-slate-900 hover:text-red-600 transition-colors">ALTROX WORLD CORP.</a> (CCTV Surveillance System Manufacturer)
                     </p>
                     <p className="font-semibold">
-                        ALTRON SAFETY & SECURITY ACADEMY (CCTV, Safety & Security On-Job Training Institute)
+                        <a href="https://altroneducation.com/" target="_blank" rel="noopener noreferrer" className="text-slate-900 hover:text-red-600 transition-colors">ALTRON SAFETY & SECURITY ACADEMY</a> (CCTV, Safety & Security On-Job Training Institute)
                     </p>
                     <p className="font-semibold">
-                        ALTRON INTERIOR DESIGNER (Feel the Difference & Technology)
+                        <a href="https://www.gripforum.com/" target="_blank" rel="noopener noreferrer" className="text-slate-900 hover:text-red-600 transition-colors">GRIP</a> (Global Referral Interacting Platform - Business Networking)
                     </p>
                 </div>
 
 
                 {/* Section 1 */}
                 <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-red-600">
-                        1. ALTRON SECURITY ENGINEERING PVT. LTD. – ESTD 2000
+                    <h2 className="text-2xl font-bold">
+                        <a href="https://altronindia.com/" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:text-red-700 transition-colors flex items-center gap-2 group">
+                            1. ALTRON SECURITY ENGINEERING PVT. LTD. – ESTD 2000
+                            <ArrowRight size={20} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                        </a>
                     </h2>
 
                     <p>
-                        We are the leading & efficient solution providers of Safety & Security Systems in India & Overseas,
+                        We are the leading & efficient solution providers of Safety & Security Systems in India,
                         having strong clientele & testimonials. It is our commitment for quality, innovation & service that
                         brings our customers back again & again for all the Security & Surveillance needs.
                     </p>
@@ -72,8 +75,11 @@ export default function ECampus() {
 
                 {/* Section 2 */}
                 <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-red-600">
-                        2. ALTROX WORLD CORP.
+                    <h2 className="text-2xl font-bold">
+                        <a href="https://altroxworld.com/" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:text-red-700 transition-colors flex items-center gap-2 group">
+                            2. ALTROX WORLD CORP.
+                            <ArrowRight size={20} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                        </a>
                     </h2>
 
                     <p>
@@ -118,8 +124,11 @@ export default function ECampus() {
 
                 {/* Section 3 */}
                 <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-red-600">
-                        3. ALTRON SAFETY & SECURITY ACADEMY
+                    <h2 className="text-2xl font-bold">
+                        <a href="https://altroneducation.com/" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:text-red-700 transition-colors flex items-center gap-2 group">
+                            3. ALTRON SAFETY & SECURITY ACADEMY
+                            <ArrowRight size={20} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                        </a>
                     </h2>
 
                     <p>
@@ -158,29 +167,62 @@ export default function ECampus() {
 
 
                 {/* Section 4 */}
-                <div className="space-y-4">
-                    <h2 className="text-2xl font-bold text-red-600">
-                        4. ALTRON INTERIOR DESIGNERS
+                <div className="space-y-6 pt-8 border-t border-gray-100">
+                    <h2 className="text-3xl font-black tracking-tight">
+                        <a href="https://www.gripforum.com/" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:text-red-700 transition-colors flex items-center gap-2 group">
+                            4. GRIP – Global Referral Interacting Platform
+                            <ArrowRight size={20} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                        </a>
                     </h2>
 
-                    <p>
-                        Altron Interior Designers is a reputed interior design
-                        organization focused on technology-oriented solutions.
+                    <p className="text-lg font-medium text-slate-900">
+                        India’s first paperless digital referral networking platform focused on structured business growth and professional networking.
                     </p>
 
-                    <p>
-                        We provide home and commercial interiors along with
-                        home redesign services handled by experienced professionals.
-                    </p>
-
-                    <p>
-                        Our growing customer base stands testimony to our quality
-                        standards. Each project is handled by small interdisciplinary teams.
-                    </p>
-
-                    <p className="font-semibold">
-                        End-to-End Interior Design Solution with Technology
-                    </p>
+                    <div className="grid md:grid-cols-2 gap-8 bg-gray-50 p-8 rounded-3xl border border-gray-100">
+                        <div className="space-y-4">
+                            <h4 className="font-bold text-slate-900 uppercase tracking-widest text-xs">Platform Ecosystem</h4>
+                            <ul className="space-y-3">
+                                <li className="flex items-start gap-3">
+                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-600 flex-shrink-0" />
+                                    <span>Weekly business networking meetings</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-600 flex-shrink-0" />
+                                    <span>Referral-based business growth models</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-600 flex-shrink-0" />
+                                    <span>Digital business profiles for all members</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-600 flex-shrink-0" />
+                                    <span>Chapter-based local networking groups</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="space-y-4">
+                            <h4 className="font-bold text-slate-900 uppercase tracking-widest text-xs">Growth & Training</h4>
+                            <ul className="space-y-3">
+                                <li className="flex items-start gap-3">
+                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-600 flex-shrink-0" />
+                                    <span>One-on-one Mentorship for business expansion</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-600 flex-shrink-0" />
+                                    <span>Offline training sessions twice a month</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-600 flex-shrink-0" />
+                                    <span>Mobile app to track referrals & attendance</span>
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-600 flex-shrink-0" />
+                                    <span>Strategic business collaborations</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
             </div>

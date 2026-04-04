@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PageHero from '../components/PageHero';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, XCircle } from 'lucide-react';
 
 interface ContactForm {
     name: string;
@@ -13,13 +13,41 @@ interface ContactForm {
 export default function Contact() {
     const [form, setForm] = useState<ContactForm>({ name: '', email: '', phone: '', subject: '', message: '' });
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        if (error) setError(null);
+    };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitted(true);
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await fetch('http://127.0.0.1:5050/api/inquiries', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: form.name,
+                    mobile: form.phone,
+                    email: form.email,
+                    message: `[Subject: ${form.subject}] ${form.message}`
+                }),
+            });
+            if (res.ok) {
+                setSubmitted(true);
+                setForm({ name: '', email: '', phone: '', subject: '', message: '' });
+            } else {
+                const result = await res.json();
+                setError(result.message || 'Failed to send message. Please try again later.');
+            }
+        } catch (err) {
+            setError('Network error. Please check your internet connection.');
+            console.error('Contact submission failed:', err);
+        }
+        setLoading(false);
     };
 
     const contactInfo = [
@@ -88,6 +116,11 @@ export default function Contact() {
                             </div>
                         ) : (
                             <>
+                                {error && (
+                                    <div className="bg-red-50 text-red-700 p-4 rounded-xl flex items-center gap-2 font-bold mb-6 border border-red-100 animate-in slide-in-from-top-2">
+                                        <XCircle size={20} /> {error}
+                                    </div>
+                                )}
                                 <h2 className="text-gray-900 font-bold text-xl mb-6">Send Us a Message</h2>
                                 <form onSubmit={handleSubmit} className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
@@ -156,8 +189,8 @@ export default function Contact() {
                                             className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors resize-none"
                                         />
                                     </div>
-                                    <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2 py-3.5 mt-2">
-                                        <Send className="w-4 h-4" /> Send Message
+                                    <button disabled={loading} type="submit" className="btn-primary w-full flex items-center justify-center gap-2 py-3.5 mt-2 disabled:opacity-50">
+                                        <Send className={loading ? "animate-pulse" : "w-4 h-4"} /> {loading ? 'Sending...' : 'Send Message'}
                                     </button>
                                 </form>
                             </>

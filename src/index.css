@@ -81,6 +81,19 @@ body {
   border-radius: 3px;
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #BA442E;
+  border-radius: 10px;
+}
+
 /* Glow effects */
 .glow-red {
   box-shadow: 0 0 30px rgba(192, 57, 43, 0.3);

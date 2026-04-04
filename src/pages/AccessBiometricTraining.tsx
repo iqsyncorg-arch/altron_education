@@ -1,5 +1,6 @@
 import { CheckCircle, Clock, Award, Fingerprint, Shield, Users, Settings, Cpu } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useApi } from '../hooks/useApi';
 
 const technologies = [
     {
@@ -24,22 +25,14 @@ const technologies = [
     },
 ];
 
-const curriculum = [
-    'Introduction to Access Control Systems',
-    'Password and PIN-Based Systems',
-    'Card Access Technology (RFID, Smart Cards)',
-    'Fingerprint Scanner Installation',
-    'Iris/Eyeball Recognition Systems',
-    'Face Recognition Cameras',
-    'Software Integration & Programming',
-    'Network Configuration',
-    'Multi-Door Access Control',
-    'Time & Attendance Integration',
-    'Troubleshooting and Maintenance',
-    'Compliance and Reporting',
-];
-
 export default function AccessBiometricTraining() {
+    const { data: courses, loading } = useApi<any>('/courses');
+    const course = courses.find((c: any) => c.slug === 'access-biometric-training');
+
+    if (loading) return <div className="flex items-center justify-center min-h-screen bg-[#0a0a0a]"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div></div>;
+    if (!course) return <div className="text-white text-center py-20 bg-[#0a0a0a]">Course not found.</div>;
+
+    const curriculum = course.subjects || [];
     return (
         <div className="bg-[#0a0a0a] min-h-screen font-sans text-gray-200">
             {/* Hero Section */}
@@ -75,26 +68,26 @@ export default function AccessBiometricTraining() {
                             Access and Biometric control systems are critical for protecting confidential areas by ensuring only authorized individuals gain entry. While traditional systems rely on passwords and sensors, modern Biometric systems utilize unique physical identities—like thumbprints and iris patterns—offering the highest level of security.
                         </p>
                         <p className="text-gray-400 leading-relaxed">
-                            At <span className="text-brand-500 font-semibold">Altron Education</span>, we bridge the gap between theory and industry-standard application. With decades of experience, we provide the number one installation training in Chennai, preparing you for roles in hospitals, banks, and corporate data centers.
+                            At <span className="text-brand-500 font-semibold">Altron Academy</span>, we bridge the gap between theory and industry-standard application. With decades of experience, we provide the number one installation training in Chennai, preparing you for roles in hospitals, banks, and corporate data centers.
                         </p>
                     </div>
                     <div className="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-sm">
                         <div className="grid grid-cols-2 gap-6">
                             <div className="text-center p-4">
-                                <div className="text-brand-500 text-3xl font-bold mb-1">10+</div>
-                                <div className="text-gray-500 text-xs uppercase tracking-wider">Years Experience</div>
+                                <div className="text-brand-500 text-3xl font-bold mb-1">100%</div>
+                                <div className="text-gray-500 text-xs uppercase tracking-wider">Hands-on Practical</div>
                             </div>
                             <div className="text-center p-4">
                                 <div className="text-brand-500 text-3xl font-bold mb-1">100%</div>
-                                <div className="text-gray-500 text-xs uppercase tracking-wider">Practical Lab</div>
+                                <div className="text-gray-500 text-xs uppercase tracking-wider">On-site Training</div>
                             </div>
                             <div className="text-center p-4">
-                                <div className="text-brand-500 text-3xl font-bold mb-1">PRO</div>
-                                <div className="text-gray-500 text-xs uppercase tracking-wider">Certified</div>
+                                <div className="text-brand-500 text-3xl font-bold mb-1">100%</div>
+                                <div className="text-gray-500 text-xs uppercase tracking-wider">Placement Opportunities</div>
                             </div>
                             <div className="text-center p-4">
-                                <div className="text-brand-500 text-3xl font-bold mb-1">24/7</div>
-                                <div className="text-gray-500 text-xs uppercase tracking-wider">Support</div>
+                                <div className="text-brand-500 text-3xl font-bold mb-1">1300+</div>
+                                <div className="text-gray-500 text-xs uppercase tracking-wider">Alumni</div>
                             </div>
                         </div>
                     </div>
@@ -127,7 +120,7 @@ export default function AccessBiometricTraining() {
                             Comprehensive Curriculum
                         </h2>
                         <div className="grid md:grid-cols-2 gap-4">
-                            {curriculum.map((item, i) => (
+                            {curriculum.map((item: string, i: number) => (
                                 <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-brand-500/5 transition-colors group">
                                     <div className="w-8 h-8 rounded-lg bg-brand-500/10 flex items-center justify-center text-brand-500 text-sm font-bold flex-shrink-0 group-hover:bg-brand-500 group-hover:text-white transition-all">
                                         {i + 1}
@@ -144,9 +137,9 @@ export default function AccessBiometricTraining() {
                                 <h3 className="text-white font-bold text-xl mb-6">Course Overview</h3>
                                 <div className="space-y-6">
                                     {[
-                                        { label: 'Duration', value: '1 Month Intensive', icon: Clock },
-                                        { label: 'Eligibility', value: 'SSLC / HSC / Diploma / Degree', icon: CheckCircle },
-                                        { label: 'Certification', value: 'Government Recognized', icon: Award },
+                                        { label: 'Duration', value: course.duration, icon: Clock },
+                                        { label: 'Eligibility', value: course.eligibility, icon: CheckCircle },
+                                        { label: 'Fees', value: `₹${course.fees.offer} (Offer)`, icon: Award },
                                     ].map((detail, i) => (
                                         <div key={i} className="flex items-start gap-4">
                                             <div className="p-2 rounded-lg bg-brand-500/10">

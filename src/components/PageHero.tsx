@@ -1,16 +1,26 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
 
 interface PageHeroProps {
     title: string;
     subtitle?: string;
     breadcrumbs?: string[];
     image?: string;
+    titleClassName?: string;
+    subtitleClassName?: string;
+    breadcrumbClassName?: string;
 }
 
-export default function PageHero({ title, subtitle, breadcrumbs = [], image }: PageHeroProps) {
+export default function PageHero({
+    title,
+    subtitle,
+    breadcrumbs = [],
+    image,
+    titleClassName,
+    subtitleClassName,
+    breadcrumbClassName
+}: PageHeroProps) {
     return (
-        <div className="relative pt-10 pb-10 overflow-hidden">
+        <div className="relative pt-20 pb-20 md:pt-32 md:pb-32 overflow-hidden">
             {/* Background */}
             {image ? (
                 <>
@@ -30,7 +40,7 @@ export default function PageHero({ title, subtitle, breadcrumbs = [], image }: P
                             style={{ backgroundImage: `url(${image})` }}
                         />
                     )}
-                    <div className="absolute inset-0 bg-brand-950/70 backdrop-blur-[2px]" />
+                    <div className="absolute inset-0 bg-black/40" />
                 </>
             ) : (
                 <div className="absolute inset-0 hero-gradient" />
@@ -46,12 +56,12 @@ export default function PageHero({ title, subtitle, breadcrumbs = [], image }: P
             <div className="relative max-w-7xl mx-auto px-4 text-center">
                 {/* Breadcrumb */}
                 {breadcrumbs.length > 0 && (
-                    <div className="flex items-center justify-center gap-2 text-sm text-brand-200 mb-6">
-                        <Link to="/" className="hover:text-white transition-colors">Home</Link>
+                    <div className="flex items-center justify-center gap-3 text-sm mb-6">
+                        <Link to="/" className="text-white hover:text-brand-200 transition-colors font-medium">Home</Link>
                         {breadcrumbs.map((crumb, i) => (
-                            <span key={i} className="flex items-center gap-2">
-                                <ChevronRight className="w-3.5 h-3.5 opacity-50" />
-                                <span className={i === breadcrumbs.length - 1 ? 'text-white font-medium' : 'hover:text-white transition-colors cursor-pointer'}>
+                            <span key={i} className="flex items-center gap-3">
+                                <span className="text-white/40 font-bold">•</span>
+                                <span className={i === breadcrumbs.length - 1 ? 'text-white font-bold' : `${breadcrumbClassName || 'text-brand-100'} hover:text-white transition-colors cursor-pointer`}>
                                     {crumb}
                                 </span>
                             </span>
@@ -59,11 +69,13 @@ export default function PageHero({ title, subtitle, breadcrumbs = [], image }: P
                     </div>
                 )}
 
-                <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">
+                <h1 className={`text-4xl md:text-6xl font-extrabold mb-6 tracking-tight ${titleClassName || 'text-white'}`}>
                     {title}
                 </h1>
                 {subtitle && (
-                    <p className="text-brand-100/90 text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed">{subtitle}</p>
+                    <p className={`text-lg md:text-xl max-w-2xl mx-auto font-medium leading-relaxed ${subtitleClassName || 'text-brand-100/90'}`}>
+                        {subtitle}
+                    </p>
                 )}
 
                 {/* Decorative line */}

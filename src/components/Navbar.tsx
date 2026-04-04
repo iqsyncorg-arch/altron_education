@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, ChevronDown, Shield, MapPin, ArrowRight } from 'lucide-react'
+import { Menu, X, ChevronDown, Shield, ArrowRight } from 'lucide-react'
 
 interface NavItem {
     label: string
@@ -15,7 +15,7 @@ const navItems: NavItem[] = [
         children: [
             { label: 'About Institute', path: '/about-institute', desc: 'Our legacy and mission' },
             { label: 'Infrastructure', path: '/infrastructure', desc: 'Modern lab facilities' },
-            { label: 'Certification', path: '/professional-certification', desc: 'Government recognized' },
+            { label: 'Certification', path: '/professional-certification', desc: 'Online Verified Certification' },
             { label: 'World Scenario', path: '/world-scenario', desc: 'Industry insights' },
         ],
     },
@@ -48,6 +48,7 @@ const navItems: NavItem[] = [
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+    const [isScrolled, setIsScrolled] = useState(false)
     const location = useLocation()
 
     useEffect(() => {
@@ -55,22 +56,25 @@ export default function Navbar() {
         setActiveDropdown(null)
     }, [location])
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50)
+        }
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
     return (
         <nav className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm">
 
             {/* Top Utility */}
-            <div className="hidden lg:block bg-slate-50 border-b border-slate-100">
+            <div className={`hidden lg:block bg-slate-50 border-b border-slate-100 transition-all duration-300 overflow-hidden ${isScrolled ? 'max-h-0 opacity-0 border-none' : 'max-h-12 opacity-100'}`}>
                 <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center text-[11px] font-semibold uppercase tracking-wider text-slate-500">
 
                     <div className="flex gap-6">
-                        <span className="flex items-center gap-1.5">
-                            <MapPin className="w-3 h-3 text-brand-600" />
-                            Arumbakkam, Chennai
-                        </span>
-
-                        <span className="flex items-center gap-1.5">
-                            <Shield className="w-3 h-3 text-brand-600" />
-                            Government Recognized
+                        <span className="flex items-center gap-1.5 text-brand-600 font-bold">
+                            <Shield className="w-3 h-3" />
+                            Online Verified Certification
                         </span>
                     </div>
 

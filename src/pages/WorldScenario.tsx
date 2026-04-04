@@ -96,7 +96,7 @@ export default function WorldScenario() {
                         greenfield business segment.
                     </li>
                     <li>
-                        Join in the <strong>"ALTRON INSTITUTE"</strong> and get Assured
+                        Join in the <strong>"ALTRON ACADEMY"</strong> and get Assured
                         Placement.
                     </li>
                 </ul>

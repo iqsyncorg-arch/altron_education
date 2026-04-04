@@ -14,9 +14,9 @@ const activities = [
     'Access Control and Biometric Systems Training',
     'Professional Safety & Security Engineering Training',
     'Industry Placement Assistance',
-    'Professional Certification Facilitation',
-    'Franchise Partner Development',
-    'Online Learning via Altron e-Campus',
+    'Online Verified Certificate',
+    'Franchise Opportunities',
+    '........',
 ];
 
 export default function AboutInstitute() {
@@ -73,10 +73,10 @@ export default function AboutInstitute() {
                                 Altron Academy was established in 2008 with a singular vision: to create a world-class training institution that bridges the gap between academic learning and industry requirements in the safety and security sector.
                             </p>
                             <p>
-                                Over the years, we have grown into one of South India's most reputed institutes for security system training, with internationally recognized certifications.
+                                Over the years, we have grown into one of South India's most reputed institutes for security system training, offering government-recognized certifications.
                             </p>
                             <p>
-                                Our institute is also recognized by the Government of India through affiliations with <strong className="text-brand-600 font-bold">MSME</strong> and <strong className="text-brand-600 font-bold">NIESBUD</strong>, making our certifications valuable and credible in the domestic job market.
+                                Our institute is also recognized by the Government of India through affiliations with <strong className="text-brand-600 font-bold">MSME</strong>  <strong className="text-brand-600 font-bold"></strong>, making our certifications valuable and credible in the domestic job market.
                             </p>
                         </div>
                     </div>
@@ -86,19 +86,20 @@ export default function AboutInstitute() {
                             <div className="text-4xl mb-4 text-brand-500">🏆</div>
                             <h3 className="text-slate-900 font-bold text-2xl mb-3">Professional Recognition</h3>
                             <p className="text-slate-600 leading-relaxed">
-                                Proudly offers government-approved accreditation through MSME and NIESBUD. Our certificates are verifiable online and widely accepted by employers.
+                                Proudly offers government-approved accreditation through MSME. Our certificates are verifiable online and widely accepted by employers.
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-2 gap-4">
                             {[
-                                { value: '2008', label: 'Founded' },
-                                { value: '1300+', label: 'Alumni' },
+                                { value: '100%', label: 'Hands-on' },
+                                { value: '100%', label: 'On-site' },
                                 { value: '100%', label: 'Placement' },
+                                { value: '1300+', label: 'Alumni' },
                             ].map((stat) => (
-                                <div key={stat.label} className="bg-brand-600 p-6 rounded-2xl text-center shadow-lg transform hover:-translate-y-1 transition-transform">
-                                    <div className="text-2xl font-black text-white">{stat.value}</div>
-                                    <div className="text-brand-100 text-xs font-medium uppercase tracking-wider mt-1">{stat.label}</div>
+                                <div key={stat.label} className="bg-brand-600 p-4 rounded-2xl text-center shadow-lg transform hover:-translate-y-1 transition-transform">
+                                    <div className="text-xl font-black text-white">{stat.value}</div>
+                                    <div className="text-brand-100 text-[10px] font-medium uppercase tracking-wider mt-1">{stat.label}</div>
                                 </div>
                             ))}
                         </div>

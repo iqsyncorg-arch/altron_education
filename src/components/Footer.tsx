@@ -120,10 +120,7 @@ export default function Footer() {
                                 </a>
                             </li>
                         </ul>
-                        <div className="mt-5 p-3 rounded-xl bg-white/10 border border-white/20">
-                            <p className="text-white text-xs font-medium">🏆 Government Recognized</p>
-                            <p className="text-brand-200 text-xs mt-0.5">MSME Affiliated Certification</p>
-                        </div>
+
                     </div>
                 </div>
             </div>

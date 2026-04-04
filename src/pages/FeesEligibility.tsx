@@ -1,65 +1,42 @@
 import PageHero from '../components/PageHero';
 import { Link } from 'react-router-dom';
+import { useApi } from '../hooks/useApi';
 
-const courses = [
-    {
-        title: 'Diploma Course in CCTV Surveillance System',
-        slug: 'cctv',
-        color: 'from-red-600 to-red-800',
-        borderColor: 'border-red-200',
-        accentColor: 'text-red-600',
-        icon: '📷',
-        rows: [
-            { label: 'Duration', value: '6 Days with Practical Exam' },
-            { label: 'Day', value: 'Monday to Saturday' },
-            { label: 'Timing', value: '10:00 AM – 05:30 PM' },
-            { label: 'Eligibility', value: 'No Need & No Age Bar' },
-            { label: 'Batch', value: '1 or 2 Candidates Only' },
-            { label: 'Course Fees', value: '₹15,900 (Offer Price ₹10,900)' },
-        ],
-    },
-    {
-        title: 'Diploma Course in Fire Alarm System',
-        slug: 'fire',
-        color: 'from-orange-600 to-red-700',
-        borderColor: 'border-orange-200',
-        accentColor: 'text-orange-600',
-        icon: '🔥',
-        rows: [
-            { label: 'Duration', value: '6 Days with Practical Exam' },
-            { label: 'Day', value: 'Monday to Saturday' },
-            { label: 'Timing', value: '10:00 AM – 05:30 PM' },
-            { label: 'Eligibility', value: 'SSLC / HSC / ITI / Diploma / Any Degree' },
-            { label: 'Batch', value: '1 or 2 Candidates Only' },
-            { label: 'Course Fees', value: '₹15,900 (Offer Price ₹10,900)' },
-        ],
-    },
-    {
-        title: 'Professional Course in Safety & Security Engineering',
-        slug: 'engineering',
-        color: 'from-red-600 to-red-900',
-        borderColor: 'border-red-200',
-        accentColor: 'text-red-600',
-        icon: '🛡️',
-        rows: [
-            { label: 'Duration', value: '4 Weeks + On-Site Practical' },
-            { label: 'Timing', value: '10:00 AM – 05:30 PM' },
-            { label: 'Subjects Covered', value: 'CCTV, Fire Alarm, Access Control, Biometric System, Home Security System' },
-            { label: 'Eligibility', value: 'SSLC / HSC / ITI / Diploma / Any Degree (Below 35)' },
-            { label: 'Course Fees', value: '₹49,000 (Offer Price ₹33,000)' },
-            { label: 'Placement', value: '100% Job Placement' },
-        ],
-    },
-];
+const COURSE_STYLING: Record<string, any> = {
+    'cctv-diploma': { color: 'bg-red-600', borderColor: 'border-red-100', accentColor: 'text-red-600', icon: '📷' },
+    'fire-alarm-training': { color: 'bg-red-600', borderColor: 'border-red-100', accentColor: 'text-red-600', icon: '🔥' },
+    'access-biometric-training': { color: 'bg-red-600', borderColor: 'border-red-100', accentColor: 'text-red-600', icon: '🆔' },
+    'engineering': { color: 'bg-red-600', borderColor: 'border-red-100', accentColor: 'text-red-600', icon: '🛡️' },
+};
 
 export default function FeesEligibility() {
+    const { data: backendCourses, loading } = useApi<any[]>('/courses');
+
+    if (loading) return <div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div></div>;
+
+    const courses = ((backendCourses || []) as any).map((course: any) => {
+        const style = COURSE_STYLING[course.slug] || COURSE_STYLING['cctv-diploma'];
+        return {
+            ...course,
+            ...style,
+            rows: [
+                { label: 'Duration', value: course.duration },
+                { label: 'Timing', value: course.timing },
+                { label: 'Eligibility', value: course.eligibility },
+                { label: 'Batch', value: course.batchSize },
+                { label: 'Course Fees', value: `₹${course.fees?.original} (Offer Price ₹${course.fees?.offer})` },
+                ...(course.slug === 'engineering' ? [{ label: 'Placement', value: '100% Job Placement' }] : []),
+            ]
+        };
+    });
     return (
         <div className="bg-gradient-to-b from-white to-gray-50">
 
             <PageHero
-                title="CCTV Installation & Maintenance Training"
-                subtitle="Professional CCTV, Fire Alarm & Security Engineering Courses"
+                title="Duration, Eligibility & Fees"
                 breadcrumbs={['Courses']}
+                image="https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774868275/Screenshot_2026-03-30_at_4.27.02_PM_tjt8be.png"
+                breadcrumbClassName="text-red-600"
             />
 
             <div className="max-w-7xl mx-auto px-4 py-20">
@@ -67,51 +44,22 @@ export default function FeesEligibility() {
                 {/* INTRO */}
                 <div className="mb-20 max-w-4xl mx-auto text-black leading-relaxed space-y-6 text-[15px]">
 
-                    <p>
-                        Altron Safety & Security Academy understands the industry
-                        needs of the ever-growing security system sector. Our CCTV Course is designed in
-                        an easy and practical way so students can learn through real hands-on experience.
-                    </p>
-
-                    <p>
-                        Our institute includes classroom sessions and fully equipped practical labs for
-                        advanced CCTV Camera Courses in Chennai. Apart from CCTV technology training,
-                        we also provide Fire Alarm Systems training and Safety & Security Engineering
-                        professional courses.
-                    </p>
-
-                    <p>
-                        Students receive <strong className="text-red-600">100% practical training </strong>
-                        for camera installation, networking configuration, troubleshooting, and system
-                        maintenance. We also train students to diagnose CCTV faults and provide real-time
-                        solutions for installation problems.
-                    </p>
-
-                    <p>
-                        Our institute is one of the most popular technical training institutes for CCTV,
-                        security systems, and surveillance technology education.
-                    </p>
-
-                    <p className="text-red-600 font-semibold">
-                        For more details about our courses and admission, feel free to contact us and
-                        schedule an appointment.
-                    </p>
 
                 </div>
 
 
                 {/* CARDS */}
-                <div className="space-y-10 mb-20">
+                <div className="grid md:grid-cols-2 gap-8 lg:gap-10 mb-20">
 
-                    {courses.map((course, i) => (
+                    {courses.map((course: any, i: number) => (
 
                         <div
                             key={i}
                             className={`group bg-white/80 backdrop-blur rounded-2xl border ${course.borderColor} shadow-md hover:shadow-xl transition duration-300`}
                         >
 
-                            {/* TOP GRADIENT BAR */}
-                            <div className={`h-1.5 bg-gradient-to-r ${course.color} rounded-t-2xl`} />
+                            {/* TOP COLOR BAR */}
+                            <div className={`h-1.5 ${course.color} rounded-t-2xl`} />
 
                             <div className="p-8">
 
@@ -154,7 +102,7 @@ export default function FeesEligibility() {
 
                                         <tbody>
 
-                                            {course.rows.map((row, j) => (
+                                            {course.rows.map((row: any, j: number) => (
 
                                                 <tr
                                                     key={j}
@@ -219,7 +167,7 @@ export default function FeesEligibility() {
                         Our training bridges the gap between students and corporate companies.
                         After successful completion of the Professional Course,
                         students receive <strong className="text-red-600"> 100% placement assistance</strong>
-                        in Tamil Nadu and overseas opportunities.
+                        across Tamil Nadu and nationwide opportunities.
                     </p>
 
                     <div className="flex flex-wrap gap-4 justify-center">

@@ -1,45 +1,40 @@
+import { useState, useEffect } from 'react';
 import { MapPin, Phone, Clock, Mail, ExternalLink, Globe, UserCheck } from 'lucide-react';
 import PageHero from '../components/PageHero';
 
-const centers = [
-    {
-        name: 'Chennai — Arumbakkam (Head Office)',
-        address: '79A/44A, S1, Panchali Amman Koil Street, Arumbakkam, Chennai – 600 106',
-        phone: '+91 99624 56533',
-        email: 'info@altroneducation.com',
-        timing: 'Mon – Sat: 9:00 AM – 7:00 PM',
-        type: 'Corporate Headquarters',
-        mapLink: 'https://maps.google.com/?q=Altron+Academy+Arumbakkam',
-    },
-
-    {
-        name: 'Thanjavur Regional Center',
-        address: '#3C, Thiruvallur Nagar 4th Street, New Bus Stand, Thanjavur – 613 005',
-        phone: '98410 12721',
-        mobile: '88833 38414',
-        contactPerson: 'Ms. Thilaga / Mrs. Mayuri Thangadurai',
-        email: 'tnj@altroneducation.com',
-        timing: 'Mon – Sat: 9:30 AM – 6:00 PM',
-        type: 'Regional Center',
-        mapLink: 'https://maps.google.com/?q=New+Bus+Stand+Thanjavur',
-    },
-];
-
 export default function Centers() {
+    const [centers, setCenters] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch('http://127.0.0.1:5050/api/centers')
+            .then(res => res.json())
+            .then(data => {
+                setCenters(data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error('Error fetching centers:', err);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div></div>;
     return (
         <div className="bg-gray-50 min-h-screen text-gray-800">
             <PageHero
-                title="Our Training Centers"
-                subtitle="Expert security engineering training at a location convenient for you."
-                breadcrumbs={['Centers']}
+                title="Visit Altron Academy"
+                image="https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774865871/Screenshot_2026-03-30_at_3.46.08_PM_jewtgg.png"
+                subtitleClassName="text-black"
+                breadcrumbClassName="text-black"
             />
 
             <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
 
                 {/* Section Header */}
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4">
-                        Visit <span className="text-red-600">Altron Academy</span>
+                    <h2 className="text-3xl md:text-5xl font-extrabold text-red-600 mb-4">
+                        Visit Altron Academy
                     </h2>
                     <p className="text-gray-600 max-w-2xl mx-auto text-lg">
                         Our centers are equipped with state-of-the-art labs for CCTV, Fire Alarm, and Integrated Security System training.

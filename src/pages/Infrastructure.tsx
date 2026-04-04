@@ -7,21 +7,21 @@ const facilities = [
         title: 'Well Trained Faculty',
         desc: 'Our faculty members are seasoned professionals with 20+ years of hands-on experience in the security industry. They bring real-world knowledge into every classroom session.',
         highlights: ['Industry veterans as instructors', '20+ years average experience', 'Regular training and upskilling', 'Dedicated mentorship program'],
-        image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80'
+        image: 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774726363/7fd81e80-9af0-46c5-895d-223b88b456ad_rqwfhf.jpg'
     },
     {
         icon: Layout,
         title: 'Neat & Modern Classrooms',
         desc: 'Our classrooms are designed for optimal learning with modern audio-visual equipment, comfortable seating, and an environment that promotes concentration.',
         highlights: ['Air-conditioned classrooms', 'Smart boards & projectors', 'Comfortable seating for 30 students', 'Natural lighting & ventilation'],
-        image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80'
+        image: 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774726413/43094343-ec21-4be9-bc3e-1b0f053ab2cc_v9yzvb.jpg'
     },
     {
         icon: Cpu,
         title: 'State-of-the-Art Lab',
-        desc: 'Our labs are equipped with the latest industry-standard equipment including IP cameras, DVR/NVR systems, fire alarm panels, and biometric devices.',
+        desc: 'Our Practical Training Academy is fully equipped with the latest industry-standard technologies, including HD & IP Cameras, XVR/NVR Systems, Fire Alarm Panels (Conventional & Addressable), Detectors, Access Control & Biometric Devices, Video Door Phones, Apartment Systems, and a wide range of accessories—ensuring complete hands-on training experience.',
         highlights: ['IP & Analog CCTV systems', 'Fire alarm panels & sensors', 'Biometric & access control devices', 'Live network configuration setups'],
-        image: 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773062591/ChatGPT_Image_Mar_9_2026_06_42_27_PM_iihcoo.png'
+        image: 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774726368/0560e602-03f5-4a07-9370-7e412e9c5ea5_cpxplw.jpg'
     },
 ];
 
@@ -140,10 +140,10 @@ export default function Infrastructure() {
                 {/* Stats */}
                 <div className="mt-40 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {[
-                        { value: '3', label: 'Modern Labs', icon: Cpu },
-                        { value: '5', label: 'Campuses', icon: Layout },
-                        { value: '30+', label: 'Workstations', icon: Monitor },
-                        { value: '100%', label: 'Hands-on', icon: Shield },
+                        { value: '100%', label: 'Hands-on Practical', icon: Cpu },
+                        { value: '100%', label: 'On-site Training', icon: Layout },
+                        { value: '100%', label: 'Placement Opportunities', icon: Monitor },
+                        { value: '1300+', label: 'Alumni', icon: Shield },
                     ].map((stat, i) => (
                         <div key={i} className="bg-red-600 p-10 rounded-sm text-center shadow-lg transform hover:-translate-y-1 transition-all duration-300">
 
@@ -170,7 +170,7 @@ export default function Infrastructure() {
                     </h2>
 
                     <p className="text-gray-400 mb-10 text-lg">
-                        We welcome parents and students to tour our facilities between 9 AM and 6 PM.
+                        We welcome parents and students to tour our facilities between 10 AM and 6 PM.
                     </p>
 
                     <button className="bg-red-600 hover:bg-red-700 text-white px-10 py-4 font-bold text-sm uppercase tracking-widest transition-all rounded-sm shadow-xl">

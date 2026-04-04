@@ -19,16 +19,10 @@ export default function ProfessionalCertification() {
                 <div className="relative z-10 text-center max-w-3xl px-4">
 
                     <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 tracking-tight">
-                        Professional Certification
+                        Online Verified Certification
                     </h1>
 
-                    <p className="text-lg text-white/90">
-                        Government recognized credentials that validate your expertise in security systems
-                    </p>
 
-                    <div className="text-sm text-white/70 mt-4">
-                        Academy / Professional Certification
-                    </div>
 
                 </div>
             </div>
@@ -43,31 +37,25 @@ export default function ProfessionalCertification() {
                     <div>
 
                         <div className="inline-flex items-center gap-2 bg-blue-100 border border-blue-300 rounded-full px-4 py-2 text-black text-sm mb-6">
-                            <Shield className="w-4 h-4" /> Government Recognized
+                            <Shield className="w-4 h-4" /> Online Verified Certification
                         </div>
 
                         <h2 className="text-3xl md:text-4xl font-bold text-black mb-6 tracking-tight">
-                            MSME Certification
+                            Certificate Verification
                         </h2>
 
                         <div className="space-y-5 text-gray-700 leading-relaxed text-[15px]">
 
                             <p>
-                                Altron Academy is proudly recognized by the
-                                <strong className="text-black"> Government of India</strong> through affiliations with
-                                <strong className="text-black"> MSME</strong> and <strong className="text-black"> NIESBUD</strong>.
+                                All our certificates are issued with a unique Roll Number for authentication.
+                                To verify the validity of your certificate, please enter the Roll Number on our official verification page
                             </p>
 
                             <p>
-                                This certification ensures that our course curriculum, teaching methodology,
-                                and infrastructure meet national industry standards. Students who complete
-                                our programs receive certificates that are highly valued by employers.
+                                This ensures transparency and allows anyone to easily confirm the authenticity of the certificate.
                             </p>
 
-                            <p>
-                                These government-approved certifications validate the authenticity of our training programs
-                                and assure employers across India of the quality and credibility of our graduates.
-                            </p>
+
 
                         </div>
 
@@ -81,36 +69,20 @@ export default function ProfessionalCertification() {
                     </div>
 
 
-                    {/* RIGHT CARD */}
-                    <div className="rounded-3xl p-12 border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-100 shadow-md hover:shadow-xl transition duration-300 text-center">
-
-                        <div className="w-20 h-20 mx-auto flex items-center justify-center rounded-full bg-white shadow-sm mb-6 text-4xl">
-                            🏆
+                    {/* RIGHT IMAGE */}
+                    <div className="relative group">
+                        <div className="rounded-3xl overflow-hidden shadow-2xl border border-gray-200 bg-white">
+                            <img
+                                src="https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774726745/27edc2b0-288e-4078-bbce-71f72695443b_wplacj.jpg"
+                                alt="Government Approval"
+                                className="w-full h-auto object-contain blur-[2px] group-hover:blur-0 transition-all duration-500"
+                            />
                         </div>
-
-                        <div className="text-black font-bold text-2xl mb-1 tracking-tight">
-                            Government Approved
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/20 rounded-3xl pointer-events-none">
+                            <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-xs font-bold text-black shadow-lg">
+                                Official Government Approval Document
+                            </div>
                         </div>
-
-                        <div className="text-gray-800 font-semibold mb-1">
-                            Certified Institute
-                        </div>
-
-                        <div className="text-gray-600 text-sm mb-8">
-                            MSME Recognition
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-3">
-                            {['MSME', 'Govt of India', 'Industry Leaders'].map((type) => (
-                                <div
-                                    key={type}
-                                    className="bg-white border border-blue-200 rounded-lg py-2 px-3 text-black text-xs font-medium shadow-sm"
-                                >
-                                    ✓ {type}
-                                </div>
-                            ))}
-                        </div>
-
                     </div>
 
                 </div>
@@ -133,7 +105,7 @@ export default function ProfessionalCertification() {
                             { title: 'Higher Employability', desc: 'Professional certification gives you an edge over non-certified candidates.', icon: Award },
                             { title: 'Authentic Credentials', desc: 'Every certificate has a unique roll number verifiable online.', icon: Shield },
                             { title: 'Career Advancement', desc: 'Opens doors to senior technical and management positions.', icon: CheckCircle },
-                            { title: 'Govt. Affiliated', desc: 'Recognized by MSME and NIESBUD, adding massive credibility.', icon: Shield },
+                            { title: 'Govt. Affiliated', desc: 'Recognized by MSME adding massive credibility.', icon: Shield },
                             { title: 'Skill Validation', desc: 'Ensures your practical skills match current industry requirements.', icon: Award },
                         ].map((benefit, i) => (
                             <div
