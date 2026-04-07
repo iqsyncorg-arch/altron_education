@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Lock, Mail } from 'lucide-react';
 
-const API_BASE = 'http://api.altroneducation.com/api';
+const API_BASE = 'https://api.altroneducation.com/api';
 
 interface LoginProps {
     onLogin: (token: string, role?: string) => void;
