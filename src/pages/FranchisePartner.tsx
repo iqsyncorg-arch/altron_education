@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Send, IndianRupee, Building2, Briefcase, GraduationCap, ShieldCheck, Globe, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { API_BASE } from '../config/api';
+
 
 const brandBenefits = [
     { icon: GraduationCap, title: 'Complete Staff Training', desc: 'Comprehensive training for your academy staff to ensure high-quality education delivery.' },
@@ -49,7 +51,8 @@ export default function FranchisePartner() {
         setError(null);
 
         try {
-            const response = await fetch('http://127.0.0.1:5050/api/franchise', {
+            const response = await fetch(`${API_BASE}/franchise`, {
+
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form),

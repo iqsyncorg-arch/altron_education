@@ -14,6 +14,8 @@ import {
     XCircle
 } from 'lucide-react';
 import { useApi } from '../hooks/useApi';
+import { API_BASE } from '../config/api';
+
 
 
 const SLIDES = [
@@ -184,7 +186,8 @@ export default function Home() {
         setInquiryLoading(true);
         setInquiryError(null);
         try {
-            const res = await fetch('http://127.0.0.1:5050/api/inquiries', {
+            const res = await fetch(`${API_BASE}/inquiries`, {
+
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(inquiryForm),

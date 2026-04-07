@@ -14,6 +14,8 @@ import {
     ArrowRight,
     Lock
 } from 'lucide-react';
+import { API_BASE } from '../config/api';
+
 
 interface CertificateResult {
     rollNo: string;
@@ -37,7 +39,8 @@ export default function Authenticity() {
         setResult(null);
 
         try {
-            const res = await fetch(`http://127.0.0.1:5050/api/studentinfo/verify/${rollNo.trim()}`);
+            const res = await fetch(`${API_BASE}/studentinfo/verify/${rollNo.trim()}`);
+
             if (res.ok) {
                 const student = await res.json();
                 setResult({

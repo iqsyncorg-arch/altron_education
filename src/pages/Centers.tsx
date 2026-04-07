@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Phone, Clock, Mail, ExternalLink, Globe, UserCheck } from 'lucide-react';
 import PageHero from '../components/PageHero';
+import { API_BASE } from '../config/api';
+
 
 export default function Centers() {
     const [centers, setCenters] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:5050/api/centers')
+        fetch(`${API_BASE}/centers`)
+
             .then(res => res.json())
             .then(data => {
                 setCenters(data);

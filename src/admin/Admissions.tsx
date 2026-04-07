@@ -23,6 +23,8 @@ import {
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import CourseSelect from './CourseSelect';
+import { API_BASE } from '../config/api';
+
 
 
 
@@ -109,7 +111,8 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
         const token = localStorage.getItem('altron_admin_token');
 
         try {
-            const res = await fetch('http://127.0.0.1:5050/api/upload', {
+            const res = await fetch(`${API_BASE}/upload`, {
+
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

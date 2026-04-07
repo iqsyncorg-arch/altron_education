@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import PageHero from '../components/PageHero';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, XCircle } from 'lucide-react';
+import { API_BASE } from '../config/api';
+
 
 interface ContactForm {
     name: string;
@@ -26,7 +28,8 @@ export default function Contact() {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch('http://127.0.0.1:5050/api/inquiries', {
+            const res = await fetch(`${API_BASE}/inquiries`, {
+
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

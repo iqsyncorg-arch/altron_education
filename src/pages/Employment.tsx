@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Briefcase, CheckCircle, Send, Info, FileText, ShieldCheck } from 'lucide-react';
+import { API_BASE } from '../config/api';
+
 
 export default function Employment() {
     const [formData, setFormData] = useState({
@@ -32,7 +34,8 @@ export default function Employment() {
         e.preventDefault();
         setLoading(true);
         try {
-            const res = await fetch('http://127.0.0.1:5050/api/recruitment', {
+            const res = await fetch(`${API_BASE}/recruitment`, {
+
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

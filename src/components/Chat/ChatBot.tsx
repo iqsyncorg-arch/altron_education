@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Minus, Maximize2, Phone } from 'lucide-react';
+import { API_BASE } from '../../config/api';
+
 
 
 import { motion, AnimatePresence } from 'framer-motion';
@@ -50,7 +52,8 @@ export default function ChatBot() {
         setIsLoading(true);
 
         try {
-            const res = await fetch('http://127.0.0.1:5050/api/chat', {
+            const res = await fetch(`${API_BASE}/chat`, {
+
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
