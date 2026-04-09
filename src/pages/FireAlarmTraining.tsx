@@ -27,7 +27,7 @@ const technologies = [
 
 export default function FireAlarmTraining() {
     const { data: courses, loading } = useApi<any>('/courses');
-    const course = courses.find((c: any) => c.slug === 'fire-alarm-training');
+    const course = courses.find((c: any) => c.slug === 'diploma-course-in-fire-alarm-system');
 
     if (loading) return <div className="flex items-center justify-center min-h-screen bg-[#0a0a0a]"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div></div>;
     if (!course) return <div className="text-white text-center py-20 bg-[#0a0a0a]">Course not found.</div>;

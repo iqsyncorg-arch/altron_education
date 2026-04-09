@@ -27,7 +27,7 @@ const technologies = [
 
 export default function AccessBiometricTraining() {
     const { data: courses, loading } = useApi<any>('/courses');
-    const course = courses.find((c: any) => c.slug === 'access-biometric-training');
+    const course = courses.find((c: any) => c.slug === 'diploma-course-in-access-control--biometric-system');
 
     if (loading) return <div className="flex items-center justify-center min-h-screen bg-[#0a0a0a]"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div></div>;
     if (!course) return <div className="text-white text-center py-20 bg-[#0a0a0a]">Course not found.</div>;

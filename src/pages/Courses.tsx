@@ -5,7 +5,7 @@ import { useApi } from '../hooks/useApi';
 
 export default function Courses() {
     const { data: courses, loading } = useApi<any>('/courses');
-    const course = courses.find((c: any) => c.slug === 'cctv-diploma');
+    const course = courses.find((c: any) => c.slug === 'diploma-course-in-cctv-surveillance-system');
 
     if (loading) return <div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div></div>;
     if (!course) return <div className="text-white text-center py-20">Course not found.</div>;

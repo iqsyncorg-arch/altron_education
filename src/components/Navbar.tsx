@@ -24,12 +24,12 @@ const navItems: NavItem[] = [
         children: [
             { label: 'Fire Alarm', path: '/fire-alarm-training', desc: 'Safety systems training' },
             { label: 'Access & Biometric', path: '/access-biometric-training', desc: 'Security protocols' },
-            { label: 'Duration, Eligibility & Fees', path: '/fees-eligibility', desc: 'Course details' },
+            { label: 'Duration, Eligibility & Fees', path: '/duration-eligibility-fees', desc: 'Course details' },
             { label: 'Demand & Benefits of Course', path: '/demand-benefits', desc: 'Industry insights' },
             { label: 'Bank Details', path: '/bank-details', desc: 'Payment information' },
         ],
     },
-    { label: 'Fees', path: '/fees-eligibility' },
+    { label: 'Fees', path: '/duration-eligibility-fees' },
     { label: 'Authenticity', path: '/authenticity' },
     { label: 'e-Campus', path: '/e-campus' },
     {
