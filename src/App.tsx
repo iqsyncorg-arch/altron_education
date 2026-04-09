@@ -50,7 +50,7 @@ function App() {
                   <Route path="/courses" element={<Courses />} />
                   <Route path="/fire-alarm-training" element={<FireAlarmTraining />} />
                   <Route path="/access-biometric-training" element={<AccessBiometricTraining />} />
-                  <Route path="/fees-eligibility" element={<FeesEligibility />} />
+                  <Route path="/duration-eligibility-fees" element={<FeesEligibility />} />
                   <Route path="/authenticity" element={<Authenticity />} />
                   <Route path="/e-campus" element={<ECampus />} />
                   <Route path="/gallery" element={<Gallery />} />
