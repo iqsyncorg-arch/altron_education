@@ -98,7 +98,7 @@ export default function BankDetails() {
                                 <div>
                                     <h4 className="font-bold text-amber-900 mb-1">Important Note</h4>
                                     <p className="text-sm text-amber-800 leading-relaxed">
-                                        After making the payment, please share the transaction screenshot/UTR number with our admission team via WhatsApp at <strong className="font-bold">+91 99624 56533</strong> along with the student's name and course selected.
+                                        After making the payment, please share the transaction screenshot/UTR number with our admission team via WhatsApp at <strong className="font-bold">+91 98410 14328</strong> along with the student's name and course selected.
                                     </p>
                                 </div>
                             </div>

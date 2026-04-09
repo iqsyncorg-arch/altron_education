@@ -122,7 +122,7 @@ export default function FranchiseManagement({ data, loading, onSave, onDelete }:
                                     value={formData.primaryPhone}
                                     onChange={e => setFormData({ ...formData, primaryPhone: e.target.value })}
                                     className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:border-brand-500 outline-none transition-all"
-                                    placeholder="e.g. +91 99624 56533"
+                                    placeholder="e.g. +91 98410 14328"
                                 />
                             </div>
                         </div>
