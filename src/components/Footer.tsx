@@ -128,7 +128,7 @@ export default function Footer() {
             {/* Bottom Bar */}
             <div className="border-t border-white/10 py-6">
                 <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-brand-300">
-                    <p>© {new Date().getFullYear()} Altron Academy. All rights reserved.</p>
+                    <p>© 2008 - {new Date().getFullYear()} Altron Academy. All rights reserved.</p>
                     <div className="flex gap-6">
                         <Link to="/faq" className="hover:text-white transition-colors">FAQ</Link>
                         <Link to="/authenticity" className="hover:text-white transition-colors">Certificate Verification</Link>

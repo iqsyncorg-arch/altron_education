@@ -14,7 +14,7 @@ import FranchiseManagement from '../admin/FranchiseManagement';
 import { NotificationProvider, useNotification } from '../components/AdminUI/NotificationProvider';
 
 
-const API_BASE = 'https://api.altroneducation.com/api';
+import { API_BASE } from '../config/api';
 
 function AdminContent({ token, onLogout, role }: { token: string; onLogout: () => void; role: string }) {
 
@@ -227,6 +227,105 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
         }
     };
 
+    const handleSaveCourse = async (courseData: any) => {
+        setLoading(true);
+        try {
+            const isUpdate = !!courseData.id;
+            const url = isUpdate ? `${API_BASE}/courses/${courseData.id}` : `${API_BASE}/courses`;
+            const method = isUpdate ? 'PUT' : 'POST';
+
+            const res = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(courseData),
+            });
+
+            if (res.ok) {
+                showToast(`Course ${isUpdate ? 'updated' : 'added'} successfully`, 'success');
+                fetchData();
+                setShowForm(false);
+            } else {
+                if (res.status === 401) onLogout();
+                const result = await res.json();
+                showToast(result.message || 'Error saving course', 'error');
+                setLoading(false);
+            }
+        } catch (err) {
+            console.error('Error saving course:', err);
+            showToast('Network error', 'error');
+            setLoading(false);
+        }
+    };
+
+    const handleSaveStory = async (storyData: any) => {
+        setLoading(true);
+        try {
+            const isUpdate = !!storyData.id;
+            const url = isUpdate ? `${API_BASE}/stories/${storyData.id}` : `${API_BASE}/stories`;
+            const method = isUpdate ? 'PUT' : 'POST';
+
+            const res = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(storyData),
+            });
+
+            if (res.ok) {
+                showToast(`Story ${isUpdate ? 'updated' : 'added'} successfully`, 'success');
+                fetchData();
+                setShowForm(false);
+            } else {
+                if (res.status === 401) onLogout();
+                const result = await res.json();
+                showToast(result.message || 'Error saving story', 'error');
+                setLoading(false);
+            }
+        } catch (err) {
+            console.error('Error saving story:', err);
+            showToast('Network error', 'error');
+            setLoading(false);
+        }
+    };
+
+    const handleSaveAdmission = async (admissionData: any) => {
+        setLoading(true);
+        try {
+            const isUpdate = !!admissionData.id;
+            const url = isUpdate ? `${API_BASE}/admissions/${admissionData.id}` : `${API_BASE}/admissions`;
+            const method = isUpdate ? 'PUT' : 'POST';
+
+            const res = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(admissionData),
+            });
+
+            if (res.ok) {
+                showToast(`Admission ${isUpdate ? 'updated' : 'added'} successfully`, 'success');
+                fetchData();
+                setShowForm(false);
+            } else {
+                if (res.status === 401) onLogout();
+                const result = await res.json();
+                showToast(result.message || 'Error saving admission', 'error');
+                setLoading(false);
+            }
+        } catch (err) {
+            console.error('Error saving admission:', err);
+            showToast('Network error', 'error');
+            setLoading(false);
+        }
+    };
+
     const handleSaveFranchise = async (franchiseData: any) => {
         setLoading(true);
         try {
@@ -299,7 +398,7 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
                 <Courses
                     data={data}
                     loading={loading}
-                    onAddCourse={handleAdd}
+                    onSaveCourse={handleSaveCourse}
                     onDeleteCourse={handleDelete}
                     showForm={showForm}
                     setShowForm={setShowForm}
@@ -309,7 +408,7 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
                 <Stories
                     data={data}
                     loading={loading}
-                    onAddStory={handleAdd}
+                    onSaveStory={handleSaveStory}
                     onDeleteStory={handleDelete}
                     showForm={showForm}
                     setShowForm={setShowForm}
@@ -352,7 +451,7 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
                 <Admissions
                     data={data}
                     loading={loading}
-                    onAddAdmission={handleAdd}
+                    onSaveAdmission={handleSaveAdmission}
                     onDeleteAdmission={handleDelete}
                     showForm={showForm}
                     setShowForm={setShowForm}

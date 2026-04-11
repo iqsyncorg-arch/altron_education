@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Video, ExternalLink, CheckCircle, Trash2, X, Save } from 'lucide-react';
+import { Video, ExternalLink, CheckCircle, Trash2, X, Save, Pencil } from 'lucide-react';
 
 interface StoriesProps {
     data: any[];
     loading: boolean;
-    onAddStory: (story: any) => void;
+    onSaveStory: (story: any) => void;
     onDeleteStory: (id: any) => void;
     showForm: boolean;
     setShowForm: (show: boolean) => void;
 }
 
-export default function Stories({ data, loading, onAddStory, onDeleteStory, showForm, setShowForm }: StoriesProps) {
+export default function Stories({ data, loading, onSaveStory, onDeleteStory, showForm, setShowForm }: StoriesProps) {
+    const [editingItem, setEditingItem] = useState<any>(null);
     const [formData, setFormData] = useState({
         title: '',
         youtubeUrl: '',
@@ -19,9 +20,20 @@ export default function Stories({ data, loading, onAddStory, onDeleteStory, show
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onAddStory(formData);
+        onSaveStory({ ...formData, id: editingItem?.id });
         setShowForm(false);
+        setEditingItem(null);
         setFormData({ title: '', youtubeUrl: '', description: '' });
+    };
+
+    const handleEdit = (item: any) => {
+        setEditingItem(item);
+        setFormData({
+            title: item.title,
+            youtubeUrl: item.youtubeUrl,
+            description: item.description
+        });
+        setShowForm(true);
     };
 
     if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div></div>;
@@ -31,8 +43,8 @@ export default function Stories({ data, loading, onAddStory, onDeleteStory, show
             {showForm && (
                 <div className="bg-white/5 border border-brand-500/30 p-8 rounded-3xl backdrop-blur-xl shadow-2xl mb-12 animate-in fade-in slide-in-from-top-4 duration-300">
                     <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-xl font-bold text-white">Add Success Story</h3>
-                        <button onClick={() => setShowForm(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400">
+                        <h3 className="text-xl font-bold text-white">{editingItem ? 'Edit Success Story' : 'Add Success Story'}</h3>
+                        <button onClick={() => { setShowForm(false); setEditingItem(null); }} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400">
                             <X size={20} />
                         </button>
                     </div>
@@ -76,9 +88,9 @@ export default function Stories({ data, loading, onAddStory, onDeleteStory, show
 
                         <div className="flex gap-4 mt-4">
                             <button type="submit" className="flex-1 bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-500/20 transition-all flex items-center justify-center gap-2">
-                                <Save size={20} /> Save Story
+                                <Save size={20} /> {editingItem ? 'Update Story' : 'Save Story'}
                             </button>
-                            <button type="button" onClick={() => setShowForm(false)} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 transition-all">
+                            <button type="button" onClick={() => { setShowForm(false); setEditingItem(null); }} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 transition-all">
                                 Cancel
                             </button>
                         </div>
@@ -97,8 +109,12 @@ export default function Stories({ data, loading, onAddStory, onDeleteStory, show
                             </a>
                         </div>
                         <div className="flex sm:flex-col gap-2 w-full sm:w-auto">
-                            <button className="flex-1 sm:flex-none p-3 bg-white/5 text-gray-400 hover:text-brand-500 hover:bg-white/10 rounded-xl transition-all shadow-sm flex items-center justify-center">
-                                <CheckCircle size={18} />
+                            <button
+                                onClick={() => handleEdit(item)}
+                                className="flex-1 sm:flex-none p-3 bg-white/5 text-gray-400 hover:text-brand-500 hover:bg-white/10 rounded-xl transition-all shadow-sm flex items-center justify-center"
+                                title="Edit Story"
+                            >
+                                <Pencil size={18} />
                             </button>
                             <button
                                 onClick={() => onDeleteStory(item.id)}

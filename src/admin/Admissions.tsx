@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { ChangeEvent } from 'react';
 import {
     User,
@@ -10,6 +10,7 @@ import {
     ChevronDown,
     ChevronUp,
     FileText,
+
     BookOpen,
     UserCheck,
     Info,
@@ -19,9 +20,11 @@ import {
     Building2,
     Phone,
     Download,
-    FileDown
+    FileDown,
+    CheckCircle,
+    Pencil
 } from 'lucide-react';
-import jsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
 import CourseSelect from './CourseSelect';
 import { API_BASE } from '../config/api';
 
@@ -31,7 +34,7 @@ import { API_BASE } from '../config/api';
 interface AdmissionsProps {
     data: any[];
     loading: boolean;
-    onAddAdmission: (admission: any) => void;
+    onSaveAdmission: (admission: any) => void;
     onDeleteAdmission: (id: any) => void;
     showForm: boolean;
     setShowForm: (show: boolean) => void;
@@ -43,10 +46,9 @@ interface AdmissionsProps {
 const initialForm = {
     course_information: {
         course_name: '',
-        course_code: '',
-        registration_number: '',
         application_number: '',
-        passport_photo: ''
+        passport_photo: '',
+        adhar_card: ''
     },
     biographical_information: {
         full_name: '',
@@ -55,7 +57,7 @@ const initialForm = {
         religion: '',
         nationality: '',
         mother_tongue: '',
-        sex: '',
+        gender: '',
         date_of_birth: '',
         blood_group: '',
         permanent_address: '',
@@ -71,8 +73,6 @@ const initialForm = {
         institution_last_studied: ''
     },
     declaration: {
-        parent_name: '',
-        parent_signature: '',
         student_name: '',
         candidate_signature: '',
         place: '',
@@ -91,38 +91,65 @@ const initialForm = {
     }
 };
 
-export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmission, showForm, setShowForm, role, courses }: AdmissionsProps) {
+export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdmission, showForm, setShowForm, role, courses }: AdmissionsProps) {
+    const [editingAdmission, setEditingAdmission] = useState<any>(null);
     const [formData, setFormData] = useState(initialForm);
     const [expandedSection, setExpandedSection] = useState<string | null>('course_information');
     const [searchTerm, setSearchTerm] = useState('');
     const [uploading, setUploading] = useState(false);
     const [selectedAdmission, setSelectedAdmission] = useState<any | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const passportInputRef = useRef<HTMLInputElement>(null);
+    const adharInputRef = useRef<HTMLInputElement>(null);
 
+    const getNextApplicationNumber = () => {
+        if (!data || data.length === 0) return "1000";
+        const appNumbers = data
+            .map(item => {
+                const val = item.course_information?.application_number;
+                return typeof val === "string" ? parseInt(val) : val;
+            })
+            .filter(num => typeof num === "number" && !isNaN(num));
 
-    const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+        if (appNumbers.length === 0) return "1000";
+        const maxApp = Math.max(...appNumbers);
+        return (Math.max(1000, maxApp + 1)).toString();
+    };
+
+    useEffect(() => {
+        if (showForm && !editingAdmission) {
+            const nextAppNum = getNextApplicationNumber();
+            setFormData(prev => ({
+                ...prev,
+                course_information: {
+                    ...prev.course_information,
+                    application_number: nextAppNum
+                }
+            }));
+        }
+    }, [showForm, editingAdmission, data]);
+
+    const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>, field: 'passport_photo' | 'adhar_card') => {
         const file = e.target.files?.[0];
         if (!file) return;
 
         setUploading(true);
-        const formData = new FormData();
-        formData.append('image', file);
+        const uploadFormData = new FormData();
+        uploadFormData.append('image', file);
 
         const token = localStorage.getItem('altron_admin_token');
 
         try {
             const res = await fetch(`${API_BASE}/upload`, {
-
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
-                body: formData
+                body: uploadFormData
             });
 
             if (res.ok) {
                 const result = await res.json();
-                handleInputChange('course_information', 'passport_photo', result.url);
+                handleInputChange('course_information', field, result.url);
             } else {
                 if (res.status === 401) {
                     localStorage.removeItem('altron_admin_token');
@@ -136,7 +163,8 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
             alert('Upload failed. Network error.');
         } finally {
             setUploading(false);
-            if (fileInputRef.current) fileInputRef.current.value = '';
+            if (passportInputRef.current) passportInputRef.current.value = '';
+            if (adharInputRef.current) adharInputRef.current.value = '';
         }
     };
 
@@ -157,9 +185,23 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onAddAdmission(formData);
+        onSaveAdmission({ ...formData, id: editingAdmission?.id });
         setFormData(initialForm);
         setShowForm(false);
+        setEditingAdmission(null);
+    };
+
+    const handleEdit = (admission: any) => {
+        setEditingAdmission(admission);
+        setFormData({
+            course_information: { ...initialForm.course_information, ...admission.course_information },
+            biographical_information: { ...initialForm.biographical_information, ...admission.biographical_information },
+            education_details: { ...initialForm.education_details, ...admission.education_details },
+            declaration: { ...initialForm.declaration, ...admission.declaration },
+            additional_information: { ...initialForm.additional_information, ...admission.additional_information },
+            attachments_required: { ...initialForm.attachments_required, ...admission.attachments_required }
+        });
+        setShowForm(true);
     };
 
     const filteredData = data.filter(item =>
@@ -172,7 +214,7 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
 
         const headers = [
             'Full Name', 'Email', 'Mobile', 'Course', 'App Number',
-            'Registration Number', 'DOB', 'Sex', 'Nationality',
+            'DOB', 'Gender', 'Nationality',
             'Place of Birth', 'Address', 'Franchise'
         ];
 
@@ -182,9 +224,8 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
             item.biographical_information?.mobile_number || '',
             item.course_information?.course_name || '',
             item.course_information?.application_number || '',
-            item.course_information?.registration_number || '',
             item.biographical_information?.date_of_birth || '',
-            item.biographical_information?.sex || '',
+            item.biographical_information?.gender || '',
             item.biographical_information?.nationality || '',
             item.biographical_information?.place_of_birth || '',
             (item.biographical_information?.permanent_address || '').replace(/,/g, ' '),
@@ -206,86 +247,177 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
         document.body.removeChild(link);
     };
 
-    const downloadPDF = async (admission: any) => {
-        // If we are calling from the list, we might not have the modal open.
-        // Let's create a temporary div to render the admission details for PDF.
+    const getBase64 = async (url: string): Promise<string | null> => {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result as string);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        } catch (error) {
+            console.error('Error converting image to base64:', error);
+            return null;
+        }
+    };
 
+    const downloadPDF = async (admission: any) => {
         const doc = new jsPDF('p', 'mm', 'a4');
         const padding = 15;
         let y = 20;
 
-        doc.setFontSize(22);
-        doc.setTextColor(0, 0, 0);
-        doc.text('ADMISSION FORM', 105, y, { align: 'center' });
-        y += 15;
+        // Layout constants for 75/25 split
+        const contentWidth = 210 - (2 * padding);
+        const textWidth = contentWidth * 0.75;
+        const imageWidth = contentWidth * 0.25;
+        const textCenterX = padding + (textWidth / 2);
+        const imageStartX = padding + textWidth;
 
-        doc.setFontSize(14);
-        doc.text('ALTRON EDUCATION', 105, y, { align: 'center' });
+        // Branding & Header (in 75% area)
+        doc.setFontSize(24);
+        doc.setTextColor(185, 28, 28); // Brand Red
+        doc.setFont('helvetica', 'bold');
+        doc.text('ALTRON ACADEMY', textCenterX, y, { align: 'center' });
+        y += 8;
+
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Professional CCTV & Integrated Security System Training', textCenterX, y, { align: 'center' });
+        y += 12;
+
+        doc.setFontSize(18);
+        doc.setTextColor(31, 41, 55);
+        doc.setFont('helvetica', 'bold');
+        doc.text('ADMISSION DECLARATION FORM', textCenterX, y, { align: 'center' });
         y += 10;
 
+        // Add Portrait/Passport Photo (in 25% area)
+        const photoUrl = admission.course_information?.passport_photo;
+        const photoWidth = 25;
+        const photoHeight = 35;
+        const photoX = imageStartX + (imageWidth - photoWidth) / 2;
+        const photoY = 10;
+
+        if (photoUrl) {
+            try {
+                const base64 = await getBase64(photoUrl);
+                if (base64) {
+                    doc.addImage(base64, 'JPEG', photoX, photoY, photoWidth, photoHeight);
+                    doc.setDrawColor(200, 200, 200);
+                    doc.rect(photoX, photoY, photoWidth, photoHeight); // Border around photo
+                }
+            } catch (err) {
+                console.error('Could not add image to PDF');
+            }
+        } else {
+            // Placeholder box
+            doc.setDrawColor(200, 200, 200);
+            doc.rect(photoX, photoY, photoWidth, photoHeight);
+            doc.setFontSize(8);
+            doc.setTextColor(150, 150, 150);
+            doc.text('Passport Photo', photoX + (photoWidth / 2), photoY + (photoHeight / 2), { align: 'center' });
+        }
+
         doc.setLineWidth(0.5);
+        doc.setDrawColor(185, 28, 28);
         doc.line(padding, y, 210 - padding, y);
         y += 10;
 
         // Application Details
         doc.setFontSize(10);
         doc.setTextColor(100, 100, 100);
-        doc.text(`Application Number: ${admission.course_information?.application_number || 'N/A'}`, padding, y);
-        doc.text(`Date: ${new Date().toLocaleDateString()}`, 210 - padding, y, { align: 'right' });
-        y += 15;
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Application ID: ${admission.course_information?.application_number || 'N/A'}`, padding, y);
+        y += 6;
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, padding, y);
+        y += 10;
 
         const addSection = (title: string, data: any) => {
-            doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
+            if (y > 240) { doc.addPage(); y = 20; }
+            doc.setFontSize(11);
+            doc.setTextColor(31, 41, 55);
             doc.setFont('helvetica', 'bold');
             doc.text(title.toUpperCase(), padding, y);
-            y += 6;
+            y += 5;
+            doc.setLineWidth(0.2);
+            doc.setDrawColor(229, 231, 235);
             doc.line(padding, y, 210 - padding, y);
             y += 8;
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(9);
 
             Object.entries(data).forEach(([key, value]: [string, any]) => {
-                if (y > 270) {
-                    doc.addPage();
-                    y = 20;
-                }
-                const cleanKey = key.replace(/_/g, ' ').toUpperCase();
-                doc.setTextColor(100, 100, 100);
+                if (y > 275) { doc.addPage(); y = 20; }
+                const cleanKey = key.replace(/_/g, ' ');
+                doc.setTextColor(107, 114, 128);
                 doc.text(`${cleanKey}:`, padding, y);
-                doc.setTextColor(0, 0, 0);
-                doc.text(`${value || 'N/A'}`, padding + 50, y);
+                doc.setTextColor(17, 24, 39);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`${value || 'N/A'}`, padding + 45, y);
+                doc.setFont('helvetica', 'normal');
                 y += 6;
             });
-            y += 10;
+            y += 8;
         };
 
-        addSection('Course Information', {
-            'Course Name': admission.course_information?.course_name,
-            'Course Code': admission.course_information?.course_code,
-            'Registration Number': admission.course_information?.registration_number
+        addSection('Course Details', {
+            'Applied Course': admission.course_information?.course_name,
+            'Application Number': admission.course_information?.application_number
         });
 
-        addSection('Biographical Information', {
+        addSection('Student Personal Details', {
             'Full Name': admission.biographical_information?.full_name,
-            'DOB': admission.biographical_information?.date_of_birth,
-            'Sex': admission.biographical_information?.sex,
-            'Email': admission.biographical_information?.email,
+            'Date of Birth': admission.biographical_information?.date_of_birth,
+            'Nationality': admission.biographical_information?.nationality,
+            'Gender': admission.biographical_information?.gender,
+            'Blood Group': admission.biographical_information?.blood_group,
             'Mobile': admission.biographical_information?.mobile_number,
+            'Email': admission.biographical_information?.email,
             'Address': admission.biographical_information?.permanent_address
         });
 
-        addSection('Education Details', {
+        addSection('Academic History', {
             'Qualifying Exam': admission.education_details?.qualifying_exam_name,
-            'Year': admission.education_details?.year_of_passing,
-            'Institution': admission.education_details?.institution_last_studied
+            'Year of Passing': admission.education_details?.year_of_passing,
+            'Number of Attempts': admission.education_details?.number_of_attempts,
+            'University/Board': admission.education_details?.affiliating_body_university,
+            'Institution Last Studied': admission.education_details?.institution_last_studied
         });
 
-        addSection('Declaration', {
-            'Parent Name': admission.declaration?.parent_name,
-            'Place': admission.declaration?.place,
-            'Date': admission.declaration?.date
-        });
+        // Declaration Section
+        if (y > 200) { doc.addPage(); y = 20; }
+        y += 5;
+        doc.setFontSize(12);
+        doc.setTextColor(31, 41, 55);
+        doc.setFont('helvetica', 'bold');
+        doc.text('DECLARATION', padding, y);
+        y += 8;
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(55, 65, 81);
+        const declarationText = `I hereby declare that the information provided in this application is true and complete to the best of my knowledge and belief. I understand that any false or misleading information may result in the cancellation of my admission. I agree to abide by the rules and regulations of Altron Academy during the tenure of my course.`;
+        const lines = doc.splitTextToSize(declarationText, 180);
+        doc.text(lines, padding, y);
+        y += (lines.length * 5) + 20;
+
+        // Signature Sections
+        const sigWidth = 60;
+        doc.setLineWidth(0.5);
+        doc.setDrawColor(0);
+
+        // Student Signature
+        doc.line(padding, y, padding + sigWidth, y);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Student Signature', padding, y + 5);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Place: ${admission.declaration?.place || '________________'}`, padding, y + 15);
+        doc.text(`Date: ${admission.declaration?.date || '________________'}`, padding, y + 20);
+
+        y += 40;
 
         doc.save(`admission_${admission.course_information?.application_number || admission.id}.pdf`);
     };
@@ -318,8 +450,8 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
             {showForm && (
                 <div className="bg-white/5 border border-brand-500/30 p-8 rounded-3xl backdrop-blur-xl shadow-2xl mb-12 animate-in fade-in slide-in-from-top-4 duration-300">
                     <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-xl font-bold text-white">New Admission Form</h3>
-                        <button onClick={() => setShowForm(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400">
+                        <h3 className="text-xl font-bold text-white">{editingAdmission ? 'Edit Admission Form' : 'New Admission Form'}</h3>
+                        <button onClick={() => { setShowForm(false); setEditingAdmission(null); }} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400">
                             <X size={20} />
                         </button>
                     </div>
@@ -340,42 +472,64 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
                                     onChange={v => handleInputChange('course_information', 'course_name', v)}
                                     courses={courses}
                                 />
-                                <Field label="Course Code" value={formData.course_information.course_code} onChange={v => handleInputChange('course_information', 'course_code', v)} />
-
-                                <Field label="Registration Number" value={formData.course_information.registration_number} onChange={v => handleInputChange('course_information', 'registration_number', v)} />
-                                <Field label="Application Number" value={formData.course_information.application_number} onChange={v => handleInputChange('course_information', 'application_number', v)} />
-                                <div className="md:col-span-2">
+                                <Field
+                                    label="Application Number"
+                                    value={formData.course_information.application_number}
+                                    onChange={v => handleInputChange('course_information', 'application_number', v)}
+                                    readOnly={true}
+                                />
+                                <div className="md:col-span-1">
                                     <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">Passport Photo</label>
-                                    <div className="flex flex-col sm:flex-row gap-4">
-                                        <div className="flex-1 relative">
-                                            <input
-                                                type="text"
-                                                value={formData.course_information.passport_photo}
-                                                onChange={e => handleInputChange('course_information', 'passport_photo', e.target.value)}
-                                                placeholder="Enter photo URL or upload below"
-                                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-brand-500 outline-none"
-                                            />
-                                        </div>
+                                    <div className="flex flex-col gap-4">
                                         <div className="flex gap-4">
                                             <input
                                                 type="file"
-                                                ref={fileInputRef}
-                                                onChange={handleImageUpload}
+                                                ref={passportInputRef}
+                                                onChange={e => handleImageUpload(e, 'passport_photo')}
                                                 className="hidden"
                                                 accept="image/*"
                                             />
                                             <button
                                                 type="button"
-                                                onClick={() => fileInputRef.current?.click()}
+                                                onClick={() => passportInputRef.current?.click()}
                                                 disabled={uploading}
-                                                className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-3 rounded-xl flex items-center gap-2 transition-all disabled:opacity-50"
+                                                className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                                             >
                                                 {uploading ? <Loader2 className="animate-spin w-4 h-4" /> : <Upload size={18} />}
-                                                {uploading ? 'Uploading...' : 'Upload'}
+                                                {uploading ? 'Uploading...' : 'Upload Photo'}
                                             </button>
                                             {formData.course_information.passport_photo && (
-                                                <div className="w-12 h-12 rounded-xl border border-white/10 overflow-hidden bg-white/5">
+                                                <div className="w-12 h-12 rounded-xl border border-white/10 overflow-hidden bg-white/5 shrink-0">
                                                     <img src={formData.course_information.passport_photo} alt="" className="w-full h-full object-cover" />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="md:col-span-1">
+                                    <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">Adhar Card Photo</label>
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex gap-4">
+                                            <input
+                                                type="file"
+                                                ref={adharInputRef}
+                                                onChange={e => handleImageUpload(e, 'adhar_card')}
+                                                className="hidden"
+                                                accept="image/*"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => adharInputRef.current?.click()}
+                                                disabled={uploading}
+                                                className="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-white px-6 py-3 rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                                            >
+                                                {uploading ? <Loader2 className="animate-spin w-4 h-4" /> : <Upload size={18} />}
+                                                {uploading ? 'Uploading...' : 'Upload Adhar'}
+                                            </button>
+                                            {formData.course_information.adhar_card && (
+                                                <div className="w-12 h-12 rounded-xl border border-white/10 overflow-hidden bg-white/5 shrink-0">
+                                                    <img src={formData.course_information.adhar_card} alt="" className="w-full h-full object-cover" />
                                                 </div>
                                             )}
                                         </div>
@@ -396,7 +550,19 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
                                 <Field label="Full Name" value={formData.biographical_information.full_name} onChange={v => handleInputChange('biographical_information', 'full_name', v)} />
                                 <Field label="Date of Birth" type="date" value={formData.biographical_information.date_of_birth} onChange={v => handleInputChange('biographical_information', 'date_of_birth', v)} />
-                                <Field label="Sex" value={formData.biographical_information.sex} onChange={v => handleInputChange('biographical_information', 'sex', v)} />
+                                <div>
+                                    <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">Gender</label>
+                                    <select
+                                        value={formData.biographical_information.gender}
+                                        onChange={e => handleInputChange('biographical_information', 'gender', e.target.value)}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-brand-500 outline-none appearance-none"
+                                    >
+                                        <option value="" className="bg-gray-900">Select Gender</option>
+                                        <option value="Male" className="bg-gray-900">Male</option>
+                                        <option value="Female" className="bg-gray-900">Female</option>
+                                        <option value="Not to disclose" className="bg-gray-900">Not to disclose</option>
+                                    </select>
+                                </div>
                                 <Field label="Place of Birth" value={formData.biographical_information.place_of_birth} onChange={v => handleInputChange('biographical_information', 'place_of_birth', v)} />
                                 <Field label="State/Country" value={formData.biographical_information.state_country} onChange={v => handleInputChange('biographical_information', 'state_country', v)} />
                                 <Field label="Nationality" value={formData.biographical_information.nationality} onChange={v => handleInputChange('biographical_information', 'nationality', v)} />
@@ -435,7 +601,6 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
                             </div>
                         </Section>
 
-                        {/* Declaration */}
                         <Section
                             id="declaration"
                             title="Declaration"
@@ -444,7 +609,6 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
                             onToggle={() => toggleSection('declaration')}
                         >
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-                                <Field label="Parent/Guardian Name" value={formData.declaration.parent_name} onChange={v => handleInputChange('declaration', 'parent_name', v)} />
                                 <Field label="Student Name" value={formData.declaration.student_name} onChange={v => handleInputChange('declaration', 'student_name', v)} />
                                 <Field label="Place" value={formData.declaration.place} onChange={v => handleInputChange('declaration', 'place', v)} />
                                 <Field label="Date" type="date" value={formData.declaration.date} onChange={v => handleInputChange('declaration', 'date', v)} />
@@ -483,9 +647,9 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
 
                         <div className="flex gap-4 pt-6">
                             <button type="submit" className="flex-1 bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-500/20 transition-all flex items-center justify-center gap-2">
-                                <Save size={20} /> Save Admission
+                                <Save size={20} /> {editingAdmission ? 'Update Admission' : 'Save Admission'}
                             </button>
-                            <button type="button" onClick={() => setShowForm(false)} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 transition-all">
+                            <button type="button" onClick={() => { setShowForm(false); setEditingAdmission(null); }} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 transition-all">
                                 Cancel
                             </button>
                         </div>
@@ -536,6 +700,13 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
                             </div>
 
                             <div className="flex gap-2">
+                                <button
+                                    onClick={() => handleEdit(admission)}
+                                    className="p-3 bg-white/5 text-brand-500 hover:bg-brand-500/10 rounded-xl transition-all shadow-sm border border-white/5"
+                                    title="Edit Admission"
+                                >
+                                    <Pencil size={18} />
+                                </button>
                                 <button
                                     onClick={() => downloadPDF(admission)}
                                     className="p-3 bg-white/5 text-brand-500 hover:bg-brand-500/10 rounded-xl transition-all shadow-sm border border-white/5"
@@ -594,7 +765,7 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
                             {/* Summary Bar */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-white/5 rounded-3xl border border-white/5">
                                 <SummaryItem label="Course" value={selectedAdmission.course_information?.course_name} />
-                                <SummaryItem label="Sex" value={selectedAdmission.biographical_information?.sex} />
+                                <SummaryItem label="Gender" value={selectedAdmission.biographical_information?.gender} />
                                 <SummaryItem label="DOB" value={selectedAdmission.biographical_information?.date_of_birth} />
                                 <SummaryItem label="Blood Group" value={selectedAdmission.biographical_information?.blood_group} />
                             </div>
@@ -603,7 +774,7 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
                                 <DetailSection title="Personal Information" icon={<User size={18} className="text-brand-500" />}>
                                     <DetailItem label="Full Name" value={selectedAdmission.biographical_information?.full_name} />
                                     <DetailItem label="DOB" value={selectedAdmission.biographical_information?.date_of_birth} />
-                                    <DetailItem label="Sex" value={selectedAdmission.biographical_information?.sex} />
+                                    <DetailItem label="Gender" value={selectedAdmission.biographical_information?.gender} />
                                     <DetailItem label="Place of Birth" value={selectedAdmission.biographical_information?.place_of_birth} />
                                     <DetailItem label="State/Country" value={selectedAdmission.biographical_information?.state_country} />
                                     <DetailItem label="Nationality" value={selectedAdmission.biographical_information?.nationality} />
@@ -626,14 +797,12 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
                                 </DetailSection>
 
                                 <DetailSection title="Administration" icon={<Info size={18} className="text-brand-500" />}>
-                                    <DetailItem label="Course Code" value={selectedAdmission.course_information?.course_code} />
-                                    <DetailItem label="Registration #" value={selectedAdmission.course_information?.registration_number} />
+                                    <DetailItem label="Application #" value={selectedAdmission.course_information?.application_number} />
                                     <DetailItem label="Franchise ID" value={selectedAdmission.franchiseEmail} />
                                     <DetailItem label="Added Role" value={selectedAdmission.addedByRole} />
                                 </DetailSection>
 
                                 <DetailSection title="Declaration" icon={<UserCheck size={18} className="text-brand-500" />}>
-                                    <DetailItem label="Parent Name" value={selectedAdmission.declaration?.parent_name} />
                                     <DetailItem label="Student Name" value={selectedAdmission.declaration?.student_name} />
                                     <DetailItem label="Place" value={selectedAdmission.declaration?.place} />
                                     <DetailItem label="Date" value={selectedAdmission.declaration?.date} />
@@ -647,8 +816,14 @@ export default function Admissions({ data, loading, onAddAdmission, onDeleteAdmi
                             </div>
                         </div>
 
-                        {/* Modal Footer */}
                         <div className="p-8 border-t border-white/10 flex justify-end gap-4 bg-white/[0.02]">
+                            <button
+                                onClick={() => handleEdit(selectedAdmission)}
+                                className="px-10 py-4 bg-white/5 hover:bg-white/10 text-white font-black rounded-2xl transition-all border border-white/10 flex items-center gap-2"
+                            >
+                                <Pencil size={20} className="text-brand-500" />
+                                Edit Form
+                            </button>
                             <button
                                 onClick={() => downloadPDF(selectedAdmission)}
                                 className="px-10 py-4 bg-white/5 hover:bg-white/10 text-white font-black rounded-2xl transition-all border border-white/10 flex items-center gap-2"
@@ -702,7 +877,7 @@ function Section({ id, title, icon, children, expanded, onToggle }: { id: string
     );
 }
 
-function Field({ label, value, onChange, type = "text" }: { label: string, value: string, onChange: (v: string) => void, type?: string }) {
+function Field({ label, value, onChange, type = "text", readOnly = false }: { label: string, value: string, onChange: (v: string) => void, type?: string, readOnly?: boolean }) {
     return (
         <div>
             <label className="block text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2">{label}</label>
@@ -710,7 +885,8 @@ function Field({ label, value, onChange, type = "text" }: { label: string, value
                 type={type}
                 value={value}
                 onChange={e => onChange(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-brand-500 outline-none"
+                readOnly={readOnly}
+                className={`w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-brand-500 outline-none ${readOnly ? 'opacity-60 cursor-not-allowed bg-black/20' : ''}`}
             />
         </div>
     );
@@ -742,7 +918,7 @@ function DetailItem({ label, value, fullWidth = false, isEmail = false }: { labe
     return (
         <div className={`${fullWidth ? 'col-span-2' : 'col-span-1'} space-y-1 bg-white/[0.02] p-3 rounded-xl border border-white/5`}>
             <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{label}</p>
-            <p className={`text-white text-sm font-medium ${isEmail ? 'lowercase' : ''} break-words`}>{value || '—'}</p>
+            <p className={`text-white text-sm font-medium ${isEmail ? 'lowercase' : ''} break-words`}>{value || '-'}</p>
         </div>
     );
 }

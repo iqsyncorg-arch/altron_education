@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, Trash2, MapPin, Clock, Edit2, Plus, X, ExternalLink, Globe } from 'lucide-react';
+import { Mail, Phone, Trash2, MapPin, Clock, Pencil, Plus, X, ExternalLink, Globe } from 'lucide-react';
 
 interface Center {
     id: any;
@@ -82,8 +82,8 @@ export default function CentersManagement({ data, loading, onDelete, onSave }: C
                                 {center.type}
                             </span>
                             <div className="flex gap-2">
-                                <button onClick={() => handleEdit(center)} className="p-2 bg-white/5 text-gray-400 hover:text-white rounded-lg transition-all border border-white/5">
-                                    <Edit2 size={14} />
+                                <button onClick={() => handleEdit(center)} className="p-2 bg-white/5 text-gray-400 hover:text-white rounded-lg transition-all border border-white/5" title="Edit Center">
+                                    <Pencil size={14} />
                                 </button>
                                 <button onClick={() => onDelete(center.id)} className="p-2 bg-white/5 text-gray-400 hover:text-red-500 rounded-lg transition-all border border-white/5">
                                     <Trash2 size={14} />

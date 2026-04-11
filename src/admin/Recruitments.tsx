@@ -1,4 +1,5 @@
-import { Building, Mail, Phone, Calendar, Trash2, CheckCircle, Info } from 'lucide-react';
+import { Building, Mail, Phone, Calendar, Trash2, CheckCircle, Info, FileDown } from 'lucide-react';
+import jsPDF from 'jspdf';
 
 interface RecruitmentsProps {
     data: any[];
@@ -11,13 +12,158 @@ interface RecruitmentsProps {
 
 export default function Recruitments({ data, loading, onDelete, page = 1, totalPages = 1, onPageChange }: RecruitmentsProps) {
 
+    const downloadPDF = (item: any) => {
+        const doc = new jsPDF('p', 'mm', 'a4');
+        const padding = 15;
+        let y = 20;
+
+        // Branding & Header
+        doc.setFontSize(24);
+        doc.setTextColor(185, 28, 28); // Brand Red
+        doc.setFont('helvetica', 'bold');
+        doc.text('ALTRON ACADEMY', 105, y, { align: 'center' });
+        y += 8;
+
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Professional CCTV & Integrated Security System Training', 105, y, { align: 'center' });
+        y += 12;
+
+        doc.setFontSize(18);
+        doc.setTextColor(31, 41, 55);
+        doc.setFont('helvetica', 'bold');
+        doc.text('RECRUITMENT REQUISITION', 105, y, { align: 'center' });
+        y += 10;
+
+        doc.setLineWidth(0.5);
+        doc.setDrawColor(185, 28, 28);
+        doc.line(padding, y, 210 - padding, y);
+        y += 10;
+
+        // Requisition ID & Date
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Organisation: ${item.organisationName}`, padding, y);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Date: ${new Date(item.date || item.createdAt || Date.now()).toLocaleDateString()}`, 210 - padding, y, { align: 'right' });
+        y += 15;
+
+        const addSection = (title: string, data: any) => {
+            if (y > 240) { doc.addPage(); y = 20; }
+            doc.setFontSize(11);
+            doc.setTextColor(31, 41, 55);
+            doc.setFont('helvetica', 'bold');
+            doc.text(title.toUpperCase(), padding, y);
+            y += 5;
+            doc.setLineWidth(0.2);
+            doc.setDrawColor(229, 231, 235);
+            doc.line(padding, y, 210 - padding, y);
+            y += 8;
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+
+            Object.entries(data).forEach(([key, value]: [string, any]) => {
+                if (y > 275) { doc.addPage(); y = 20; }
+                const cleanKey = key.replace(/_/g, ' ');
+                doc.setTextColor(107, 114, 128);
+                doc.text(`${cleanKey}:`, padding, y);
+                doc.setTextColor(17, 24, 39);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`${value || 'N/A'}`, padding + 50, y);
+                doc.setFont('helvetica', 'normal');
+                y += 6;
+            });
+            y += 8;
+        };
+
+        addSection('Organisation Details', {
+            'Organisation Name': item.organisationName,
+            'Designation': item.designation,
+            'Contact Person': item.contactPerson,
+            'Email': item.email,
+            'Mobile': item.mobile,
+            'Address': item.address
+        });
+
+        addSection('Manpower Requirements', {
+            'Nos. Required': item.requiredEmployeesNo,
+            'Min. Qualification': item.qualification,
+            'Starting Salary': item.startingSalary
+        });
+
+        addSection('Employee Benefits', {
+            'Conveyance': item.conveyance || 'No',
+            'Accommodation': item.accommodation || 'No',
+            'Uniform': item.uniform || 'No',
+            'ESIC': item.esic || 'No',
+            'PF': item.pf || 'No',
+            'Project Incentive': item.projectIncentive || 'None'
+        });
+
+        doc.save(`recruitment_${item.organisationName.replace(/\s+/g, '_').toLowerCase()}.pdf`);
+    };
+
+    const downloadCSV = () => {
+        if (!data || data.length === 0) return;
+
+        const headers = [
+            'Organisation Name', 'Designation', 'Contact Person', 'Email', 'Mobile',
+            'Submitted Date', 'Nos Required', 'Qualification', 'Salary', 'Address',
+            'Conveyance', 'Accommodation', 'Uniform', 'ESIC', 'PF'
+        ];
+
+        const rows = data.map(item => [
+            item.organisationName || '',
+            item.designation || '',
+            item.contactPerson || '',
+            item.email || '',
+            item.mobile || '',
+            new Date(item.date || item.createdAt || Date.now()).toLocaleDateString(),
+            item.requiredEmployeesNo || '',
+            item.qualification || '',
+            item.startingSalary || '',
+            (item.address || '').replace(/,/g, ' '),
+            item.conveyance || 'No',
+            item.accommodation || 'No',
+            item.uniform || 'No',
+            item.esic || 'No',
+            item.pf || 'No'
+        ]);
+
+        const csvContent = [
+            headers.join(','),
+            ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `recruitment_requisitions_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div></div>;
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-white">Professional Requisitions</h2>
-                <div className="text-gray-400 text-sm">{data.length} Requests</div>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                <div>
+                    <h2 className="text-2xl font-bold text-white">Professional Requisitions</h2>
+                    <p className="text-gray-400 text-sm mt-1">{data.length} Requests Found</p>
+                </div>
+                <button
+                    onClick={downloadCSV}
+                    className="w-full md:w-auto bg-brand-500/10 hover:bg-brand-500/20 text-brand-500 px-6 py-3 rounded-xl border border-brand-500/20 flex items-center justify-center gap-2 transition-all font-bold shadow-sm shadow-brand-500/5 group"
+                    title="Export all records to CSV"
+                >
+                    <FileDown size={20} className="group-hover:-translate-y-0.5 transition-transform" />
+                    Export CSV
+                </button>
             </div>
 
             {Array.isArray(data) && data.map((item, idx) => (
@@ -91,8 +237,16 @@ export default function Recruitments({ data, loading, onDelete, page = 1, totalP
                         </div>
                         <div className="flex gap-2 w-full sm:w-auto">
                             <button
+                                onClick={() => downloadPDF(item)}
+                                className="flex-1 sm:flex-none p-3 bg-white/5 text-gray-400 hover:text-brand-500 hover:bg-brand-500/10 rounded-xl transition-all flex items-center justify-center"
+                                title="Download Requisition PDF"
+                            >
+                                <FileDown size={18} />
+                            </button>
+                            <button
                                 onClick={() => onDelete(item.id)}
                                 className="flex-1 sm:flex-none p-3 bg-white/5 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all flex items-center justify-center"
+                                title="Delete Requisition"
                             >
                                 <Trash2 size={18} />
                             </button>

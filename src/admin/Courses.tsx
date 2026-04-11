@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { BookOpen, CheckCircle, Trash2, X, Save } from 'lucide-react';
+import { BookOpen, CheckCircle, Trash2, X, Save, Pencil } from 'lucide-react';
 
 interface CoursesProps {
     data: any[];
     loading: boolean;
-    onAddCourse: (course: any) => void;
+    onSaveCourse: (course: any) => void;
     onDeleteCourse: (id: any) => void;
     showForm: boolean;
     setShowForm: (show: boolean) => void;
 }
 
-export default function Courses({ data, loading, onAddCourse, onDeleteCourse, showForm, setShowForm }: CoursesProps) {
+export default function Courses({ data, loading, onSaveCourse, onDeleteCourse, showForm, setShowForm }: CoursesProps) {
+    const [editingItem, setEditingItem] = useState<any>(null);
     const [formData, setFormData] = useState({
         title: '',
         description: 'Practical Training Program',
@@ -25,16 +26,34 @@ export default function Courses({ data, loading, onAddCourse, onDeleteCourse, sh
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const newCourse = {
+        const courseData = {
             ...formData,
+            id: editingItem?.id, // Use existing ID if editing
             slug: formData.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, ''),
             fees: {
                 original: parseInt(formData.originalFees),
                 offer: parseInt(formData.offerPrice)
             }
         };
-        onAddCourse(newCourse);
+        onSaveCourse(courseData);
         setShowForm(false);
+        setEditingItem(null);
+    };
+
+    const handleEdit = (item: any) => {
+        setEditingItem(item);
+        setFormData({
+            title: item.title,
+            description: item.description,
+            duration: item.duration,
+            day: item.day || 'Monday to Saturday',
+            timing: item.timing,
+            eligibility: item.eligibility,
+            batchSize: item.batchSize,
+            originalFees: item.fees?.original?.toString() || '',
+            offerPrice: item.fees?.offer?.toString() || ''
+        });
+        setShowForm(true);
     };
 
     if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div></div>;
@@ -44,8 +63,8 @@ export default function Courses({ data, loading, onAddCourse, onDeleteCourse, sh
             {showForm && (
                 <div className="bg-white/5 border border-brand-500/30 p-8 rounded-3xl backdrop-blur-xl shadow-2xl mb-12 animate-in fade-in slide-in-from-top-4 duration-300">
                     <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-xl font-bold text-white">Create New Course</h3>
-                        <button onClick={() => setShowForm(false)} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400">
+                        <h3 className="text-xl font-bold text-white">{editingItem ? 'Edit Course' : 'Create New Course'}</h3>
+                        <button onClick={() => { setShowForm(false); setEditingItem(null); }} className="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400">
                             <X size={20} />
                         </button>
                     </div>
@@ -150,9 +169,9 @@ export default function Courses({ data, loading, onAddCourse, onDeleteCourse, sh
 
                         <div className="md:col-span-2 flex gap-4 mt-4">
                             <button type="submit" className="flex-1 bg-brand-600 hover:bg-brand-500 text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-500/20 transition-all flex items-center justify-center gap-2">
-                                <Save size={20} /> Save Course
+                                <Save size={20} /> {editingItem ? 'Update Course' : 'Save Course'}
                             </button>
-                            <button type="button" onClick={() => setShowForm(false)} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 transition-all">
+                            <button type="button" onClick={() => { setShowForm(false); setEditingItem(null); }} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-4 rounded-xl border border-white/10 transition-all">
                                 Cancel
                             </button>
                         </div>
@@ -188,8 +207,12 @@ export default function Courses({ data, loading, onAddCourse, onDeleteCourse, sh
                             </div>
                         </div>
                         <div className="flex sm:flex-col gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-                            <button className="flex-1 sm:flex-none p-3 bg-white/5 text-gray-400 hover:text-brand-500 hover:bg-white/10 rounded-xl transition-all shadow-sm flex items-center justify-center">
-                                <CheckCircle size={18} />
+                            <button
+                                onClick={() => handleEdit(item)}
+                                className="flex-1 sm:flex-none p-3 bg-white/5 text-gray-400 hover:text-brand-500 hover:bg-white/10 rounded-xl transition-all shadow-sm flex items-center justify-center"
+                                title="Edit Course"
+                            >
+                                <Pencil size={18} />
                             </button>
                             <button
                                 onClick={() => onDeleteCourse(item.id)}

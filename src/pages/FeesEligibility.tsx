@@ -24,7 +24,15 @@ export default function FeesEligibility() {
                 { label: 'Timing', value: course.timing },
                 { label: 'Eligibility', value: course.eligibility },
                 { label: 'Batch', value: course.batchSize },
-                { label: 'Course Fees', value: `₹${course.fees?.original} (Offer Price ₹${course.fees?.offer})` },
+                {
+                    label: 'Course Fees',
+                    value: (
+                        <span>
+                            <span className="line-through text-gray-400 mr-2">₹{course.fees?.original}</span>
+                            <span className="font-extrabold">Offer Price ₹{course.fees?.offer}</span>
+                        </span>
+                    )
+                },
                 ...(course.slug === 'engineering' ? [{ label: 'Placement', value: '100% Job Placement' }] : []),
             ]
         };

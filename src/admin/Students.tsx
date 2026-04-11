@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { User, Trash2, X, Save, GraduationCap, Search, Edit2, Upload, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
+import { User, Trash2, X, Save, GraduationCap, Search, Pencil, Upload, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
 import CourseSelect from './CourseSelect';
+import { API_BASE } from '../config/api';
 
 
 interface StudentsProps {
@@ -12,6 +13,17 @@ interface StudentsProps {
     setShowForm: (show: boolean) => void;
     courses: any[];
 }
+
+const getImageUrl = (path: string) => {
+    if (!path) return null;
+    if (path.startsWith('http') || path.startsWith('data:') || path.startsWith('blob:')) {
+        return path;
+    }
+    const backendUrl = API_BASE.replace('/api', '');
+    const fullPath = `${backendUrl}/${path}`;
+    // console.log('Resolved Image Path:', fullPath);
+    return fullPath;
+};
 
 export default function Students({ data, loading, onAddStudent, onDeleteStudent, showForm, setShowForm, courses }: StudentsProps) {
 
@@ -177,7 +189,7 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
                             >
                                 {imagePreview ? (
                                     <>
-                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                        <img src={getImageUrl(imagePreview) || ''} alt="Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                             <Upload className="text-white w-8 h-8" />
                                         </div>
@@ -269,7 +281,7 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
                             <div className="flex gap-6 items-center flex-1">
                                 <div className="w-16 h-16 bg-brand-500/10 rounded-2xl flex items-center justify-center">
                                     {student.image ? (
-                                        <img src={student.image} alt="" className="w-full h-full object-cover rounded-2xl" />
+                                        <img src={getImageUrl(student.image) || ''} alt="" className="w-full h-full object-cover rounded-2xl" referrerPolicy="no-referrer" />
                                     ) : (
                                         <User className="text-brand-500 w-8 h-8" />
                                     )}
@@ -292,8 +304,9 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
                                 <button
                                     onClick={() => handleEdit(student)}
                                     className="p-3 bg-white/5 text-gray-400 hover:text-brand-500 hover:bg-white/10 rounded-xl transition-all shadow-sm flex items-center justify-center flex-1 sm:flex-none"
+                                    title="Edit Student"
                                 >
-                                    <Edit2 size={18} />
+                                    <Pencil size={18} />
                                 </button>
                                 <button
                                     onClick={() => onDeleteStudent(student.rid)}
