@@ -22,21 +22,23 @@ const navItems: NavItem[] = [
     {
         label: 'Courses',
         children: [
+            { label: 'Professional Course', path: '/ProfessionalCourse', desc: 'Industry insights' },
+            { label: 'CCTV', path: '/cctv', desc: 'Diploma Course in CCTV' },
             { label: 'Fire Alarm', path: '/fire-alarm-training', desc: 'Safety systems training' },
             { label: 'Access & Biometric', path: '/access-biometric-training', desc: 'Security protocols' },
-            { label: 'Duration, Eligibility & Fees', path: '/duration-eligibility-fees', desc: 'Course details' },
-            { label: 'Demand & Benefits of Course', path: '/demand-benefits', desc: 'Industry insights' },
-            { label: 'Bank Details', path: '/bank-details', desc: 'Payment information' },
+            { label: 'Demand & Benefits', path: '/demand-benefits', desc: 'Industry insights' },
+
+            // { label: 'Bank Details', path: '/bank-details', desc: 'Payment information' },
         ],
     },
     { label: 'Fees', path: '/duration-eligibility-fees' },
     { label: 'Authenticity', path: '/authenticity' },
-    { label: 'e-Campus', path: '/e-campus' },
+    { label: 'Placement', path: '/testimonials' },
     {
         label: 'Gallery',
         children: [
             { label: 'Photos', path: '/gallery' },
-            { label: 'Testimonials', path: '/testimonials' },
+            { label: 'e-Campus', path: '/e-campus' },
         ],
     },
     { label: 'Employment', path: '/employment' },

@@ -15,6 +15,8 @@ import ProfessionalCertification from './pages/ProfessionalCertification';
 import WorldScenario from './pages/WorldScenario';
 import Courses from './pages/Courses';
 import FireAlarmTraining from './pages/FireAlarmTraining';
+import CCTVTraining from './pages/CCTVTraining';
+import ProfessionalCourse from './pages/ProfessionalCourse';
 import AccessBiometricTraining from './pages/AccessBiometricTraining';
 import FeesEligibility from './pages/FeesEligibility';
 import Authenticity from './pages/Authenticity';
@@ -47,7 +49,7 @@ function App() {
                   <Route path="/infrastructure" element={<Infrastructure />} />
                   <Route path="/professional-certification" element={<ProfessionalCertification />} />
                   <Route path="/world-scenario" element={<WorldScenario />} />
-                  <Route path="/courses" element={<Courses />} />
+                  <Route path="/cctv" element={<CCTVTraining />} />
                   <Route path="/fire-alarm-training" element={<FireAlarmTraining />} />
                   <Route path="/access-biometric-training" element={<AccessBiometricTraining />} />
                   <Route path="/duration-eligibility-fees" element={<FeesEligibility />} />
@@ -62,6 +64,7 @@ function App() {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/become-franchise" element={<FranchisePartner />} />
                   <Route path="/demand-benefits" element={<DemandBenefits />} />
+                  <Route path="/ProfessionalCourse" element={<ProfessionalCourse />} />
                 </Routes>
               </main>
               <Footer />
