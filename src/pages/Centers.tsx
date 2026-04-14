@@ -139,7 +139,7 @@ export default function Centers() {
                             <a href="/become-franchise" className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all text-center">
                                 Apply for Franchise
                             </a>
-                            <a href="https://wa.me/919962456533" className="px-8 py-4 bg-gray-900 hover:bg-black text-white font-bold rounded-xl transition-all text-center">
+                            <a href="https://wa.me/919841014328" className="px-8 py-4 bg-gray-900 hover:bg-black text-white font-bold rounded-xl transition-all text-center">
                                 WhatsApp Inquiry
                             </a>
                         </div>

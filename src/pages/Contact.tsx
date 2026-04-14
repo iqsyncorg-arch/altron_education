@@ -55,7 +55,7 @@ export default function Contact() {
 
     const contactInfo = [
         { icon: MapPin, label: 'Address', value: '79A/44A, S1, Panchali Amman Koil Street, Arumbakkam, Chennai – 600 106', href: undefined },
-        { icon: Phone, label: 'Phone', value: '+91 98410 14328', href: 'tel:+919962456533' },
+        { icon: Phone, label: 'Phone', value: '+91 98410 14328', href: 'tel:+919841014328' },
         { icon: Mail, label: 'Email', value: 'info@altroneducation.com', href: 'mailto:info@altroneducation.com' },
         { icon: Clock, label: 'Office Hours', value: 'Monday – Saturday: 9:00 AM – 7:00 PM', href: undefined },
     ];
@@ -98,11 +98,11 @@ export default function Contact() {
                         <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
                             <h3 className="text-gray-900 font-semibold mb-4">Quick Connect</h3>
                             <div className="space-y-3">
-                                <a href="https://wa.me/919962456533" className="flex items-center gap-3 text-sm text-gray-600 hover:text-green-600 transition-colors">
+                                <a href="https://wa.me/919841014328" className="flex items-center gap-3 text-sm text-gray-600 hover:text-green-600 transition-colors">
                                     <span className="text-2xl">💬</span> Chat on WhatsApp
                                 </a>
-                                <a href="tel:+919962456533" className="flex items-center gap-3 text-sm text-gray-600 hover:text-brand-600 transition-colors">
-                                    <span className="text-2xl">📞</span> Call: 99624 56533
+                                <a href="tel:+919841014328" className="flex items-center gap-3 text-sm text-gray-600 hover:text-brand-600 transition-colors">
+                                    <span className="text-2xl">📞</span> Call: 98410 14328
                                 </a>
                             </div>
                         </div>

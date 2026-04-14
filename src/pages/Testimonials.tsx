@@ -1,5 +1,6 @@
 import { Star } from 'lucide-react';
 import { useApi } from '../hooks/useApi';
+import { getYoutubeEmbedUrl } from '../utils/youtube';
 
 export default function Testimonials() {
     const { data: testimonialsData, loading: tLoading } = useApi<any>('/testimonials');
@@ -30,7 +31,7 @@ export default function Testimonials() {
                                     </p>
                                     <div className="flex items-center gap-4 pt-6 border-t border-gray-50">
                                         <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center text-[#BA442E] font-black text-xl">
-                                            {(t.studentName || t.name || t.author || 'A')[0]}
+                                            {(t.studentName?.trim() || t.name?.trim() || t.author?.trim() || 'A')[0]}
                                         </div>
                                         <div>
                                             <div className="text-gray-900 font-bold text-base leading-tight">{t.studentName || t.name || t.author}</div>
@@ -57,7 +58,7 @@ export default function Testimonials() {
                                 <div key={vid.id || i} className="glass-card hover-lift group cursor-pointer border border-white/10 p-4 rounded-2xl bg-white/5">
                                     <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-black mb-4">
                                         <iframe
-                                            src={vid.youtubeUrl.replace('watch?v=', 'embed/')}
+                                            src={getYoutubeEmbedUrl(vid.youtubeUrl)}
                                             className="absolute inset-0 w-full h-full border-0"
                                             title={vid.title}
                                         />

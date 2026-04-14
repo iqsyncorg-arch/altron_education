@@ -30,7 +30,7 @@ export default function Footer() {
                         <Link to="/contact" className="bg-white text-brand-700 font-semibold px-6 py-3 rounded-xl hover:bg-brand-50 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 whitespace-nowrap">
                             Enquire Now
                         </Link>
-                        <a href="tel:+919962456533" className="border-2 border-white text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap">
+                        <a href="tel:+919841014328" className="border-2 border-white text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap">
                             Call Us
                         </a>
                     </div>
@@ -109,7 +109,7 @@ export default function Footer() {
                             </li>
                             <li className="flex items-center gap-3">
                                 <Phone className="w-4 h-4 text-brand-200 flex-shrink-0" />
-                                <a href="tel:+919962456533" className="text-brand-200 hover:text-white text-sm transition-colors">
+                                <a href="tel:+919841014328" className="text-brand-200 hover:text-white text-sm transition-colors">
                                     +91 98410 14328
                                 </a>
                             </li>

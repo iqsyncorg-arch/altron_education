@@ -181,10 +181,10 @@ export default function FeesEligibility() {
                     <div className="flex flex-wrap gap-4 justify-center">
 
                         <a
-                            href="tel:+919962456533"
+                            href="tel:+919841014328"
                             className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold shadow-sm hover:shadow-md transition"
                         >
-                            Call: 99624 56533
+                            Call: 98410 14328
                         </a>
 
                         <Link

@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useApi } from '../hooks/useApi';
 import { API_BASE } from '../config/api';
+import { getYoutubeEmbedUrl, getYoutubeThumbnailUrl } from '../utils/youtube';
 
 
 
@@ -506,7 +507,7 @@ export default function Home() {
                                 <div className="lg:col-span-8">
                                     <div className="aspect-video w-full bg-black relative group overflow-hidden border border-white/10 rounded-2xl">
                                         <iframe
-                                            src={storiesData[featuredStoryIndex]?.youtubeUrl.replace('watch?v=', 'embed/')}
+                                            src={getYoutubeEmbedUrl(storiesData[featuredStoryIndex]?.youtubeUrl)}
                                             className="absolute inset-0 w-full h-full"
                                             allowFullScreen
                                             title="Featured Video"
@@ -524,7 +525,7 @@ export default function Home() {
                                         >
                                             <div className="w-full sm:w-48 lg:w-full aspect-video bg-black relative overflow-hidden border border-white/5 rounded-lg transition-all duration-300 group-hover:border-[#BA442E]/50">
                                                 <img
-                                                    src={`https://img.youtube.com/vi/${video.youtubeUrl.split('v=')[1]}/hqdefault.jpg`}
+                                                    src={getYoutubeThumbnailUrl(video.youtubeUrl)}
                                                     alt={video.title}
                                                     className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity"
                                                 />
@@ -583,7 +584,7 @@ export default function Home() {
                                         </p>
                                         <div className="flex items-center gap-4 pt-6 border-t border-gray-50 mt-auto">
                                             <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center text-[#BA442E] font-black text-xl">
-                                                {(review.studentName || review.name || 'A')[0]}
+                                                {(review.studentName?.trim() || review.name?.trim() || 'A')[0]}
                                             </div>
                                             <div>
                                                 <h4 className="font-bold text-gray-900 text-base leading-tight">{review.studentName || review.name}</h4>

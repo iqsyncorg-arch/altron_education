@@ -240,7 +240,7 @@ export default function Authenticity() {
                                 Manual Assistance
                             </h4>
                             <p className="text-gray-400 font-medium mb-6">Encountering problems during Verification? Our support team is here to help you verify credentials manually.</p>
-                            <a href="tel:+919962456533" className="text-3xl font-black text-white hover:text-red-500 transition-colors">
+                            <a href="tel:+919841014328" className="text-3xl font-black text-white hover:text-red-500 transition-colors">
                                 +91 98410 14328
                             </a>
                         </div>

@@ -180,7 +180,7 @@ export default function ChatBot() {
                     <>
                         {/* WhatsApp */}
                         <a
-                            href="https://wa.me/919962456533"
+                            href="https://wa.me/919841014328"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-12 h-12 rounded-full bg-[#25D366] hover:bg-[#20ba5a] flex items-center justify-center shadow-lg shadow-green-500/40 hover:shadow-green-500/60 transition-all hover:scale-110 group relative"
@@ -194,7 +194,7 @@ export default function ChatBot() {
 
                         {/* Call */}
                         <a
-                            href="tel:+919962456533"
+                            href="tel:+919841014328"
                             className="w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-400 flex items-center justify-center shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 transition-all hover:scale-110 group relative"
                             aria-label="Call Now"
                         >

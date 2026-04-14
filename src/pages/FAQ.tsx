@@ -124,14 +124,14 @@ export default function FAQ() {
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <a
-                            href="tel:+919962456533"
+                            href="tel:+919841014328"
                             className="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3 rounded-xl transition-all hover:scale-105"
                         >
-                            Call: 99624 56533
+                            Call: 98410 14328
                         </a>
 
                         <a
-                            href="https://wa.me/919962456533"
+                            href="https://wa.me/919841014328"
                             className="inline-flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-xl transition-all hover:scale-105"
                         >
                             WhatsApp Us

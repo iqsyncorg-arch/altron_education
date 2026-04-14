@@ -37,7 +37,7 @@ export default function FloatingButtons() {
             <div className="fixed right-4 bottom-6 z-50 flex flex-col gap-3">
                 {/* WhatsApp */}
                 <a
-                    href="https://wa.me/919962456533"
+                    href="https://wa.me/919841014328"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full bg-[#25D366] hover:bg-[#20ba5a] flex items-center justify-center shadow-lg shadow-green-500/40 hover:shadow-green-500/60 transition-all hover:scale-110 group"
@@ -55,12 +55,12 @@ export default function FloatingButtons() {
 
                 {/* Call */}
                 <a
-                    href="tel:+919962456533"
+                    href="tel:+919841014328"
                     className="w-12 h-12 rounded-full bg-blue-500 hover:bg-blue-400 flex items-center justify-center shadow-lg shadow-blue-500/40 hover:shadow-blue-500/60 transition-all hover:scale-110 group"
                     aria-label="Call Now"
                 >
                     <Phone className="w-5 h-5 text-white" />
-                    <span className="absolute right-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Call: 99624 56533</span>
+                    <span className="absolute right-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Call: 98410 14328</span>
                 </a>
 
                 {/* Enquire */}

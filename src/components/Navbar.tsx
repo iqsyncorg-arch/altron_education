@@ -33,7 +33,7 @@ const navItems: NavItem[] = [
     },
     { label: 'Fees', path: '/duration-eligibility-fees' },
     { label: 'Authenticity', path: '/authenticity' },
-    { label: 'Placement', path: '/testimonials' },
+    { label: 'Testimonials', path: '/testimonials' },
     {
         label: 'Gallery',
         children: [
