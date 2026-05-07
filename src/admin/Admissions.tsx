@@ -40,6 +40,7 @@ interface AdmissionsProps {
     setShowForm: (show: boolean) => void;
     role?: string;
     courses: any[];
+    onPromoteToStudent?: (admission: any) => void;
 }
 
 
@@ -91,7 +92,7 @@ const initialForm = {
     }
 };
 
-export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdmission, showForm, setShowForm, role, courses }: AdmissionsProps) {
+export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdmission, showForm, setShowForm, role, courses, onPromoteToStudent }: AdmissionsProps) {
     const [editingAdmission, setEditingAdmission] = useState<any>(null);
     const [formData, setFormData] = useState(initialForm);
     const [expandedSection, setExpandedSection] = useState<string | null>('course_information');
@@ -266,7 +267,7 @@ export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdm
     const downloadPDF = async (admission: any) => {
         const doc = new jsPDF('p', 'mm', 'a4');
         const padding = 15;
-        let y = 20;
+        let y = 15;
 
         // Layout constants for 75/25 split
         const contentWidth = 210 - (2 * padding);
@@ -275,20 +276,23 @@ export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdm
         const textCenterX = padding + (textWidth / 2);
         const imageStartX = padding + textWidth;
 
-        // Branding & Header (in 75% area)
-        doc.setFontSize(24);
-        doc.setTextColor(185, 28, 28); // Brand Red
-        doc.setFont('helvetica', 'bold');
-        doc.text('ALTRON ACADEMY', textCenterX, y, { align: 'center' });
-        y += 8;
+        // Logo in 75% area (left side)
+        const logoUrl = 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773043568/altronaccodemy_pxgw2x.png';
+        try {
+            const logoBase64 = await getBase64(logoUrl);
+            if (logoBase64) {
+                const logoW = 50;
+                const logoH = 18;
+                const logoX = padding + (textWidth - logoW) / 2;
+                doc.addImage(logoBase64, 'PNG', logoX, y, logoW, logoH);
+                y += logoH + 5;
+            }
+        } catch (_e) {
+            // fallback: skip logo
+            y += 10;
+        }
 
-        doc.setFontSize(10);
-        doc.setTextColor(100, 100, 100);
-        doc.setFont('helvetica', 'normal');
-        doc.text('Professional CCTV & Integrated Security System Training', textCenterX, y, { align: 'center' });
-        y += 12;
-
-        doc.setFontSize(18);
+        doc.setFontSize(14);
         doc.setTextColor(31, 41, 55);
         doc.setFont('helvetica', 'bold');
         doc.text('ADMISSION DECLARATION FORM', textCenterX, y, { align: 'center' });
@@ -388,38 +392,39 @@ export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdm
             'Institution Last Studied': admission.education_details?.institution_last_studied
         });
 
-        // Declaration Section
-        if (y > 200) { doc.addPage(); y = 20; }
-        y += 5;
-        doc.setFontSize(12);
+        // Declaration Section — keep on same page if at least 65mm remain
+        if (y > 240) { doc.addPage(); y = 20; }
+        y += 4;
+        doc.setFontSize(11);
         doc.setTextColor(31, 41, 55);
         doc.setFont('helvetica', 'bold');
         doc.text('DECLARATION', padding, y);
-        y += 8;
+        y += 5;
+        doc.setLineWidth(0.2);
+        doc.setDrawColor(229, 231, 235);
+        doc.line(padding, y, 210 - padding, y);
+        y += 6;
         doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(55, 65, 81);
         const declarationText = `I hereby declare that the information provided in this application is true and complete to the best of my knowledge and belief. I understand that any false or misleading information may result in the cancellation of my admission. I agree to abide by the rules and regulations of Altron Academy during the tenure of my course.`;
         const lines = doc.splitTextToSize(declarationText, 180);
         doc.text(lines, padding, y);
-        y += (lines.length * 5) + 20;
+        y += (lines.length * 4.5) + 14;
 
-        // Signature Sections
+        // Signature
         const sigWidth = 60;
         doc.setLineWidth(0.5);
         doc.setDrawColor(0);
-
-        // Student Signature
         doc.line(padding, y, padding + sigWidth, y);
         doc.setFont('helvetica', 'bold');
         doc.text('Student Signature', padding, y + 5);
         doc.setFont('helvetica', 'normal');
-        doc.text(`Place: ${admission.declaration?.place || '________________'}`, padding, y + 15);
-        doc.text(`Date: ${admission.declaration?.date || '________________'}`, padding, y + 20);
 
-        y += 40;
+        y += 30;
 
-        doc.save(`admission_${admission.course_information?.application_number || admission.id}.pdf`);
+        const fullName = (admission.biographical_information?.full_name || 'admission').replace(/\s+/g, '_');
+        doc.save(`${fullName}.pdf`);
     };
 
     if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div></div>;
@@ -721,6 +726,15 @@ export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdm
                                 >
                                     <FileText size={18} />
                                 </button>
+                                {onPromoteToStudent && (
+                                    <button
+                                        onClick={() => onPromoteToStudent(admission)}
+                                        className="p-3 bg-green-500/10 text-green-400 hover:bg-green-500/20 rounded-xl transition-all shadow-sm border border-green-500/10"
+                                        title="Promote to Student Record"
+                                    >
+                                        <GraduationCap size={18} />
+                                    </button>
+                                )}
                                 <button
                                     onClick={() => onDeleteAdmission(admission.id)}
                                     className="p-3 bg-white/5 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all shadow-sm border border-white/5"

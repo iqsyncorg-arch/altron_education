@@ -12,6 +12,8 @@ interface StudentsProps {
     showForm: boolean;
     setShowForm: (show: boolean) => void;
     courses: any[];
+    prefill?: any | null;
+    onClearPrefill?: () => void;
 }
 
 const getImageUrl = (path: string) => {
@@ -25,13 +27,13 @@ const getImageUrl = (path: string) => {
     return fullPath;
 };
 
-export default function Students({ data, loading, onAddStudent, onDeleteStudent, showForm, setShowForm, courses }: StudentsProps) {
+export default function Students({ data, loading, onAddStudent, onDeleteStudent, showForm, setShowForm, courses, prefill, onClearPrefill }: StudentsProps) {
 
     const [formData, setFormData] = useState({
         rid: '',
         stdname: '',
         subject: '',
-        dob: '', // we will map this to DD.MM.YYYY internally
+        dob: '',
         gender: '',
         image: ''
     });
@@ -68,7 +70,6 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
         if (!showForm) {
             setEditingId(null);
             setImageFile(null);
-
             setImagePreview(null);
             setFormData({
                 rid: '',
@@ -84,11 +85,26 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
                 .map(s => parseInt(s.rid))
                 .filter(rid => !isNaN(rid));
             const nextRid = numericalRids.length > 0 ? Math.max(1286, Math.max(...numericalRids) + 1) : 1286;
-            setFormData(prev => ({
-                ...prev,
-                rid: String(nextRid),
-                dob: getTodayDate() // Default to today's date in YYYY-MM-DD for the input
-            }));
+
+            // Apply prefill if available
+            if (prefill) {
+                setFormData(prev => ({
+                    ...prev,
+                    rid: String(nextRid),
+                    dob: getTodayDate(),
+                    stdname: prefill.stdname || '',
+                    subject: prefill.subject || '',
+                    image: prefill.image || '',
+                }));
+                if (prefill.image) setImagePreview(prefill.image);
+                onClearPrefill?.();
+            } else {
+                setFormData(prev => ({
+                    ...prev,
+                    rid: String(nextRid),
+                    dob: getTodayDate()
+                }));
+            }
         }
     }, [showForm, editingId, data]);
 

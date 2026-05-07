@@ -12,25 +12,43 @@ interface RecruitmentsProps {
 
 export default function Recruitments({ data, loading, onDelete, page = 1, totalPages = 1, onPageChange }: RecruitmentsProps) {
 
-    const downloadPDF = (item: any) => {
+    const getBase64 = async (url: string): Promise<string | null> => {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result as string);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        } catch (error) {
+            console.error('Error converting image to base64:', error);
+            return null;
+        }
+    };
+
+    const downloadPDF = async (item: any) => {
         const doc = new jsPDF('p', 'mm', 'a4');
         const padding = 15;
         let y = 20;
 
-        // Branding & Header
-        doc.setFontSize(24);
-        doc.setTextColor(185, 28, 28); // Brand Red
-        doc.setFont('helvetica', 'bold');
-        doc.text('ALTRON ACADEMY', 105, y, { align: 'center' });
-        y += 8;
+        // Logo header
+        const logoUrl = 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773043568/altronaccodemy_pxgw2x.png';
+        try {
+            const logoBase64 = await getBase64(logoUrl);
+            if (logoBase64) {
+                const logoW = 50;
+                const logoH = 18;
+                const logoX = (210 - logoW) / 2;
+                doc.addImage(logoBase64, 'PNG', logoX, y, logoW, logoH);
+                y += logoH + 5;
+            }
+        } catch (_e) {
+            y += 10;
+        }
 
-        doc.setFontSize(10);
-        doc.setTextColor(100, 100, 100);
-        doc.setFont('helvetica', 'normal');
-        doc.text('Professional CCTV & Integrated Security System Training', 105, y, { align: 'center' });
-        y += 12;
-
-        doc.setFontSize(18);
+        doc.setFontSize(16);
         doc.setTextColor(31, 41, 55);
         doc.setFont('helvetica', 'bold');
         doc.text('RECRUITMENT REQUISITION', 105, y, { align: 'center' });

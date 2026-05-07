@@ -26,6 +26,7 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [allCourses, setAllCourses] = useState<any[]>([]);
+    const [prefillStudent, setPrefillStudent] = useState<any | null>(null);
 
     const fetchCourses = useCallback(async () => {
         try {
@@ -380,10 +381,20 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
     };
 
 
+    const handlePromoteToStudent = (admission: any) => {
+        setPrefillStudent({
+            stdname: admission.biographical_information?.full_name || '',
+            subject: admission.course_information?.course_name || '',
+            image: admission.course_information?.passport_photo || '',
+        });
+        setActiveTab('studentinfo');
+        setShowForm(true);
+    };
+
     return (
         <AdminLayout
             activeTab={activeTab}
-            setActiveTab={(tab) => { setActiveTab(tab); setShowForm(false); }}
+            setActiveTab={(tab) => { setActiveTab(tab); setShowForm(false); setPrefillStudent(null); }}
             onLogout={onLogout}
             onAdd={!['inquiries', 'recruitment', 'franchise-accounts'].includes(activeTab) ? () => setShowForm(true) : undefined}
             role={role}
@@ -445,6 +456,8 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
                     showForm={showForm}
                     setShowForm={setShowForm}
                     courses={allCourses}
+                    prefill={prefillStudent}
+                    onClearPrefill={() => setPrefillStudent(null)}
                 />
             )}
             {activeTab === 'admissions' && (
@@ -457,6 +470,7 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
                     setShowForm={setShowForm}
                     role={role}
                     courses={allCourses}
+                    onPromoteToStudent={handlePromoteToStudent}
                 />
             )}
         </AdminLayout>
