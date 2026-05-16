@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Shield, Phone, Mail, MapPin, Facebook, Youtube, Instagram, ArrowRight } from 'lucide-react';
+import { Shield, Phone, Mail, MapPin, Facebook, Youtube, Instagram, Twitter, ArrowRight } from 'lucide-react';
 
 export default function Footer() {
     const courses = [
@@ -55,14 +55,17 @@ export default function Footer() {
                             India's Unique & Premier Academy Training Institute for CCTV Surveillance, Fire Alarm, Access with Biometric Attendance and Smart Home Security System Since 2008.
                         </p>
                         <div className="flex gap-3">
-                            <a href="#" className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-brand-200 hover:text-white hover:border-white/40 transition-all">
+                            <a href="https://www.facebook.com/altronacademy" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-brand-200 hover:text-white hover:border-white/40 transition-all">
                                 <Facebook className="w-4 h-4" />
                             </a>
-                            <a href="#" className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-brand-200 hover:text-white hover:border-white/40 transition-all">
+                            <a href="https://www.youtube.com/@altronindiapromotion" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-brand-200 hover:text-white hover:border-white/40 transition-all">
                                 <Youtube className="w-4 h-4" />
                             </a>
-                            <a href="#" className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-brand-200 hover:text-white hover:border-white/40 transition-all">
+                            <a href="https://www.instagram.com/altroncctvinstitute/?hl=en" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-brand-200 hover:text-white hover:border-white/40 transition-all">
                                 <Instagram className="w-4 h-4" />
+                            </a>
+                            <a href="https://x.com/altroneducation" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-brand-200 hover:text-white hover:border-white/40 transition-all">
+                                <Twitter className="w-4 h-4" />
                             </a>
                         </div>
                     </div>

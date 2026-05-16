@@ -70,14 +70,23 @@ export default function Navbar() {
         <nav className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm">
 
             {/* Top Utility */}
-            <div className={`hidden lg:block bg-slate-50 border-b border-slate-100 transition-all duration-300 overflow-hidden ${isScrolled ? 'max-h-0 opacity-0 border-none' : 'max-h-12 opacity-100'}`}>
+            <div
+                className={`hidden lg:block bg-slate-50 border-b border-slate-100 transition-all duration-300 overflow-hidden ${isScrolled ? 'max-h-0 opacity-0 border-none' : 'max-h-12 opacity-100'
+                    }`}
+            >
                 <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center text-[11px] font-semibold uppercase tracking-wider text-slate-500">
 
                     <div className="flex gap-6">
-                        <Link to="/authenticity" className="flex items-center gap-1.5 text-brand-600 font-bold hover:text-brand-700 hover:underline transition-all">
+
+                        {/* Fixed Route */}
+                        <Link
+                            to="/authenticity"
+                            className="flex items-center gap-1.5 text-brand-600 font-bold hover:text-brand-700 hover:underline transition-all"
+                        >
                             <Shield className="w-3 h-3" />
                             Online Verified Certification
                         </Link>
+
                     </div>
 
                     <Link
