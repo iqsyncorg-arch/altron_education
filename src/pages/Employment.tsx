@@ -213,7 +213,7 @@ export default function Employment() {
                         {/* Section 4 */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
-                                { label: 'Starting Salary', key: 'startingSalary' },
+                                { label: 'Starting Salary', key: 'startingSalary', type: 'number', min: '20000', placeholder: 'Min 20000' },
                                 { label: 'Conveyance', key: 'conveyance' },
                                 { label: 'Accommodation', key: 'accommodation' },
                                 { label: 'Uniform for Staff', key: 'uniform' },
@@ -225,10 +225,21 @@ export default function Employment() {
                                 <div key={field.key}>
                                     <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">{field.label}</label>
                                     <input
+                                        type={field.type || 'text'}
+                                        min={field.min}
+                                        placeholder={field.placeholder}
                                         value={(formData as any)[field.key]}
                                         onChange={e => setFormData({ ...formData, [field.key]: e.target.value })}
-                                        className="w-full bg-zinc-900 border-2 border-zinc-800 focus:border-red-600 text-white px-5 py-3 rounded-xl outline-none transition-all font-bold text-sm"
+                                        className={`w-full bg-zinc-900 border-2 text-white px-5 py-3 rounded-xl outline-none transition-all font-bold text-sm ${field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000
+                                                ? 'border-red-500 focus:border-red-500'
+                                                : 'border-zinc-800 focus:border-red-600'
+                                            }`}
                                     />
+                                    {field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000 && (
+                                        <p className="text-red-500 text-xs font-bold mt-2 flex items-center gap-1">
+                                            <Info size={12} /> Starting salary must be at least ₹20,000
+                                        </p>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -241,8 +252,8 @@ export default function Employment() {
 
                         <button
                             type="submit"
-                            disabled={loading}
-                            className="w-full bg-red-600 hover:bg-red-700 text-white font-black py-7 rounded-[30px] shadow-2xl shadow-red-950/50 transition-all flex items-center justify-center gap-4 text-xl uppercase tracking-widest active:scale-95 disabled:opacity-70"
+                            disabled={loading || (formData.startingSalary !== '' && Number(formData.startingSalary) < 20000)}
+                            className="w-full bg-red-600 hover:bg-red-700 text-white font-black py-7 rounded-[30px] shadow-2xl shadow-red-950/50 transition-all flex items-center justify-center gap-4 text-xl uppercase tracking-widest active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             {loading ? 'Processing...' : <><Send size={24} /> Submit Requirements</>}
                         </button>

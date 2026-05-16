@@ -10,7 +10,6 @@ import {
     ChevronDown,
     ChevronUp,
     FileText,
-
     BookOpen,
     UserCheck,
     Info,
@@ -27,8 +26,6 @@ import {
 import { jsPDF } from 'jspdf';
 import CourseSelect from './CourseSelect';
 import { API_BASE } from '../config/api';
-
-
 
 
 interface AdmissionsProps {
@@ -277,26 +274,34 @@ export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdm
         const imageStartX = padding + textWidth;
 
         // Logo in 75% area (left side)
-        const logoUrl = 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773043568/altronaccodemy_pxgw2x.png';
+        const logoUrl = '/altronpdf.jpeg';
+        let logoBottom = y;
         try {
             const logoBase64 = await getBase64(logoUrl);
             if (logoBase64) {
-                const logoW = 50;
-                const logoH = 18;
-                const logoX = padding + (textWidth - logoW) / 2;
-                doc.addImage(logoBase64, 'PNG', logoX, y, logoW, logoH);
-                y += logoH + 5;
+                const logoW = 20;
+                const logoH = 20;
+                const logoX = padding; // Align left
+                doc.addImage(logoBase64, 'JPEG', logoX, y, logoW, logoH);
+                logoBottom = y + logoH;
             }
         } catch (_e) {
             // fallback: skip logo
-            y += 10;
         }
+
+        y += 8; // Move text down slightly to align horizontally with the logo
+        doc.setTextColor(185, 28, 28);
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.text('ALTRON SAFETY & SECURITY ACADEMY', textCenterX, y, { align: 'center' });
+        y += 8;
 
         doc.setFontSize(14);
         doc.setTextColor(31, 41, 55);
         doc.setFont('helvetica', 'bold');
-        doc.text('ADMISSION DECLARATION FORM', textCenterX, y, { align: 'center' });
-        y += 10;
+        doc.text('APPLICATION FORM', textCenterX, y, { align: 'center' });
+
+        y = Math.max(y + 8, logoBottom + 5);
 
         // Add Portrait/Passport Photo (in 25% area)
         const photoUrl = admission.course_information?.passport_photo;
@@ -324,6 +329,9 @@ export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdm
             doc.setTextColor(150, 150, 150);
             doc.text('Passport Photo', photoX + (photoWidth / 2), photoY + (photoHeight / 2), { align: 'center' });
         }
+
+        // Ensure the layout y-coordinate clears the photo so the red line doesn't overlap
+        y = Math.max(y, photoY + photoHeight + 5);
 
         doc.setLineWidth(0.5);
         doc.setDrawColor(185, 28, 28);

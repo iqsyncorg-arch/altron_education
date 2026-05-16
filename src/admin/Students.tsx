@@ -160,8 +160,13 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
 
     const filteredData = Array.isArray(data) ? data.filter(s =>
         s.stdname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        s.rid?.toLowerCase().includes(searchTerm.toLowerCase())
-    ) : [];
+        String(s.rid || '').toLowerCase().includes(searchTerm.toLowerCase())
+    ).sort((a, b) => {
+        const numA = parseInt(a.rid);
+        const numB = parseInt(b.rid);
+        if (!isNaN(numA) && !isNaN(numB)) return numB - numA;
+        return String(b.rid || '').localeCompare(String(a.rid || ''));
+    }) : [];
 
     // Pagination logic
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);

@@ -41,7 +41,7 @@ const navItems: NavItem[] = [
             { label: 'e-Campus', path: '/e-campus' },
         ],
     },
-    { label: 'Employment', path: '/employment' },
+    { label: 'Recruitment', path: '/employment' },
     { label: 'FAQ', path: '/faq' },
     { label: 'Centers', path: '/centers' },
     { label: 'Contact', path: '/contact' },
@@ -74,10 +74,10 @@ export default function Navbar() {
                 <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center text-[11px] font-semibold uppercase tracking-wider text-slate-500">
 
                     <div className="flex gap-6">
-                        <span className="flex items-center gap-1.5 text-brand-600 font-bold">
+                        <Link to="/authenticity" className="flex items-center gap-1.5 text-brand-600 font-bold hover:text-brand-700 hover:underline transition-all">
                             <Shield className="w-3 h-3" />
                             Online Verified Certification
-                        </span>
+                        </Link>
                     </div>
 
                     <Link
