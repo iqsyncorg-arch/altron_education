@@ -34,12 +34,11 @@ export default function Recruitments({ data, loading, onDelete, page = 1, totalP
         let y = 20;
 
         // Logo header
-        const logoUrl = 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773043568/altronaccodemy_pxgw2x.png';
         try {
-            const logoBase64 = await getBase64(logoUrl);
+            const logoBase64 = await getBase64('/applogo.png');
             if (logoBase64) {
-                const logoW = 50;
-                const logoH = 18;
+                const logoW = 25;
+                const logoH = 25;
                 const logoX = (210 - logoW) / 2;
                 doc.addImage(logoBase64, 'PNG', logoX, y, logoW, logoH);
                 y += logoH + 5;

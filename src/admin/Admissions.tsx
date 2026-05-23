@@ -262,179 +262,341 @@ export default function Admissions({ data, loading, onSaveAdmission, onDeleteAdm
     };
 
     const downloadPDF = async (admission: any) => {
-        const doc = new jsPDF('p', 'mm', 'a4');
-        const padding = 15;
-        let y = 15;
+        const doc = new jsPDF('p', 'mm', 'a4')
 
-        // Layout constants for 75/25 split
-        const contentWidth = 210 - (2 * padding);
-        const textWidth = contentWidth * 0.75;
-        const imageWidth = contentWidth * 0.25;
-        const textCenterX = padding + (textWidth / 2);
-        const imageStartX = padding + textWidth;
+        const pageWidth = 210
+        const pageHeight = 297
+        const margin = 14
+        const contentWidth = pageWidth - margin * 2
 
-        // Logo in 75% area (left side)
-        const logoUrl = '/altronpdf.jpeg';
-        let logoBottom = y;
-        try {
-            const logoBase64 = await getBase64(logoUrl);
-            if (logoBase64) {
-                const logoW = 20;
-                const logoH = 20;
-                const logoX = padding; // Align left
-                doc.addImage(logoBase64, 'JPEG', logoX, y, logoW, logoH);
-                logoBottom = y + logoH;
-            }
-        } catch (_e) {
-            // fallback: skip logo
+        let y = 18
+
+        // COLORS
+        const RED = [185, 28, 28] as const
+        const DARK = [17, 24, 39] as const
+        const GRAY = [107, 114, 128] as const
+        const LIGHT = [245, 245, 245] as const
+        const BORDER = [230, 230, 230] as const
+
+        // ---------- HELPERS ----------
+
+        const sectionTitle = (title: string) => {
+
+            doc.setFillColor(...RED)
+            doc.roundedRect(margin, y, 70, 10, 2, 2, 'F')
+
+            doc.setTextColor(255, 255, 255)
+            doc.setFontSize(12)
+            doc.setFont('helvetica', 'bold')
+
+            doc.text(title.toUpperCase(), margin + 35, y + 6.5, {
+                align: 'center',
+            })
+
+            y += 13
         }
 
-        y += 8; // Move text down slightly to align horizontally with the logo
-        doc.setTextColor(185, 28, 28);
-        doc.setFontSize(16);
-        doc.setFont('helvetica', 'bold');
-        doc.text('ALTRON SAFETY & SECURITY ACADEMY', textCenterX, y, { align: 'center' });
-        y += 8;
+        const drawField = (
+            label: string,
+            value: string,
+            x: number,
+            currentY: number
+        ) => {
 
-        doc.setFontSize(14);
-        doc.setTextColor(31, 41, 55);
-        doc.setFont('helvetica', 'bold');
-        doc.text('APPLICATION FORM', textCenterX, y, { align: 'center' });
+            doc.setTextColor(...GRAY)
+            doc.setFontSize(9)
+            doc.setFont('helvetica', 'normal')
+            doc.text(label, x, currentY)
 
-        y = Math.max(y + 8, logoBottom + 5);
+            doc.setTextColor(...DARK)
+            doc.setFont('helvetica', 'bold')
+            doc.text(value || 'N/A', x + 45, currentY)
+        }
 
-        // Add Portrait/Passport Photo (in 25% area)
-        const photoUrl = admission.course_information?.passport_photo;
-        const photoWidth = 25;
-        const photoHeight = 35;
-        const photoX = imageStartX + (imageWidth - photoWidth) / 2;
-        const photoY = 10;
+        const drawBox = (height: number) => {
+            doc.setDrawColor(...BORDER)
+            doc.setFillColor(255, 255, 255)
+            doc.roundedRect(
+                margin,
+                y,
+                contentWidth,
+                height,
+                3,
+                3,
+                'FD'
+            )
+        }
+
+        // ---------- HEADER ----------
+
+        // OUTER BORDER
+        doc.setDrawColor(...RED)
+        doc.setLineWidth(0.8)
+        doc.roundedRect(2, 2, 206, 293, 4, 4)
+
+        // LOGO
+        try {
+
+            const logoBase64 = await getBase64('/applogo.png')
+
+            if (logoBase64) {
+
+                doc.addImage(
+                    logoBase64,
+                    'PNG',
+                    margin,
+                    y - 3,
+                    26,
+                    26
+                )
+            }
+
+        } catch (_e) { }
+
+        // PHOTO
+        const photoUrl = admission.course_information?.passport_photo
 
         if (photoUrl) {
+
             try {
-                const base64 = await getBase64(photoUrl);
-                if (base64) {
-                    doc.addImage(base64, 'JPEG', photoX, photoY, photoWidth, photoHeight);
-                    doc.setDrawColor(200, 200, 200);
-                    doc.rect(photoX, photoY, photoWidth, photoHeight); // Border around photo
+
+                const photoBase64 = await getBase64(photoUrl)
+
+                if (photoBase64) {
+
+                    doc.setDrawColor(...RED)
+
+                    doc.roundedRect(
+                        pageWidth - 46,
+                        y - 1,
+                        28,
+                        26,
+                        3,
+                        3
+                    )
+
+                    doc.addImage(
+                        photoBase64,
+                        'JPEG',
+                        pageWidth - 44,
+                        y + 1,
+                        24,
+                        22
+                    )
                 }
-            } catch (err) {
-                console.error('Could not add image to PDF');
-            }
-        } else {
-            // Placeholder box
-            doc.setDrawColor(200, 200, 200);
-            doc.rect(photoX, photoY, photoWidth, photoHeight);
-            doc.setFontSize(8);
-            doc.setTextColor(150, 150, 150);
-            doc.text('Passport Photo', photoX + (photoWidth / 2), photoY + (photoHeight / 2), { align: 'center' });
+
+            } catch (_e) { }
         }
 
-        // Ensure the layout y-coordinate clears the photo so the red line doesn't overlap
-        y = Math.max(y, photoY + photoHeight + 5);
+        // TITLE
+        doc.setTextColor(...RED)
+        doc.setFontSize(17)
+        doc.setFont('helvetica', 'bold')
 
-        doc.setLineWidth(0.5);
-        doc.setDrawColor(185, 28, 28);
-        doc.line(padding, y, 210 - padding, y);
-        y += 10;
+        doc.text(
+            'ALTRON SAFETY &',
+            pageWidth / 2 - 10,
+            y + 5,
+            { align: 'center' }
+        )
 
-        // Application Details
-        doc.setFontSize(10);
-        doc.setTextColor(100, 100, 100);
-        doc.setFont('helvetica', 'bold');
-        doc.text(`Application ID: ${admission.course_information?.application_number || 'N/A'}`, padding, y);
-        y += 6;
-        doc.setFont('helvetica', 'normal');
-        doc.text(`Generated on: ${new Date().toLocaleDateString()}`, padding, y);
-        y += 10;
+        doc.text(
+            'SECURITY ACADEMY',
+            pageWidth / 2 - 10,
+            y + 14,
+            { align: 'center' }
+        )
 
-        const addSection = (title: string, data: any) => {
-            if (y > 240) { doc.addPage(); y = 20; }
-            doc.setFontSize(11);
-            doc.setTextColor(31, 41, 55);
-            doc.setFont('helvetica', 'bold');
-            doc.text(title.toUpperCase(), padding, y);
-            y += 5;
-            doc.setLineWidth(0.2);
-            doc.setDrawColor(229, 231, 235);
-            doc.line(padding, y, 210 - padding, y);
-            y += 8;
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(9);
+        doc.setTextColor(...DARK)
+        doc.setFontSize(13)
 
-            Object.entries(data).forEach(([key, value]: [string, any]) => {
-                if (y > 275) { doc.addPage(); y = 20; }
-                const cleanKey = key.replace(/_/g, ' ');
-                doc.setTextColor(107, 114, 128);
-                doc.text(`${cleanKey}:`, padding, y);
-                doc.setTextColor(17, 24, 39);
-                doc.setFont('helvetica', 'bold');
-                doc.text(`${value || 'N/A'}`, padding + 45, y);
-                doc.setFont('helvetica', 'normal');
-                y += 6;
-            });
-            y += 8;
-        };
+        doc.text(
+            'APPLICATION FORM',
+            pageWidth / 2 - 10,
+            y + 25,
+            { align: 'center' }
+        )
 
-        addSection('Course Details', {
-            'Applied Course': admission.course_information?.course_name,
-            'Application Number': admission.course_information?.application_number
-        });
+        y += 28
 
-        addSection('Student Personal Details', {
-            'Full Name': admission.biographical_information?.full_name,
-            'Date of Birth': admission.biographical_information?.date_of_birth,
-            'Nationality': admission.biographical_information?.nationality,
-            'Gender': admission.biographical_information?.gender,
-            'Blood Group': admission.biographical_information?.blood_group,
-            'Mobile': admission.biographical_information?.mobile_number,
-            'Email': admission.biographical_information?.email,
-            'Address': admission.biographical_information?.permanent_address
-        });
+        // RED DIVIDER
+        doc.setDrawColor(...RED)
+        doc.setLineWidth(0.5)
+        doc.line(margin, y, pageWidth - margin, y)
 
-        addSection('Academic History', {
-            'Qualifying Exam': admission.education_details?.qualifying_exam_name,
-            'Year of Passing': admission.education_details?.year_of_passing,
-            'Number of Attempts': admission.education_details?.number_of_attempts,
-            'University/Board': admission.education_details?.affiliating_body_university,
-            'Institution Last Studied': admission.education_details?.institution_last_studied
-        });
+        y += 5
 
-        // Declaration Section — keep on same page if at least 65mm remain
-        if (y > 240) { doc.addPage(); y = 20; }
-        y += 4;
-        doc.setFontSize(11);
-        doc.setTextColor(31, 41, 55);
-        doc.setFont('helvetica', 'bold');
-        doc.text('DECLARATION', padding, y);
-        y += 5;
-        doc.setLineWidth(0.2);
-        doc.setDrawColor(229, 231, 235);
-        doc.line(padding, y, 210 - padding, y);
-        y += 6;
-        doc.setFontSize(9);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(55, 65, 81);
-        const declarationText = `I hereby declare that the information provided in this application is true and complete to the best of my knowledge and belief. I understand that any false or misleading information may result in the cancellation of my admission. I agree to abide by the rules and regulations of Altron Academy during the tenure of my course.`;
-        const lines = doc.splitTextToSize(declarationText, 180);
-        doc.text(lines, padding, y);
-        y += (lines.length * 4.5) + 14;
+        // ---------- APPLICATION INFO CARD ----------
 
-        // Signature
-        const sigWidth = 60;
-        doc.setLineWidth(0.5);
-        doc.setDrawColor(0);
-        doc.line(padding, y, padding + sigWidth, y);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Student Signature', padding, y + 5);
-        doc.setFont('helvetica', 'normal');
+        drawBox(14)
 
-        y += 30;
+        // LEFT
+        drawField(
+            'Application ID',
+            admission.course_information?.application_number || 'N/A',
+            margin + 10,
+            y + 7
+        )
 
-        const fullName = (admission.biographical_information?.full_name || 'admission').replace(/\s+/g, '_');
-        doc.save(`${fullName}.pdf`);
-    };
+        // RIGHT
+        drawField(
+            'Generated On',
+            new Date().toLocaleDateString(),
+            margin + 100,
+            y + 7
+        )
 
+        y += 18
+
+        // ---------- COURSE DETAILS ----------
+
+        sectionTitle('Course Details')
+
+        drawBox(18)
+
+        drawField(
+            'Applied Course',
+            admission.course_information?.course_name || 'N/A',
+            margin + 10,
+            y + 7
+        )
+
+        drawField(
+            'Application Number',
+            admission.course_information?.application_number || 'N/A',
+            margin + 10,
+            y + 14
+        )
+
+        y += 24
+
+        // ---------- PERSONAL DETAILS ----------
+
+        sectionTitle('Student Personal Details')
+
+        drawBox(38)
+
+        const leftX = margin + 10
+        const rightX = margin + 98
+
+        const startY = y + 7
+
+        drawField('Full Name', admission.biographical_information?.full_name, leftX, startY)
+
+        drawField('Date of Birth', admission.biographical_information?.date_of_birth, leftX, startY + 7)
+
+        drawField('Nationality', admission.biographical_information?.nationality, leftX, startY + 14)
+
+        drawField('Gender', admission.biographical_information?.gender, leftX, startY + 21)
+
+        drawField('Blood Group', admission.biographical_information?.blood_group, leftX, startY + 28)
+
+        drawField('Mobile', admission.biographical_information?.mobile_number, rightX, startY)
+
+        drawField('Email', admission.biographical_information?.email, rightX, startY + 7)
+
+        drawField('Address', admission.biographical_information?.permanent_address, rightX, startY + 14)
+
+        y += 46
+
+        // ---------- ACADEMIC ----------
+
+        sectionTitle('Academic History')
+
+        drawBox(28)
+
+        drawField(
+            'Qualifying Exam',
+            admission.education_details?.qualifying_exam_name,
+            leftX,
+            y + 7
+        )
+
+        drawField(
+            'Year of Passing',
+            admission.education_details?.year_of_passing,
+            leftX,
+            y + 14
+        )
+
+        drawField(
+            'Number of Attempts',
+            admission.education_details?.number_of_attempts,
+            leftX,
+            y + 21
+        )
+
+        drawField(
+            'University/Board',
+            admission.education_details?.affiliating_body_university,
+            rightX,
+            y + 7
+        )
+
+        drawField(
+            'Institution Last Studied',
+            admission.education_details?.institution_last_studied,
+            rightX,
+            y + 14
+        )
+
+        y += 36
+
+        // ---------- DECLARATION ----------
+
+        sectionTitle('Declaration')
+
+        drawBox(22)
+
+        const declaration = `I hereby declare that the information provided in this application is true and complete to the best of my knowledge and belief. I understand that any false or misleading information may result in the cancellation of my admission. I agree to abide by the rules and regulations of Altron Academy during the tenure of my course.`
+
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(...DARK)
+        doc.setFontSize(9)
+
+        const declarationLines = doc.splitTextToSize(
+            declaration,
+            170
+        )
+
+        doc.text(
+            declarationLines,
+            margin + 10,
+            y + 8
+        )
+
+        y += 38
+
+        // ---------- SIGNATURE ----------
+
+        doc.setDrawColor(0, 0, 0)
+
+        doc.line(
+            margin,
+            y,
+            margin + 60,
+            y
+        )
+
+        doc.setFont('helvetica', 'bold')
+        doc.setFontSize(10)
+
+        doc.text(
+            'Student Signature',
+            margin,
+            y + 6
+        )
+
+        // ---------- SAVE ----------
+
+        const fullName =
+            (
+                admission.biographical_information?.full_name ||
+                'application'
+            ).replace(/\s+/g, '_')
+
+        doc.save(`${fullName}.pdf`)
+    }
     if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div></div>;
 
     return (

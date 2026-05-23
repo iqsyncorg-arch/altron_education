@@ -1,7 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { User, Trash2, X, Save, GraduationCap, Search, Pencil, Upload, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
+import { User, Trash2, X, Save, GraduationCap, Search, Pencil, Upload, ChevronLeft, ChevronRight, Image as ImageIcon, Award } from 'lucide-react';
+import jsPDF from 'jspdf';
 import CourseSelect from './CourseSelect';
 import { API_BASE } from '../config/api';
+
+const getBase64 = async (url: string): Promise<string | null> => {
+    try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    } catch { return null; }
+};
 
 
 interface StudentsProps {
@@ -39,6 +53,184 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
     });
 
     const [editingId, setEditingId] = useState<string | null>(null);
+    const [certModal, setCertModal] = useState(false);
+    const [certStudent, setCertStudent] = useState<any>(null);
+    const [certForm, setCertForm] = useState({ from: '', to: '', place: '', grade: '' });
+    const [generating, setGenerating] = useState(false);
+
+    const openCertModal = (student: any) => {
+        setCertStudent(student);
+        setCertForm({ from: '', to: '', place: student.gender || '', grade: '' });
+        setCertModal(true);
+    };
+
+    const generateCertificate = async () => {
+        if (!certStudent) return;
+        setGenerating(true);
+        await new Promise(r => setTimeout(r, 2000));
+        try {
+            const doc = new jsPDF('l', 'mm', 'a4');
+            const W = 297, H = 210, mg = 8;
+            const RED    = [185, 28, 28] as const;
+            const GOLD   = [184, 134, 11] as const;
+            const DARK   = [17, 24, 39] as const;
+            const CRIMSON= [160, 10, 10] as const;
+            const DKGOLD = [120, 80, 0] as const;
+
+            // ── White background ──
+            doc.setFillColor(255, 255, 255);
+            doc.rect(0, 0, W, H, 'F');
+
+            // ── Gold double border ──
+            doc.setDrawColor(...GOLD); doc.setLineWidth(3);
+            doc.rect(mg, mg, W-2*mg, H-2*mg);
+            doc.setLineWidth(0.6);
+            doc.rect(mg+3, mg+3, W-2*mg-6, H-2*mg-6);
+
+            // ── Red corner triangles (larger, matching design) ──
+            doc.setFillColor(...RED);
+            doc.triangle(W-mg-45, mg, W-mg, mg, W-mg, mg+45, 'F');
+            doc.triangle(mg, H-mg, mg+45, H-mg, mg, H-mg-45, 'F');
+
+            // ── Roll No + Photo box ──
+            const pX = mg+6, pY = mg+6;
+            doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...DARK);
+            doc.text(`Roll No.  ${certStudent.rid}`, pX, pY+4);
+            doc.setDrawColor(...RED); doc.setLineWidth(1);
+            doc.rect(pX, pY+7, 28, 34);
+            if (certStudent.image) {
+                try {
+                    const imgUrl = getImageUrl(certStudent.image);
+                    if (imgUrl) { const b64 = await getBase64(imgUrl); if (b64) doc.addImage(b64,'JPEG',pX,pY+7,28,34); }
+                } catch {}
+            }
+
+            // ── Academy title (center, right of photo) ──
+            const tX = (mg + 40 + W - mg) / 2;   // center between photo-right and right margin
+            doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(...DARK);
+            doc.text('ALTRON SAFETY & SECURITY ACADEMY', tX, mg+20, {align:'center'});
+            doc.setFont('helvetica','normal'); doc.setFontSize(9.5); doc.setTextColor(...RED);
+            doc.text('Micro, Small & Medium Enterprises - Government of India', tX, mg+30, {align:'center'});
+
+            // ── Altron logo (top-right, before triangle) ──
+            try { const lb = await getBase64('/applogo.png'); if (lb) doc.addImage(lb,'PNG', W-mg-38, mg+5, 25, 25); } catch {}
+
+            // ── Red separator line ──
+            doc.setDrawColor(...RED); doc.setLineWidth(1);
+            doc.line(mg+5, mg+38, W-mg-5, mg+38);
+
+            // ── CERTIFICATE (large, spaced) ──
+            doc.setFont('times','italic'); doc.setFontSize(52); doc.setTextColor(...CRIMSON);
+            doc.text('C E R T I F I C A T E', W/2, mg+62, {align:'center'});
+
+            // ── OF COMPLETION with long flanking gold lines ──
+            const ocY = mg+73;
+            doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...DKGOLD);
+            doc.setDrawColor(...GOLD); doc.setLineWidth(0.6);
+            doc.line(mg+14, ocY-1.5, W/2-38, ocY-1.5);
+            doc.text('OF COMPLETION', W/2, ocY, {align:'center'});
+            doc.line(W/2+38, ocY-1.5, W-mg-14, ocY-1.5);
+
+            // ── Body fields (4 rows, 14mm spacing) ──
+            let bY = ocY + 16;
+            const lm = mg+14, rm = W-mg-12;
+            doc.setFont('helvetica','italic'); doc.setFontSize(11); doc.setTextColor(...DARK);
+            doc.setDrawColor(160,160,160); doc.setLineWidth(0.3);
+
+            const dash  = () => doc.setLineDashPattern([0.8,1.2], 0);
+            const solid = () => doc.setLineDashPattern([], 0);
+
+            // Row 1: This is to certify that [name] ....
+            doc.text('This is to certify that', lm, bY);
+            const nm = certStudent.stdname || '';
+            doc.setFont('helvetica','bolditalic');
+            doc.text(nm, lm+53, bY);
+            dash(); doc.line(lm+53+doc.getTextWidth(nm)+3, bY+0.5, rm, bY+0.5); solid();
+
+            bY += 14;
+            // Row 2: has successfully completed [course] ....
+            doc.setFont('helvetica','italic');
+            doc.text('has successfully completed', lm, bY);
+            const cv = certStudent.subject || '';
+            doc.setFont('helvetica','bolditalic');
+            doc.text(cv, lm+67, bY);
+            dash(); doc.line(lm+67+doc.getTextWidth(cv)+3, bY+0.5, rm, bY+0.5); solid();
+
+            bY += 14;
+            // Row 3: Course in .... Grade ....
+            doc.setFont('helvetica','italic');
+            doc.text('Course in', lm, bY);
+            dash(); doc.line(lm+27, bY+0.5, W/2-15, bY+0.5); solid();
+            doc.text('Grade', W/2-10, bY);
+            doc.setFont('helvetica','bolditalic');
+            if (certForm.grade) doc.text(certForm.grade, W/2+15, bY);
+            dash(); doc.line(W/2+14, bY+0.5, rm, bY+0.5); solid();
+
+            bY += 14;
+            // Row 4: During the period from [from] .... To [to] ....
+            doc.setFont('helvetica','italic');
+            doc.text('During the period from', lm, bY);
+            const fv = certForm.from || '';
+            doc.setFont('helvetica','bolditalic');
+            doc.text(fv, lm+60, bY);
+            dash(); doc.line(lm+60+doc.getTextWidth(fv)+3, bY+0.5, W/2+10, bY+0.5); solid();
+            doc.setFont('helvetica','italic'); doc.text('To', W/2+14, bY);
+            const tv = certForm.to || '';
+            doc.setFont('helvetica','bolditalic'); doc.text(tv, W/2+24, bY);
+            dash(); doc.line(W/2+24+doc.getTextWidth(tv)+3, bY+0.5, rm, bY+0.5); solid();
+
+            // ── Bottom section separator ──
+            const botY = bY + 14;
+            doc.setDrawColor(...GOLD); doc.setLineWidth(0.5);
+            doc.line(mg+5, botY, W-mg-5, botY);
+
+            // Vertical dividers (3 columns)
+            const col1 = mg + 80;   // left | center divider
+            const col2 = W-mg-60;   // center | right divider
+            doc.line(col1, botY, col1, H-mg-6);
+            doc.line(col2, botY, col2, H-mg-6);
+
+            // Left column: MSME text + Grades
+            const lc = mg+12;
+            doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...RED);
+            doc.text('Ministry of MSME, Govt. of India', lc, botY+8);
+            doc.text('Grades', lc, botY+16);
+            doc.setTextColor(80,80,80); doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+            doc.text('50% to <60%  -  Pass', lc, botY+22);
+            doc.text('60% to <70%  -  Credit', lc, botY+28);
+            doc.text('70% & above  -  Distinction', lc, botY+34);
+
+            // Center column: gold medal circle
+            const sX = (col1 + col2) / 2;
+            doc.setDrawColor(...GOLD); doc.setLineWidth(1.5);
+            doc.circle(sX, botY+22, 15, 'D');
+            doc.setLineWidth(0.5);
+            doc.circle(sX, botY+22, 17, 'D');
+            doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...RED);
+            doc.text('ALTRON', sX, botY+20, {align:'center'});
+            doc.setFontSize(7); doc.setTextColor(...GOLD);
+            doc.text('★  ★  ★', sX, botY+27, {align:'center'});
+
+            // Right column: Authorised Signatory
+            const rc = col2 + 8;
+            const lineEnd = W-mg-12;
+            doc.setDrawColor(...DKGOLD); doc.setLineWidth(0.5);
+            doc.line(rc, botY+28, lineEnd, botY+28);
+            doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...GOLD);
+            doc.text('Authorised Signatory', (rc+lineEnd)/2, botY+34, {align:'center'});
+            doc.setFontSize(9); doc.setTextColor(...DARK); doc.setFont('helvetica','normal');
+            doc.text(`Place:  ${certForm.place || ''}`, rc, botY+42);
+
+            // ── Footer ──
+            doc.setFontSize(8); doc.setTextColor(120,120,120);
+            doc.text('To Verify this Certificate visit  www.altroneducation.com/authenticity/', W/2, H-mg-3, {align:'center'});
+
+            doc.save(`${(certStudent.stdname||'certificate').replace(/\s+/g,'_')}_certificate.pdf`);
+        } catch (e) { console.error(e); }
+        setGenerating(false);
+        setCertModal(false);
+    };
+
     const [imageFile, setImageFile] = useState<File | null>(null);
 
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -176,7 +368,7 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
     if (loading) return <div className="flex items-center justify-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-500"></div></div>;
 
     return (
-        <div className="space-y-6">
+        <>
             <div className="flex flex-col md:flex-row gap-4 mb-8">
                 <div className="relative flex-1">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -323,6 +515,13 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
 
                             <div className="flex gap-2 w-full sm:w-auto">
                                 <button
+                                    onClick={() => openCertModal(student)}
+                                    className="p-3 bg-yellow-500/10 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-500/20 rounded-xl transition-all shadow-sm flex items-center justify-center flex-1 sm:flex-none"
+                                    title="Generate Certificate"
+                                >
+                                    <Award size={18} />
+                                </button>
+                                <button
                                     onClick={() => handleEdit(student)}
                                     className="p-3 bg-white/5 text-gray-400 hover:text-brand-500 hover:bg-white/10 rounded-xl transition-all shadow-sm flex items-center justify-center flex-1 sm:flex-none"
                                     title="Edit Student"
@@ -369,6 +568,57 @@ export default function Students({ data, loading, onAddStudent, onDeleteStudent,
                     <h3 className="text-xl font-bold text-white">No student records found</h3>
                 </div>
             )}
-        </div>
+
+        {/* Certificate Modal */}
+        {certModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                <div className="bg-slate-900 border border-yellow-500/30 rounded-3xl p-8 w-full max-w-md shadow-2xl relative">
+                    <button onClick={() => setCertModal(false)} className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full text-gray-400">
+                        <X size={20} />
+                    </button>
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="p-3 bg-yellow-500/10 rounded-xl"><Award className="text-yellow-400" size={22} /></div>
+                        <div>
+                            <h3 className="text-white font-bold text-lg">Generate Certificate</h3>
+                            <p className="text-gray-400 text-xs">{certStudent?.stdname}</p>
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">From Date</label>
+                            <input type="text" placeholder="e.g. 01.01.2025" value={certForm.from} onChange={e => setCertForm({...certForm, from: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-yellow-500 outline-none" />
+                        </div>
+                        <div>
+                            <label className="block text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">To Date</label>
+                            <input type="text" placeholder="e.g. 31.12.2025" value={certForm.to} onChange={e => setCertForm({...certForm, to: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-yellow-500 outline-none" />
+                        </div>
+                        <div>
+                            <label className="block text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Grade</label>
+                            <input type="text" placeholder="e.g. Distinction" value={certForm.grade} onChange={e => setCertForm({...certForm, grade: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-yellow-500 outline-none" />
+                        </div>
+                        <div>
+                            <label className="block text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">Place</label>
+                            <input type="text" placeholder="e.g. Chennai" value={certForm.place} onChange={e => setCertForm({...certForm, place: e.target.value})} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-yellow-500 outline-none" />
+                        </div>
+                        <button onClick={generateCertificate} disabled={!certForm.from || !certForm.to} className="w-full mt-2 bg-yellow-500 hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                            <Award size={18} /> Generate Certificate
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {/* Generating Animation */}
+        {generating && (
+            <div className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black/80 backdrop-blur-md">
+                <div className="relative flex items-center justify-center mb-6">
+                    <div className="w-24 h-24 rounded-full border-4 border-yellow-500/20 border-t-yellow-400 animate-spin" />
+                    <Award className="absolute text-yellow-400 w-10 h-10" />
+                </div>
+                <p className="text-white text-xl font-bold">Generating Certificate...</p>
+                <p className="text-gray-400 text-sm mt-2">Please wait while we prepare your document</p>
+            </div>
+        )}
+        </>
     );
 }
