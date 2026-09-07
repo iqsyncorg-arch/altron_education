@@ -56,7 +56,7 @@ export default function Contact() {
     const contactInfo = [
         { icon: MapPin, label: 'Address', value: '79A/44A, S1, Panchali Amman Koil Street, Arumbakkam, Chennai – 600 106', href: undefined },
         { icon: Phone, label: 'Phone', value: '+91 98410 14328', href: 'tel:+919841014328' },
-        { icon: Mail, label: 'Email', value: 'info@altroneducation.com', href: 'mailto:info@altroneducation.com' },
+        { icon: Mail, label: 'Email', value: 'professional@altroneducation.com', href: 'mailto:professional@altroneducation.com' },
         { icon: Clock, label: 'Office Hours', value: 'Monday – Saturday: 9:00 AM – 7:00 PM', href: undefined },
     ];
 

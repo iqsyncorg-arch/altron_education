@@ -1,8 +1,8 @@
-import { Phone, X } from 'lucide-react';
+import { Phone, X, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
 
 export default function FloatingButtons() {
-    const [showContact, setShowContact] = useState(false);
+    const [showMessage, setShowMessage] = useState(false);
 
     return (
         <>
@@ -63,43 +63,75 @@ export default function FloatingButtons() {
                     <span className="absolute right-14 bg-gray-900 text-white text-xs px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Call: 98410 14328</span>
                 </a>
 
-                {/* Enquire */}
+                {/* Message */}
                 <button
-                    onClick={() => setShowContact(!showContact)}
-                    className="w-12 h-12 rounded-full bg-amber-400 hover:bg-amber-300 flex items-center justify-center shadow-lg shadow-amber-400/40 hover:shadow-amber-400/60 transition-all hover:scale-110 group"
-                    aria-label="Contact Us"
+                    onClick={() => {
+                        setShowMessage(!showMessage);
+                    }}
+                    className="w-12 h-12 rounded-full bg-red-600 hover:bg-red-500 flex items-center justify-center shadow-lg shadow-red-600/40 hover:shadow-red-500/60 transition-all hover:scale-110 group"
+                    aria-label="Send Message"
                 >
-                    {showContact ? (
-                        <X className="w-5 h-5 text-gray-900" />
+                    {showMessage ? (
+                        <X className="w-5 h-5 text-white" />
                     ) : (
-                        <span className="text-gray-900 text-xs font-bold">?</span>
+                        <MessageCircle className="w-5 h-5 text-white" />
                     )}
                 </button>
 
-                {/* Enquiry Modal */}
-                {showContact && (
-                    <div className="absolute bottom-16 right-0 w-72 bg-navy-800/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-black/50 p-5 animate-in fade-in slide-in-from-bottom-4 duration-300">
-                        <h3 className="text-white font-semibold text-lg mb-1">Quick Enquiry</h3>
-                        <p className="text-gray-400 text-xs mb-4">We'll get back to you shortly!</p>
+                {/* Message Modal */}
+                {showMessage && (
+                    <div className="absolute bottom-16 right-0 w-80 bg-navy-800/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-black/50 p-5 animate-in fade-in slide-in-from-bottom-4 duration-300 max-h-[80vh] overflow-y-auto">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-white font-semibold text-lg">Leave a Message</h3>
+                        </div>
                         <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-                            <input
-                                type="text"
-                                placeholder="Your Name"
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                            />
-                            <input
-                                type="tel"
-                                placeholder="Phone Number"
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                            />
-                            <select className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-gray-300 text-sm focus:outline-none focus:border-blue-500 transition-colors">
-                                <option value="" className="bg-gray-800">Select Course</option>
-                                <option value="cctv" className="bg-gray-800">CCTV Installation</option>
-                                <option value="fire" className="bg-gray-800">Fire Alarm Training</option>
-                                <option value="biometric" className="bg-gray-800">Access & Biometrics</option>
-                            </select>
-                            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-500/20 text-sm">
-                                Submit Enquiry
+                            <div>
+                                <label className="block text-xs font-medium text-gray-300 mb-1">Your Name *</label>
+                                <input
+                                    type="text"
+                                    required
+                                    placeholder="John Doe"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-gray-300 mb-1">Phone Number</label>
+                                <input
+                                    type="tel"
+                                    placeholder="+91 98765 43210"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-gray-300 mb-1">Email Address *</label>
+                                <input
+                                    type="email"
+                                    required
+                                    placeholder="john@example.com"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-gray-300 mb-1">Subject *</label>
+                                <select required className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-gray-300 text-sm focus:outline-none focus:border-blue-500 transition-colors">
+                                    <option value="" className="bg-gray-800">Select subject...</option>
+                                    <option value="admissions" className="bg-gray-800">Admissions</option>
+                                    <option value="support" className="bg-gray-800">Support</option>
+                                    <option value="feedback" className="bg-gray-800">Feedback</option>
+                                    <option value="other" className="bg-gray-800">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-medium text-gray-300 mb-1">Message *</label>
+                                <textarea
+                                    required
+                                    rows={3}
+                                    placeholder="Type your message here..."
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                                ></textarea>
+                            </div>
+                            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-blue-500/20 text-sm mt-2">
+                                Send Message
                             </button>
                         </form>
                     </div>

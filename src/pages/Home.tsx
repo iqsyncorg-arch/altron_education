@@ -95,24 +95,24 @@ const FALLBACK_STORIES = [
 const FALLBACK_TESTIMONIALS = [
     {
         id: 't1',
-        studentName: "Siddharth Verma",
-        courseName: "CCTV & Networking",
+        studentName: "Janagiraman Boss",
+        courseName: "Professional Course in Safety & Security Systems",
         rating: 5,
-        reviewText: "Excellent training! The practical sessions were very helpful in understanding the real-world challenges of security installation."
+        reviewText: "Altron Academy – My Life Changing Experience Altron Academy provides excellent teaching with a strong focus on practical training. The on-site training is handled by highly experienced senior professionals who guide us step by step. The entire team is very supportive—from training to office assistance—and they also help with placement opportunities. Because of Altron Academy, my life has truly changed in a positive way. Special Thanks to: Gajendran Mari Mahesh Thank you so much to everyone for your support and guidance. I’m truly grateful and send my love to the entire team!"
     },
     {
         id: 't2',
-        studentName: "Priya Rajan",
-        courseName: "Fire Alarm Systems",
+        studentName: "Ajith Kumar",
+        courseName: "Professional Course in Safety & Security Engineering",
         rating: 5,
-        reviewText: "I joined with zero knowledge, but now I'm confident in installing and troubleshooting fire alarm panels. Highly recommended."
+        reviewText: "This Altron Company and altrox Cctv is perfectly run in the institute. All teaching staff is very excellent.. I am go through in( professional course) Had completed... Techincal teaching staff : 1.Gajendran 2.Marri 3.mahesh 4.shamim very thanks to all Staff....."
     },
     {
         id: 't3',
-        studentName: "Arun Kumar",
-        courseName: "Building Management Systems",
+        studentName: "Kaviarasan",
+        courseName: "Professional Course in Safety & Security Systems",
         rating: 5,
-        reviewText: "A very professional academy. The staff is knowledgeable and the laboratory facilities are top-notch."
+        reviewText: "I am Kaviarasan from Thanjavur, I have completed Access control and biometric, video door phone ,CCTV course, the course is worth for every penny, thanks to Gaja sir, and Mari , I recommend to everyone if you want to learn CCTV and security systems."
     }
 ];
 
@@ -137,7 +137,8 @@ export default function Home() {
 
     const { data: galleryData, loading: galleryLoading } = useApi<any>('/gallery', FALLBACK_GALLERY);
     const { data: storiesData, loading: storiesLoading } = useApi<any>('/stories', FALLBACK_STORIES);
-    const { data: testimonialsData, loading: testimonialsLoading } = useApi<any>('/testimonials', FALLBACK_TESTIMONIALS);
+    const testimonialsData = FALLBACK_TESTIMONIALS;
+    const testimonialsLoading = false;
 
     const [galleryIndex, setGalleryIndex] = useState(0);
     const [testimonialIndex, setTestimonialIndex] = useState(0);
@@ -562,8 +563,7 @@ export default function Home() {
                                 <span className="font-bold text-xl text-gray-900">4.9/5.0 <span className="text-gray-400 font-normal text-base ml-2">on Google</span></span>
                             </div>
                         </div>
-                        <a href="https://search.google.com/local/writereview?placeid=ChIJj__-F49mUjoR8Z7Zq6U7p8Y" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-white border border-gray-200 text-gray-900 font-bold hover:border-[#BA442E] transition-colors duration-300 w-full md:w-auto">
-                            <img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" alt="Google" className="w-5 h-5" />
+                        <a href="https://www.google.com/maps/place/ALTRON+CCTV,+SAFETY+%26+SECURITY+INSTITUTE/@13.0548357,80.229833,17z/data=!4m8!3m7!1s0x3a5266f51b52007d:0x946b29cd6757348c!8m2!3d13.0548357!4d80.229833!9m1!1b1!16s%2Fg%2F11bxgnpm50?authuser=0&hl=en" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#4285F4] hover:bg-[#3367D6] text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 w-full md:w-auto justify-center">
                             Leave a Review
                         </a>
                     </div>
