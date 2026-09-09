@@ -214,31 +214,60 @@ export default function Employment() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
                                 { label: 'Starting Salary', key: 'startingSalary', type: 'number', min: '20000', placeholder: 'Min 20000' },
-                                { label: 'Conveyance', key: 'conveyance' },
-                                { label: 'Accommodation', key: 'accommodation' },
-                                { label: 'Uniform for Staff', key: 'uniform' },
-                                { label: 'Vehicle for Staff', key: 'vehicle' },
-                                { label: 'ESIC', key: 'esic' },
-                                { label: 'PF', key: 'pf' },
-                                { label: 'Medi Claim', key: 'mediClaim' },
+                                { label: 'Conveyance', key: 'conveyance', type: 'boolean' },
+                                { label: 'Accommodation', key: 'accommodation', type: 'boolean' },
+                                { label: 'Uniform for Staff', key: 'uniform', type: 'boolean' },
+                                { label: 'Vehicle for Staff', key: 'vehicle', type: 'boolean' },
+                                { label: 'ESIC', key: 'esic', type: 'boolean' },
+                                { label: 'PF', key: 'pf', type: 'boolean' },
+                                { label: 'Medi Claim', key: 'mediClaim', type: 'boolean' },
                             ].map(field => (
                                 <div key={field.key}>
                                     <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">{field.label}</label>
-                                    <input
-                                        type={field.type || 'text'}
-                                        min={field.min}
-                                        placeholder={field.placeholder}
-                                        value={(formData as any)[field.key]}
-                                        onChange={e => setFormData({ ...formData, [field.key]: e.target.value })}
-                                        className={`w-full bg-zinc-900 border-2 text-white px-5 py-3 rounded-xl outline-none transition-all font-bold text-sm ${field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000
-                                                ? 'border-red-500 focus:border-red-500'
-                                                : 'border-zinc-800 focus:border-red-600'
-                                            }`}
-                                    />
-                                    {field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000 && (
-                                        <p className="text-red-500 text-xs font-bold mt-2 flex items-center gap-1">
-                                            <Info size={12} /> Starting salary must be at least ₹20,000
-                                        </p>
+                                    {field.type === 'boolean' ? (
+                                        <div className="flex gap-4">
+                                            <button
+                                                type="button"
+                                                onClick={() => setFormData({ ...formData, [field.key]: 'Yes' })}
+                                                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
+                                                    (formData as any)[field.key] === 'Yes' 
+                                                    ? 'bg-red-600 border-red-600 text-white' 
+                                                    : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                                                }`}
+                                            >
+                                                Yes
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setFormData({ ...formData, [field.key]: 'No' })}
+                                                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
+                                                    (formData as any)[field.key] === 'No' 
+                                                    ? 'bg-zinc-800 border-zinc-700 text-white' 
+                                                    : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                                                }`}
+                                            >
+                                                No
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <input
+                                                type={field.type || 'text'}
+                                                min={field.min}
+                                                placeholder={field.placeholder}
+                                                value={(formData as any)[field.key]}
+                                                onChange={e => setFormData({ ...formData, [field.key]: e.target.value })}
+                                                className={`w-full bg-zinc-900 border-2 text-white px-5 py-3 rounded-xl outline-none transition-all font-bold text-sm ${field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000
+                                                        ? 'border-red-500 focus:border-red-500'
+                                                        : 'border-zinc-800 focus:border-red-600'
+                                                    }`}
+                                            />
+                                            {field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000 && (
+                                                <p className="text-red-500 text-xs font-bold mt-2 flex items-center gap-1">
+                                                    <Info size={12} /> Starting salary must be at least ₹20,000
+                                                </p>
+                                            )}
+                                        </>
                                     )}
                                 </div>
                             ))}
@@ -276,7 +305,7 @@ export default function Employment() {
                 </div>
 
                 <div className="mt-20 text-center text-gray-400 text-xs font-medium max-w-2xl mx-auto leading-relaxed">
-                    ALTRON INSTITUTE OF SAFETY & SECURITY TECHNOLOGY, # 25, M.B. Complex, First Floor, Loganathan Nagar, Jawaharlal Nehru Salai, 100 Feet Road, MMDA, Chennai – 600 094; Phone: 044 - 2361 5531; Mobile: 98410 14328
+                    ALTRON INSTITUTE OF SAFETY & SECURITY TECHNOLOGY, 79A/44A, S1, Panchali Amman Koil Street, Arumbakkam, Chennai – 600 106; Phone: 044 - 2361 5531; Mobile: 98410 14328
                 </div>
             </div>
         </div>

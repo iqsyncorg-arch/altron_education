@@ -68,6 +68,13 @@ export default function FeesEligibility() {
                                     <Crown className="w-4 h-4" /> POPULAR
                                 </div>
                             )}
+                            
+                            {/* PLACEMENT BADGE */}
+                            {isPop && (
+                                <div className="absolute -top-[1px] -right-[1px] bg-emerald-600 text-white text-[11px] md:text-xs font-bold px-4 py-2 rounded-bl-2xl rounded-tr-3xl shadow-md uppercase tracking-wider flex items-center gap-1.5 z-20">
+                                    <Star className="w-4 h-4 fill-white text-white" /> 100% PLACEMENT
+                                </div>
+                            )}
 
                             {/* Most Chosen Watermark for Popular */}
                             {isPop && (

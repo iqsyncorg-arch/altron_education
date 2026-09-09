@@ -137,8 +137,7 @@ export default function Home() {
 
     const { data: galleryData, loading: galleryLoading } = useApi<any>('/gallery', FALLBACK_GALLERY);
     const { data: storiesData, loading: storiesLoading } = useApi<any>('/stories', FALLBACK_STORIES);
-    const testimonialsData = FALLBACK_TESTIMONIALS;
-    const testimonialsLoading = false;
+    const { data: testimonialsData, loading: testimonialsLoading } = useApi<any>('/testimonials', FALLBACK_TESTIMONIALS);
 
     const [galleryIndex, setGalleryIndex] = useState(0);
     const [testimonialIndex, setTestimonialIndex] = useState(0);

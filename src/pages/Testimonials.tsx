@@ -26,6 +26,8 @@ export default function Testimonials() {
         }
     ];
 
+    const { data: testimonialsData, loading: tLoading } = useApi<any>('/testimonials', STATIC_TESTIMONIALS);
+
     return (
         <div>
 
@@ -51,29 +53,33 @@ export default function Testimonials() {
                         </div>
                     </div>
                     
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {STATIC_TESTIMONIALS.map((t: any, i: number) => (
-                            <div key={i} className="bg-white border border-gray-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-                                <div className="flex text-yellow-500 mb-6 font-bold">
-                                    {[...Array(t.rating || 5)].map((_, j) => (
-                                        <Star key={j} className="w-5 h-5 fill-current" />
-                                    ))}
-                                </div>
-                                <p className="text-gray-600 leading-relaxed mb-10 text-[15px] flex-grow italic">
-                                    "{t.text}"
-                                </p>
-                                <div className="flex items-center gap-4 pt-6 border-t border-gray-50">
-                                    <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center text-[#BA442E] font-black text-xl shrink-0">
-                                        {t.name[0]}
+                    {tLoading ? (
+                        <div className="flex justify-center py-10"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div></div>
+                    ) : (
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {Array.isArray(testimonialsData) && testimonialsData.map((t: any, i: number) => (
+                                <div key={t.id || i} className="bg-white border border-gray-100 p-8 rounded-2xl shadow-sm hover:shadow-md transition-all flex flex-col h-full">
+                                    <div className="flex text-yellow-500 mb-6 font-bold">
+                                        {[...Array(t.rating || 5)].map((_, j) => (
+                                            <Star key={j} className="w-5 h-5 fill-current" />
+                                        ))}
                                     </div>
-                                    <div>
-                                        <div className="text-gray-900 font-bold text-base leading-tight">{t.name}</div>
-                                        <div className="text-gray-400 text-xs font-bold uppercase tracking-widest mt-1 leading-relaxed">{t.course}</div>
+                                    <p className="text-gray-600 leading-relaxed mb-10 text-[15px] flex-grow italic">
+                                        "{t.reviewText || t.text || t.content || t.comment}"
+                                    </p>
+                                    <div className="flex items-center gap-4 pt-6 border-t border-gray-50">
+                                        <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center text-[#BA442E] font-black text-xl shrink-0">
+                                            {(t.studentName?.trim() || t.name?.trim() || 'A')[0]}
+                                        </div>
+                                        <div>
+                                            <div className="text-gray-900 font-bold text-base leading-tight">{t.studentName || t.name}</div>
+                                            <div className="text-gray-400 text-xs font-bold uppercase tracking-widest mt-1 leading-relaxed">{t.courseName || t.course || 'Verified Student'}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Video Testimonials */}

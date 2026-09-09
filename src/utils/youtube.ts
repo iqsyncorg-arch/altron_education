@@ -32,8 +32,8 @@ export const getYoutubeId = (url: string): string => {
 
 export const getYoutubeEmbedUrl = (url: string): string => {
     const videoId = getYoutubeId(url);
-    if (!videoId) return url;
-    return `https://www.youtube.com/embed/${videoId}`;
+    if (!videoId) return url.includes('embed/') ? url : `https://www.youtube.com/embed/${url}`;
+    return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
 };
 
 export const getYoutubeThumbnailUrl = (url: string): string => {

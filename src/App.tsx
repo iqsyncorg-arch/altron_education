@@ -29,6 +29,8 @@ import FranchisePartner from './pages/FranchisePartner';
 import BankDetails from './pages/BankDetails';
 import DemandBenefits from './pages/DemandBenefits';
 import Admin from './pages/Admin';
+import LandingPage from './pages/LandingPage';
+import PaymentPage from './pages/PaymentPage';
 
 function PublicLayout() {
   return (
@@ -73,6 +75,8 @@ function App() {
       <div className="min-h-screen bg-navy-900 font-inter">
         <Routes>
           <Route path="/admin" element={<Admin />} />
+          <Route path="/landingpage" element={<><Navbar /><LandingPage /></>} />
+          <Route path="/payment" element={<PaymentPage />} />
           <Route path="/*" element={<PublicLayout />} />
         </Routes>
       </div>
