@@ -29,9 +29,44 @@ export default function Employment() {
 
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        const newErrors: Record<string, string> = {};
+        const booleanFields = [
+            { key: 'conveyance', label: 'Conveyance' },
+            { key: 'accommodation', label: 'Accommodation' },
+            { key: 'uniform', label: 'Uniform for Staff' },
+            { key: 'vehicle', label: 'Vehicle for Staff' },
+            { key: 'esic', label: 'ESIC' },
+            { key: 'pf', label: 'PF' },
+            { key: 'mediClaim', label: 'Medi Claim' },
+        ];
+
+        booleanFields.forEach(field => {
+            if (!(formData as any)[field.key]) {
+                newErrors[field.key] = `Please select Yes or No`;
+            }
+        });
+
+        if (!formData.qualification.trim()) {
+            newErrors['qualification'] = 'Expected Educational Qualification is required';
+        }
+
+        if (!formData.startingSalary) {
+            newErrors['startingSalary'] = 'Starting salary is required';
+        } else if (Number(formData.startingSalary) < 20000) {
+            newErrors['startingSalary'] = 'Starting salary must be at least ₹20,000';
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setErrors({});
         setLoading(true);
         try {
             const res = await fetch(`${API_BASE}/recruitment`, {
@@ -205,49 +240,81 @@ export default function Employment() {
                                 <input value={formData.designation} onChange={e => setFormData({ ...formData, designation: e.target.value })} className="w-full bg-zinc-900 border-2 border-zinc-800 focus:border-red-600 text-white px-6 py-4 rounded-2xl outline-none transition-all font-bold placeholder:text-zinc-600" placeholder="Ex. Installation Engg., Service Engg., etc." required />
                             </div>
                             <div className="md:col-span-2">
-                                <label className="block text-xs font-black text-zinc-500 uppercase tracking-widest mb-4">Expected Educational Qualification</label>
-                                <input value={formData.qualification} onChange={e => setFormData({ ...formData, qualification: e.target.value })} className="w-full bg-zinc-900 border-2 border-zinc-800 focus:border-red-600 text-white px-6 py-4 rounded-2xl outline-none transition-all font-bold" />
+                                <label className="block text-xs font-black text-zinc-500 uppercase tracking-widest mb-4">Expected Educational Qualification <span className="text-red-500 ml-1">*</span></label>
+                                <input
+                                    value={formData.qualification}
+                                    onChange={e => {
+                                        setFormData({ ...formData, qualification: e.target.value });
+                                        if (errors.qualification) setErrors({ ...errors, qualification: '' });
+                                    }}
+                                    className={`w-full bg-zinc-900 border-2 text-white px-6 py-4 rounded-2xl outline-none transition-all font-bold ${errors.qualification ? 'border-red-500 focus:border-red-500' : 'border-zinc-800 focus:border-red-600'}`}
+                                    required
+                                />
+                                {errors.qualification && (
+                                    <p className="text-red-500 text-xs font-bold mt-2 flex items-center gap-1">
+                                        <Info size={12} /> {errors.qualification}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
                         {/* Section 4 */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
-                                { label: 'Starting Salary', key: 'startingSalary', type: 'number', min: '20000', placeholder: 'Min 20000' },
-                                { label: 'Conveyance', key: 'conveyance', type: 'boolean' },
-                                { label: 'Accommodation', key: 'accommodation', type: 'boolean' },
-                                { label: 'Uniform for Staff', key: 'uniform', type: 'boolean' },
-                                { label: 'Vehicle for Staff', key: 'vehicle', type: 'boolean' },
-                                { label: 'ESIC', key: 'esic', type: 'boolean' },
-                                { label: 'PF', key: 'pf', type: 'boolean' },
-                                { label: 'Medi Claim', key: 'mediClaim', type: 'boolean' },
+                                { label: 'Starting Salary', key: 'startingSalary', type: 'number', min: '20000', placeholder: 'Min 20000', required: true },
+                                { label: 'Conveyance', key: 'conveyance', type: 'boolean', required: true },
+                                { label: 'Accommodation', key: 'accommodation', type: 'boolean', required: true },
+                                { label: 'Uniform for Staff', key: 'uniform', type: 'boolean', required: true },
+                                { label: 'Vehicle for Staff', key: 'vehicle', type: 'boolean', required: true },
+                                { label: 'ESIC', key: 'esic', type: 'boolean', required: true },
+                                { label: 'PF', key: 'pf', type: 'boolean', required: true },
+                                { label: 'Medi Claim', key: 'mediClaim', type: 'boolean', required: true },
                             ].map(field => (
                                 <div key={field.key}>
-                                    <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">{field.label}</label>
+                                    <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">
+                                        {field.label} <span className="text-red-500 ml-1">*</span>
+                                    </label>
                                     {field.type === 'boolean' ? (
-                                        <div className="flex gap-4">
-                                            <button
-                                                type="button"
-                                                onClick={() => setFormData({ ...formData, [field.key]: 'Yes' })}
-                                                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
-                                                    (formData as any)[field.key] === 'Yes' 
-                                                    ? 'bg-red-600 border-red-600 text-white' 
-                                                    : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
-                                                }`}
-                                            >
-                                                Yes
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => setFormData({ ...formData, [field.key]: 'No' })}
-                                                className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
-                                                    (formData as any)[field.key] === 'No' 
-                                                    ? 'bg-zinc-800 border-zinc-700 text-white' 
-                                                    : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
-                                                }`}
-                                            >
-                                                No
-                                            </button>
+                                        <div>
+                                            <div className="flex gap-4">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setFormData({ ...formData, [field.key]: 'Yes' });
+                                                        if (errors[field.key]) setErrors({ ...errors, [field.key]: '' });
+                                                    }}
+                                                    className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
+                                                        (formData as any)[field.key] === 'Yes' 
+                                                        ? 'bg-red-600 border-red-600 text-white' 
+                                                        : errors[field.key]
+                                                        ? 'bg-zinc-900 border-red-500/80 text-zinc-400 hover:border-red-500'
+                                                        : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                                                    }`}
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setFormData({ ...formData, [field.key]: 'No' });
+                                                        if (errors[field.key]) setErrors({ ...errors, [field.key]: '' });
+                                                    }}
+                                                    className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all border-2 ${
+                                                        (formData as any)[field.key] === 'No' 
+                                                        ? 'bg-zinc-800 border-zinc-700 text-white' 
+                                                        : errors[field.key]
+                                                        ? 'bg-zinc-900 border-red-500/80 text-zinc-400 hover:border-red-500'
+                                                        : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                                                    }`}
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                            {errors[field.key] && (
+                                                <p className="text-red-500 text-xs font-bold mt-2 flex items-center gap-1">
+                                                    <Info size={12} /> {errors[field.key]}
+                                                </p>
+                                            )}
                                         </div>
                                     ) : (
                                         <>
@@ -256,17 +323,26 @@ export default function Employment() {
                                                 min={field.min}
                                                 placeholder={field.placeholder}
                                                 value={(formData as any)[field.key]}
-                                                onChange={e => setFormData({ ...formData, [field.key]: e.target.value })}
-                                                className={`w-full bg-zinc-900 border-2 text-white px-5 py-3 rounded-xl outline-none transition-all font-bold text-sm ${field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000
+                                                required={field.required}
+                                                onChange={e => {
+                                                    setFormData({ ...formData, [field.key]: e.target.value });
+                                                    if (errors[field.key]) setErrors({ ...errors, [field.key]: '' });
+                                                }}
+                                                className={`w-full bg-zinc-900 border-2 text-white px-5 py-3 rounded-xl outline-none transition-all font-bold text-sm ${
+                                                    errors[field.key] || (field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000)
                                                         ? 'border-red-500 focus:border-red-500'
                                                         : 'border-zinc-800 focus:border-red-600'
-                                                    }`}
+                                                }`}
                                             />
-                                            {field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000 && (
+                                            {errors[field.key] ? (
+                                                <p className="text-red-500 text-xs font-bold mt-2 flex items-center gap-1">
+                                                    <Info size={12} /> {errors[field.key]}
+                                                </p>
+                                            ) : field.key === 'startingSalary' && formData.startingSalary && Number(formData.startingSalary) < 20000 ? (
                                                 <p className="text-red-500 text-xs font-bold mt-2 flex items-center gap-1">
                                                     <Info size={12} /> Starting salary must be at least ₹20,000
                                                 </p>
-                                            )}
+                                            ) : null}
                                         </>
                                     )}
                                 </div>
@@ -278,6 +354,11 @@ export default function Employment() {
                             <textarea value={formData.projectIncentive} onChange={e => setFormData({ ...formData, projectIncentive: e.target.value })} className="w-full bg-zinc-900 border-2 border-zinc-800 focus:border-red-600 text-white px-6 py-4 rounded-2xl outline-none transition-all font-bold h-24" />
                         </div>
 
+                        {Object.keys(errors).length > 0 && (
+                            <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-500 text-sm font-bold flex items-center gap-2">
+                                <Info size={18} /> Please complete all mandatory fields before submitting.
+                            </div>
+                        )}
 
                         <button
                             type="submit"

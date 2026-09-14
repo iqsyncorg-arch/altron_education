@@ -115,82 +115,34 @@ export default function Navbar() {
 
         <nav className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm">
 
-            {/* Top Utility Announcement Bar with Live 7-Day Countdown Timer (ONLY ON /landingpage) */}
-            {isLandingPage ? (
-                <div className="bg-gradient-to-r from-zinc-950 via-red-950 to-zinc-950 text-white border-b border-red-900/60 py-2 px-4 shadow-inner">
-                    <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-bold uppercase tracking-wider">
-                        
-                        {/* Left: Limited Slots Notice */}
-                        <div className="flex items-center gap-2">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                            </span>
-                            <span className="text-red-400 font-black">🔥 LIMITED SLOTS LEFT!</span>
-                            <span className="hidden sm:inline text-gray-300">Next Batch Reservation Closing Soon</span>
-                        </div>
+            <div
+                className={`hidden lg:block bg-slate-50 border-b border-slate-100 transition-all duration-300 overflow-hidden ${isScrolled
+                        ? 'max-h-0 opacity-0 border-none'
+                        : 'max-h-12 opacity-100'
+                    }`}
+            >
+                <div className="relative z-50 max-w-7xl mx-auto px-6 py-2 flex justify-between items-center text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                    <Link
+                        to="/authenticity"
+                        onClick={() => {
+                            setIsOpen(false)
+                            setActiveDropdown(null)
+                        }}
+                        className="inline-flex items-center gap-1 text-red-700 hover:text-red-800"
+                    >
+                        Online Verified Certification
+                        <ArrowRight className="w-3 h-3 shrink-0" />
+                    </Link>
 
-                        {/* Center: Live 7-Day Timer */}
-                        <div className="flex items-center gap-1 font-mono text-xs">
-                            <span className="text-gray-400 font-sans text-[10px] mr-1">OFFER ENDS IN:</span>
-                            <div className="bg-zinc-900 border border-red-600/60 px-2 py-0.5 rounded text-white font-extrabold shadow-sm">
-                                {String(timeLeft.days).padStart(2, '0')}<span className="text-red-400 font-sans text-[9px] ml-0.5">d</span>
-                            </div>
-                            <span className="text-red-500 font-bold">:</span>
-                            <div className="bg-zinc-900 border border-red-600/60 px-2 py-0.5 rounded text-white font-extrabold shadow-sm">
-                                {String(timeLeft.hours).padStart(2, '0')}<span className="text-red-400 font-sans text-[9px] ml-0.5">h</span>
-                            </div>
-                            <span className="text-red-500 font-bold">:</span>
-                            <div className="bg-zinc-900 border border-red-600/60 px-2 py-0.5 rounded text-white font-extrabold shadow-sm">
-                                {String(timeLeft.minutes).padStart(2, '0')}<span className="text-red-400 font-sans text-[9px] ml-0.5">m</span>
-                            </div>
-                            <span className="text-red-500 font-bold">:</span>
-                            <div className="bg-zinc-900 border border-red-600/60 px-2 py-0.5 rounded text-red-400 font-extrabold shadow-sm animate-pulse">
-                                {String(timeLeft.seconds).padStart(2, '0')}<span className="text-red-400 font-sans text-[9px] ml-0.5">s</span>
-                            </div>
-                        </div>
-
-                        {/* Right: Action Button */}
-                        <Link
-                            to="/payment"
-                            className="btn-shine bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-[0_0_12px_rgba(220,38,38,0.6)] inline-flex items-center gap-1.5 transition-transform hover:scale-105"
-                        >
-                            <span>PAY ₹1,000 & SECURE SLOT</span>
-                            <ArrowRight className="w-3 h-3" />
-                        </Link>
-
-                    </div>
+                    <Link
+                        to="/become-franchise"
+                        className="inline-flex items-center gap-1 text-red-700 hover:text-red-800"
+                    >
+                        Franchise Opportunities
+                        <ArrowRight className="w-3 h-3 shrink-0" />
+                    </Link>
                 </div>
-            ) : (
-                <div
-                    className={`hidden lg:block bg-slate-50 border-b border-slate-100 transition-all duration-300 overflow-hidden ${isScrolled
-                            ? 'max-h-0 opacity-0 border-none'
-                            : 'max-h-12 opacity-100'
-                        }`}
-                >
-                    <div className="relative z-50 max-w-7xl mx-auto px-6 py-2 flex justify-between items-center text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                        <Link
-                            to="/authenticity"
-                            onClick={() => {
-                                setIsOpen(false)
-                                setActiveDropdown(null)
-                            }}
-                            className="inline-flex items-center gap-1 text-red-700 hover:text-red-800"
-                        >
-                            Online Verified Certification
-                            <ArrowRight className="w-3 h-3 shrink-0" />
-                        </Link>
-
-                        <Link
-                            to="/become-franchise"
-                            className="inline-flex items-center gap-1 text-red-700 hover:text-red-800"
-                        >
-                            Franchise Opportunities
-                            <ArrowRight className="w-3 h-3 shrink-0" />
-                        </Link>
-                    </div>
-                </div>
-            )}
+            </div>
 
             {/* Main Navbar & Mobile Menu (Hidden on /landingpage) */}
             {!isLandingPage && (

@@ -1,8 +1,11 @@
 import { Phone, X, MessageCircle } from 'lucide-react';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function FloatingButtons() {
     const [showMessage, setShowMessage] = useState(false);
+    const location = useLocation();
+    const isLandingPage = location.pathname.toLowerCase() === '/landingpage';
 
     return (
         <>
@@ -34,7 +37,7 @@ export default function FloatingButtons() {
             </a>
 
             {/* Bottom Right Floating Buttons */}
-            <div className="fixed right-4 bottom-6 z-50 flex flex-col gap-3">
+            <div className={`fixed right-4 ${isLandingPage ? 'bottom-16 sm:bottom-14' : 'bottom-6'} z-50 flex flex-col gap-3 transition-all`}>
                 {/* WhatsApp */}
                 <a
                     href="https://wa.me/919841014328"

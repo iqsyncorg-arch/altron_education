@@ -1,7 +1,47 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Shield, Phone, Mail, MapPin, Facebook, Youtube, Instagram, Twitter, ArrowRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function Footer() {
+    const location = useLocation();
+    const isLandingPage = location.pathname.toLowerCase() === '/landingpage';
+
+    // 7-Day Live Countdown Timer for Landing Page
+    const [timeLeft, setTimeLeft] = useState({
+        days: 6,
+        hours: 23,
+        minutes: 55,
+        seconds: 43
+    });
+
+    useEffect(() => {
+        if (!isLandingPage) return;
+
+        let targetTime = localStorage.getItem('altron_batch_timer_end');
+        if (!targetTime) {
+            const sevenDays = Date.now() + 7 * 24 * 60 * 60 * 1000;
+            localStorage.setItem('altron_batch_timer_end', sevenDays.toString());
+            targetTime = sevenDays.toString();
+        }
+
+        const updateTimer = () => {
+            const now = Date.now();
+            const diff = Math.max(0, parseInt(targetTime!) - now);
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            setTimeLeft({ days, hours, minutes, seconds });
+        };
+
+        updateTimer();
+        const interval = setInterval(updateTimer, 1000);
+
+        return () => clearInterval(interval);
+    }, [isLandingPage]);
+
     const courses = [
         { label: 'CCTV Installation', path: '/courses' },
         { label: 'Fire Alarm Training', path: '/fire-alarm-training' },
@@ -18,7 +58,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="relative bg-brand-800 border-t border-brand-700 mt-20">
+        <footer className={`relative bg-brand-800 border-t border-brand-700 mt-20 ${isLandingPage ? 'pb-16 sm:pb-14' : ''}`}>
             {/* CTA Banner */}
             <div className="bg-gradient-to-r from-brand-600 via-brand-700 to-brand-800">
                 <div className="max-w-7xl mx-auto px-4 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -128,7 +168,7 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* Bottom Bar */}
+            {/* Bottom Copyright Bar */}
             <div className="border-t border-white/10 py-6">
                 <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-brand-300">
                     <p>© 2008 - {new Date().getFullYear()} Altron Academy. All rights reserved.</p>
@@ -139,6 +179,54 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
+
+            {/* Sticky Bottom Offer Bar (Navbar-style) - ONLY ON /landingpage */}
+            {isLandingPage && (
+                <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-r from-zinc-950 via-red-950 to-zinc-950 text-white border-t border-red-900/60 py-2.5 px-4 shadow-[0_-8px_25px_rgba(0,0,0,0.85)]">
+                    <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 text-[11px] font-bold uppercase tracking-wider">
+                        
+                        {/* Left: Limited Slots Notice */}
+                        <div className="flex items-center gap-2">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                            </span>
+                            <span className="text-red-400 font-black">🔥 LIMITED SLOTS LEFT!</span>
+                            <span className="hidden sm:inline text-gray-300">Next Batch Reservation Closing Soon</span>
+                        </div>
+
+                        {/* Center: Live 7-Day Timer */}
+                        <div className="flex items-center gap-1 font-mono text-xs">
+                            <span className="text-gray-400 font-sans text-[10px] mr-1">OFFER ENDS IN:</span>
+                            <div className="bg-zinc-900 border border-red-600/60 px-2 py-0.5 rounded text-white font-extrabold shadow-sm">
+                                {String(timeLeft.days).padStart(2, '0')}<span className="text-red-400 font-sans text-[9px] ml-0.5">d</span>
+                            </div>
+                            <span className="text-red-500 font-bold">:</span>
+                            <div className="bg-zinc-900 border border-red-600/60 px-2 py-0.5 rounded text-white font-extrabold shadow-sm">
+                                {String(timeLeft.hours).padStart(2, '0')}<span className="text-red-400 font-sans text-[9px] ml-0.5">h</span>
+                            </div>
+                            <span className="text-red-500 font-bold">:</span>
+                            <div className="bg-zinc-900 border border-red-600/60 px-2 py-0.5 rounded text-white font-extrabold shadow-sm">
+                                {String(timeLeft.minutes).padStart(2, '0')}<span className="text-red-400 font-sans text-[9px] ml-0.5">m</span>
+                            </div>
+                            <span className="text-red-500 font-bold">:</span>
+                            <div className="bg-zinc-900 border border-red-600/60 px-2 py-0.5 rounded text-red-400 font-extrabold shadow-sm animate-pulse">
+                                {String(timeLeft.seconds).padStart(2, '0')}<span className="text-red-400 font-sans text-[9px] ml-0.5">s</span>
+                            </div>
+                        </div>
+
+                        {/* Right: Action Button */}
+                        <Link
+                            to="/payment"
+                            className="btn-shine bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-[0_0_12px_rgba(220,38,38,0.6)] inline-flex items-center gap-1.5 transition-transform hover:scale-105"
+                        >
+                            <span>PAY ₹1,000 & SECURE SLOT</span>
+                            <ArrowRight className="w-3 h-3" />
+                        </Link>
+
+                    </div>
+                </div>
+            )}
         </footer>
     );
 }

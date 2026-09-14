@@ -87,22 +87,22 @@ export default function LandingPage() {
                 {/* Bottom White Background Curve Layer */}
                 <div className="absolute bottom-0 left-0 right-0 h-44 md:h-52 bg-white pointer-events-none z-0" style={{ borderTopLeftRadius: '100% 45px' }}></div>
 
-                <div className="max-w-7xl mx-auto px-4 relative z-10 text-center w-full my-auto flex flex-col justify-between h-full py-1">
+                <div className="max-w-7xl mx-auto px-3 sm:px-6 relative z-10 text-center w-full my-auto flex flex-col justify-between h-full py-1">
                     
                     {/* Header Block */}
-                    <div className="pt-2">
+                    <div className="pt-1 sm:pt-2">
                         {/* Top Pill Badge */}
-                        <div className="inline-flex items-center gap-2 bg-[#250a0a]/90 backdrop-blur-md border border-red-600/50 text-white px-4 py-1 rounded-full shadow-[0_0_20px_rgba(230,28,36,0.3)] mb-2">
-                            <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                            <span className="w-2 h-2 rounded-full bg-red-500 -ml-4"></span>
-                            <span className="text-white font-extrabold text-[10px] sm:text-xs md:text-xs tracking-[0.16em] uppercase">
+                        <div className="inline-flex items-center gap-2 bg-[#250a0a]/90 backdrop-blur-md border border-red-600/50 text-white px-3.5 sm:px-4 py-1.5 sm:py-1 rounded-full shadow-[0_0_20px_rgba(230,28,36,0.3)] mb-2 max-w-full">
+                            <span className="w-2 h-2 rounded-full bg-red-500 animate-ping shrink-0"></span>
+                            <span className="w-2 h-2 rounded-full bg-red-500 -ml-4 shrink-0"></span>
+                            <span className="text-white font-extrabold text-[9px] sm:text-xs tracking-wider sm:tracking-[0.16em] uppercase truncate">
                                 LIMITED SEATS AVAILABLE FOR NEXT BATCH
                             </span>
                         </div>
 
                         {/* Lottie Animation from public/error.json starting this text */}
                         {errorLottieData && (
-                            <div className="w-14 h-14 sm:w-18 sm:h-18 md:w-20 md:h-20 mx-auto -mb-1 flex items-center justify-center">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 mx-auto -mb-1 flex items-center justify-center">
                                 <Lottie src={errorLottieData} loop autoplay />
                             </div>
                         )}
@@ -116,34 +116,34 @@ export default function LandingPage() {
                         </h1>
 
                         {/* Sub-headlines */}
-                        <p className="text-xs sm:text-base md:text-xl text-gray-200 font-medium tracking-tight mb-0.5">
+                        <p className="text-xs sm:text-base md:text-xl text-gray-200 font-medium tracking-tight mb-0.5 leading-snug sm:leading-normal">
                             Learn Professional Security Systems Skills in Just <strong className="text-white font-black">4 Weeks.</strong>
                         </p>
-                        <p className="text-xs sm:text-base md:text-xl text-[#ff4d4d] font-extrabold tracking-tight mb-3 md:mb-4">
+                        <p className="text-xs sm:text-base md:text-xl text-[#ff4d4d] font-extrabold tracking-tight mb-3 md:mb-4 leading-snug sm:leading-normal">
                             Start Exploring Job Opportunities From Week 5.
                         </p>
                     </div>
 
                     {/* 5 Category Cards */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 text-center relative z-20 my-1">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3 md:gap-4 text-center relative z-20 my-1">
                         
                         {/* Card 1: CCTV Systems */}
-                        <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#fff0f0] flex items-center justify-center mb-2 shadow-inner group-hover:scale-105 transition-transform overflow-hidden">
-                                <div className="relative w-10 h-10 md:w-14 md:h-14 flex items-center justify-center">
+                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#fff0f0] flex items-center justify-center mb-1.5 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform overflow-hidden shrink-0">
+                                <div className="relative w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center">
                                     <Lottie src={cctvAnimation} loop autoplay className="w-full h-full object-contain" />
                                 </div>
                             </div>
-                            <h3 className="text-sm sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
+                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
                                 CCTV<br />Systems
                             </h3>
                         </div>
 
                         {/* Card 2: Biometrics Systems */}
-                        <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#eef6ff] flex items-center justify-center mb-2 shadow-inner group-hover:scale-105 transition-transform">
-                                <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-9 h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#eef6ff] flex items-center justify-center mb-1.5 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="12" y="8" width="40" height="48" rx="6" fill="#1E293B" stroke="#334155" strokeWidth="2" />
                                         <rect x="17" y="13" width="30" height="16" rx="2" fill="#0F172A" />
                                         <rect x="20" y="16" width="16" height="4" rx="1" fill="#38BDF8" />
@@ -160,16 +160,16 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-sm sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
+                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
                                 Biometrics<br />Systems
                             </h3>
                         </div>
 
                         {/* Card 3: Fire Alarm Systems */}
-                        <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#ffebee] flex items-center justify-center mb-2 shadow-inner group-hover:scale-105 transition-transform">
-                                <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-9 h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#ffebee] flex items-center justify-center mb-1.5 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="32" cy="26" r="18" fill="#DC2626" stroke="#B91C1C" strokeWidth="2" />
                                         <circle cx="32" cy="26" r="14" fill="#EF4444" />
                                         <circle cx="32" cy="26" r="4" fill="#991B1B" />
@@ -180,16 +180,16 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-sm sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
+                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
                                 Fire Alarm<br />Systems
                             </h3>
                         </div>
 
                         {/* Card 4: Burglar Alarm Systems */}
-                        <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#eef6ff] flex items-center justify-center mb-2 shadow-inner group-hover:scale-105 transition-transform">
-                                <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-9 h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#eef6ff] flex items-center justify-center mb-1.5 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <line x1="16" y1="18" x2="16" y2="8" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
                                         <line x1="48" y1="18" x2="48" y2="8" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
                                         <path d="M28 8 Q32 4 36 8" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" fill="none" />
@@ -210,16 +210,16 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-sm sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
+                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
                                 Burglar Alarm<br />Systems
                             </h3>
                         </div>
 
                         {/* Card 5: Home Security & Automation */}
-                        <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group col-span-2 sm:col-span-1 lg:col-span-1">
-                            <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#e6f7ed] flex items-center justify-center mb-2 shadow-inner group-hover:scale-105 transition-transform">
-                                <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-9 h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-row sm:flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group col-span-2 sm:col-span-1 lg:col-span-1 gap-2.5 sm:gap-0">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#e6f7ed] flex items-center justify-center mb-0 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 28 L32 12 L52 28 L46 28 L46 50 L18 50 L18 28 Z" stroke="#0F172A" strokeWidth="4" strokeLinejoin="round" fill="none" />
                                         <path d="M26 26 Q32 20 38 26" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" fill="none" />
                                         <path d="M29 30 Q32 26 35 30" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" fill="none" />
@@ -230,8 +230,8 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-sm sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
-                                Home Security<br />& Automation
+                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight text-left sm:text-center">
+                                Home Security<br className="hidden sm:inline" /> & Automation
                             </h3>
                         </div>
 
@@ -241,51 +241,51 @@ export default function LandingPage() {
                     <div className="pb-1">
                         {/* Row 2: 4 Feature Badges */}
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3 mb-2.5 relative z-20">
-                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-full py-1.5 md:py-2 px-3 md:px-4 flex items-center justify-center gap-2 text-gray-900 text-xs md:text-xs font-bold shadow-sm hover:shadow-md transition-shadow">
+                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2 md:py-2 px-2.5 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
                                 <GraduationCap className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-600 shrink-0" />
                                 <span>No prior experience required</span>
                             </div>
-                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-full py-1.5 md:py-2 px-3 md:px-4 flex items-center justify-center gap-2 text-gray-900 text-xs md:text-xs font-bold shadow-sm hover:shadow-md transition-shadow">
+                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2 md:py-2 px-2.5 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
                                 <BookOpen className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-600 shrink-0" />
                                 <span>8th Standard to Any Degree can learn</span>
                             </div>
-                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-full py-1.5 md:py-2 px-3 md:px-4 flex items-center justify-center gap-2 text-gray-900 text-xs md:text-xs font-bold shadow-sm hover:shadow-md transition-shadow">
+                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2 md:py-2 px-2.5 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
                                 <Wrench className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-600 shrink-0" />
                                 <span>100% Practical Training</span>
                             </div>
-                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-full py-1.5 md:py-2 px-3 md:px-4 flex items-center justify-center gap-2 text-gray-900 text-xs md:text-xs font-bold shadow-sm hover:shadow-md transition-shadow">
+                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2 md:py-2 px-2.5 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
                                 <Briefcase className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-600 shrink-0" />
                                 <span>Job Opportunities from Week 5</span>
                             </div>
                         </div>
 
                         {/* Row 3: Action & Fee Bar */}
-                        <div className="bg-white rounded-[1.2rem] md:rounded-[1.8rem] p-3 md:p-4 border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] text-gray-900 grid md:grid-cols-12 gap-3 items-center relative z-20">
+                        <div className="bg-white rounded-2xl md:rounded-[1.8rem] p-4 sm:p-5 md:p-6 border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] text-gray-900 grid md:grid-cols-12 gap-3.5 sm:gap-4 items-center relative z-20">
                             {/* Left Fee Column */}
-                            <div className="md:col-span-3 text-center md:text-left">
-                                <div className="text-gray-500 font-semibold text-[11px] md:text-xs mb-0.5">Course Fee:</div>
-                                <div className="text-2xl md:text-3xl lg:text-4xl font-black text-brand-600 tracking-tight leading-none">
+                            <div className="md:col-span-3 flex md:flex-col items-center justify-between md:justify-start text-left border-b md:border-b-0 border-gray-100 pb-2.5 md:pb-0">
+                                <div className="text-gray-500 font-semibold text-xs sm:text-xs md:text-xs mb-0.5">Course Fee:</div>
+                                <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-600 tracking-tight leading-none">
                                     ₹33,000
                                 </div>
                             </div>
 
                             {/* Center Register Button Column */}
                             <div className="md:col-span-5 text-center flex flex-col items-center">
-                                <Link to="/payment" className="btn-shine bg-brand-600 hover:bg-brand-700 text-white rounded-full py-2.5 md:py-3 px-5 md:px-7 font-black text-xs md:text-sm uppercase inline-flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(192,57,43,0.35)] w-full transition-transform hover:-translate-y-0.5">
-                                    REGISTER NOW FOR ₹1,000 <ArrowRight className="w-4 h-4" />
+                                <Link to="/payment" className="btn-shine bg-brand-600 hover:bg-brand-700 text-white rounded-full py-3 sm:py-3 px-5 sm:px-7 font-black text-xs sm:text-sm uppercase inline-flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(192,57,43,0.35)] w-full transition-transform hover:-translate-y-0.5">
+                                    REGISTER NOW FOR ₹1,000 <ArrowRight className="w-4 h-4 shrink-0" />
                                 </Link>
-                                <div className="text-[10px] md:text-[11px] text-gray-500 font-medium mt-1">
+                                <div className="text-[10px] sm:text-[11px] text-gray-500 font-medium mt-1.5 text-center">
                                     Take the first step towards a secure and successful career.
                                 </div>
                             </div>
 
                             {/* Right Commitment Column */}
-                            <div className="md:col-span-4 flex items-center justify-center md:justify-end gap-2.5 md:border-l border-gray-200 md:pl-5 pt-2 md:pt-0 border-t md:border-t-0">
-                                <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center shrink-0 shadow-md">
-                                    <ShieldCheck className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                            <div className="md:col-span-4 flex items-center justify-center md:justify-end gap-2.5 md:border-l border-gray-200 md:pl-5 pt-2.5 md:pt-0 border-t md:border-t-0 border-gray-100">
+                                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center shrink-0 shadow-md">
+                                    <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                                 </div>
                                 <div className="text-left leading-tight">
-                                    <div className="font-extrabold text-gray-900 text-xs md:text-xs">Your Career Our Commitment</div>
+                                    <div className="font-extrabold text-gray-900 text-xs">Your Career Our Commitment</div>
                                     <div className="text-[9px] font-extrabold tracking-widest text-gray-400 uppercase mt-0.5">SKILLS TODAY A SAFER TOMORROW</div>
                                 </div>
                             </div>
@@ -649,46 +649,46 @@ export default function LandingPage() {
                             </p>
                         </div>
 
-                        {/* 4 Cards */}
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        {/* 4 Cards - Double Row (2 cols) on Mobile, 4 cols on Large screens */}
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6 mb-12">
                             {/* Card 1 */}
-                            <div className="bg-[#fff5f5] rounded-[2rem] p-8 flex flex-col items-center text-center shadow-sm border border-red-100/50 transition-transform hover:-translate-y-1">
-                                <div className="w-20 h-20 rounded-full bg-brand-600 flex items-center justify-center shadow-[0_8px_20px_rgba(192,57,43,0.3)] mb-6 text-white">
-                                    <BookOpen className="w-10 h-10" />
+                            <div className="bg-[#fff5f5] rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 md:p-8 flex flex-col items-center text-center shadow-sm border border-red-100/50 transition-transform hover:-translate-y-1">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-brand-600 flex items-center justify-center shadow-[0_8px_20px_rgba(192,57,43,0.3)] mb-3 sm:mb-6 text-white shrink-0">
+                                    <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                                 </div>
-                                <h3 className="text-xl font-extrabold text-gray-900 mb-3 leading-tight tracking-tight">Theory + Practical<br/>Training</h3>
-                                <p className="text-gray-600 mb-8 font-medium text-sm leading-relaxed">Learn the basics and practise how real security systems work.</p>
-                                <div className="w-8 h-1 bg-brand-600 rounded-full mt-auto"></div>
+                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Theory + Practical<br/>Training</h3>
+                                <p className="text-gray-600 mb-4 sm:mb-8 font-medium text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-relaxed">Learn the basics and practise how real security systems work.</p>
+                                <div className="w-6 sm:w-8 h-1 bg-brand-600 rounded-full mt-auto"></div>
                             </div>
 
                             {/* Card 2 */}
-                            <div className="bg-[#f0f7ff] rounded-[2rem] p-8 flex flex-col items-center text-center shadow-sm border border-blue-100/50 transition-transform hover:-translate-y-1">
-                                <div className="w-20 h-20 rounded-full bg-blue-500 flex items-center justify-center shadow-[0_8px_20px_rgba(59,130,246,0.3)] mb-6 text-white">
-                                    <Wrench className="w-10 h-10" />
+                            <div className="bg-[#f0f7ff] rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 md:p-8 flex flex-col items-center text-center shadow-sm border border-blue-100/50 transition-transform hover:-translate-y-1">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-blue-500 flex items-center justify-center shadow-[0_8px_20px_rgba(59,130,246,0.3)] mb-3 sm:mb-6 text-white shrink-0">
+                                    <Wrench className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                                 </div>
-                                <h3 className="text-xl font-extrabold text-gray-900 mb-3 leading-tight tracking-tight">Professional<br/>Training</h3>
-                                <p className="text-gray-600 mb-8 font-medium text-sm leading-relaxed">Build practical technical skills across multiple security systems.</p>
-                                <div className="w-8 h-1 bg-blue-500 rounded-full mt-auto"></div>
+                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Professional<br/>Training</h3>
+                                <p className="text-gray-600 mb-4 sm:mb-8 font-medium text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-relaxed">Build practical technical skills across multiple security systems.</p>
+                                <div className="w-6 sm:w-8 h-1 bg-blue-500 rounded-full mt-auto"></div>
                             </div>
 
                             {/* Card 3 */}
-                            <div className="bg-[#f0fdf4] rounded-[2rem] p-8 flex flex-col items-center text-center shadow-sm border border-green-100/50 transition-transform hover:-translate-y-1">
-                                <div className="w-20 h-20 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_8px_20px_rgba(16,185,129,0.3)] mb-6 text-white">
-                                    <Briefcase className="w-10 h-10" />
+                            <div className="bg-[#f0fdf4] rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 md:p-8 flex flex-col items-center text-center shadow-sm border border-green-100/50 transition-transform hover:-translate-y-1">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_8px_20px_rgba(16,185,129,0.3)] mb-3 sm:mb-6 text-white shrink-0">
+                                    <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                                 </div>
-                                <h3 className="text-xl font-extrabold text-gray-900 mb-3 leading-tight tracking-tight">Job<br/>Opportunities</h3>
-                                <p className="text-gray-600 mb-8 font-medium text-sm leading-relaxed">After completing the 4-week training, job opportunities start from the 5th week.</p>
-                                <div className="w-8 h-1 bg-emerald-500 rounded-full mt-auto"></div>
+                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Job<br/>Opportunities</h3>
+                                <p className="text-gray-600 mb-4 sm:mb-8 font-medium text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-relaxed">After completing the 4-week training, job opportunities start from the 5th week.</p>
+                                <div className="w-6 sm:w-8 h-1 bg-emerald-500 rounded-full mt-auto"></div>
                             </div>
 
                             {/* Card 4 */}
-                            <div className="bg-[#fffcf0] rounded-[2rem] p-8 flex flex-col items-center text-center shadow-sm border border-orange-100/50 transition-transform hover:-translate-y-1">
-                                <div className="w-20 h-20 rounded-full bg-orange-400 flex items-center justify-center shadow-[0_8px_20px_rgba(251,146,60,0.3)] mb-6 text-white">
-                                    <ShieldCheck className="w-10 h-10" />
+                            <div className="bg-[#fffcf0] rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 md:p-8 flex flex-col items-center text-center shadow-sm border border-orange-100/50 transition-transform hover:-translate-y-1">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-orange-400 flex items-center justify-center shadow-[0_8px_20px_rgba(251,146,60,0.3)] mb-3 sm:mb-6 text-white shrink-0">
+                                    <ShieldCheck className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                                 </div>
-                                <h3 className="text-xl font-extrabold text-gray-900 mb-3 leading-tight tracking-tight">Placement<br/>Money-Back Commitment</h3>
-                                <p className="text-gray-600 mb-8 font-medium text-sm leading-relaxed">If you don't get placement, your course fee is returned, subject to applicable terms and conditions.</p>
-                                <div className="w-8 h-1 bg-orange-400 rounded-full mt-auto"></div>
+                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Placement<br/>Money-Back Commitment</h3>
+                                <p className="text-gray-600 mb-4 sm:mb-8 font-medium text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-relaxed">If you don't get placement, your course fee is returned, subject to applicable terms and conditions.</p>
+                                <div className="w-6 sm:w-8 h-1 bg-orange-400 rounded-full mt-auto"></div>
                             </div>
                         </div>
 
@@ -731,28 +731,39 @@ export default function LandingPage() {
 
 
             {/* 6. HOW IT WORKS */}
-            <section className="py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 border-y border-gray-200/60 relative overflow-hidden">
+            <section className="py-16 md:py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 border-y border-gray-200/60 relative overflow-hidden">
                 {/* Background decorative elements */}
                 <div className="absolute top-1/2 left-0 w-96 h-96 bg-brand-500/5 rounded-full filter blur-3xl pointer-events-none"></div>
                 <div className="absolute bottom-10 right-0 w-96 h-96 bg-red-500/5 rounded-full filter blur-3xl pointer-events-none"></div>
 
-                <div className="max-w-7xl mx-auto px-6 relative z-10">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
                     {/* Header */}
-                    <div className="text-center max-w-3xl mx-auto mb-20">
+                    <div className="text-center max-w-3xl mx-auto mb-12 md:mb-20">
                         <div className="inline-flex items-center gap-2 bg-brand-50 text-brand-600 border border-brand-200 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4 shadow-sm">
                             <Sparkles className="w-4 h-4 text-brand-600" />
                             <span>Simple 5-Step Journey</span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight uppercase">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight uppercase">
                             🚀 HOW IT <span className="text-brand-600">WORKS</span>
                         </h2>
-                        <p className="text-gray-600 text-base md:text-lg font-medium mt-3">
+                        <p className="text-gray-600 text-sm sm:text-base md:text-lg font-medium mt-3">
                             From seat reservation to your first career opportunity — transparent, simple, and practical.
                         </p>
                     </div>
                     
                     {/* Steps Timeline Grid */}
                     <div className="max-w-5xl mx-auto relative">
+                        {/* Connecting vertical line for mobile */}
+                        <div className="md:hidden absolute left-[23px] top-6 bottom-6 w-1 bg-gray-200 rounded-full z-0 overflow-hidden">
+                            <motion.div 
+                                initial={{ height: 0 }}
+                                whileInView={{ height: '100%' }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 1.5, ease: "easeInOut" }}
+                                className="w-full bg-gradient-to-b from-brand-600 via-red-500 to-brand-600 shadow-[0_0_12px_rgba(192,57,43,0.8)]"
+                            />
+                        </div>
+
                         {/* Connecting center line for desktop */}
                         <div className="hidden md:block absolute left-1/2 top-10 bottom-10 w-1 -translate-x-1/2 bg-gray-200 rounded-full z-0 overflow-hidden">
                             <motion.div 
@@ -764,7 +775,7 @@ export default function LandingPage() {
                             />
                         </div>
 
-                        <div className="space-y-10 md:space-y-16 relative z-10">
+                        <div className="space-y-8 md:space-y-16 relative z-10">
                             {[
                                 { 
                                     num: '01', 
@@ -815,36 +826,41 @@ export default function LandingPage() {
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true, margin: "-50px" }}
                                         transition={{ duration: 0.6, delay: idx * 0.15 }}
-                                        className={`flex flex-col md:flex-row items-center gap-6 md:gap-0 ${isEven ? 'md:flex-row-reverse' : ''}`}
+                                        className={`flex flex-row md:flex-row items-start md:items-center gap-4 md:gap-0 relative z-10 ${isEven ? 'md:flex-row-reverse' : ''}`}
                                     >
-                                        {/* Card content */}
-                                        <div className="w-full md:w-[45%]">
-                                            <div className="bg-white p-7 md:p-8 rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.06)] border border-gray-100 hover:border-brand-300 hover:shadow-[0_20px_40px_rgba(192,57,43,0.12)] transition-all duration-300 group">
-                                                <div className="flex items-center gap-3 mb-3">
-                                                    <span className="text-xs font-black uppercase tracking-widest text-brand-600 bg-brand-50 px-3 py-1 rounded-full border border-brand-100">
+                                        {/* MOBILE: Icon Badge on Left */}
+                                        <div className={`md:hidden shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br ${step.badgeColor} text-white flex items-center justify-center font-black shadow-md border-2 border-white relative z-10 mt-1`}>
+                                            <step.Icon className="w-6 h-6 text-white" />
+                                        </div>
+
+                                        {/* CARD CONTENT (Mobile: Full width next to icon badge, Desktop: 45% width) */}
+                                        <div className="flex-1 md:w-[45%]">
+                                            <div className="bg-white p-5 sm:p-7 md:p-8 rounded-2xl md:rounded-3xl shadow-[0_10px_30px_rgba(0,0,0,0.06)] border border-gray-100 hover:border-brand-300 hover:shadow-[0_20px_40px_rgba(192,57,43,0.12)] transition-all duration-300 group">
+                                                <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3 flex-wrap">
+                                                    <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-brand-600 bg-brand-50 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full border border-brand-100">
                                                         Step {step.num}
                                                     </span>
-                                                    <span className="text-xs font-semibold text-gray-400">
+                                                    <span className="text-[11px] sm:text-xs font-semibold text-gray-400">
                                                         {step.subtitle}
                                                     </span>
                                                 </div>
-                                                <h3 className="text-xl md:text-2xl font-black text-gray-900 group-hover:text-brand-600 transition-colors uppercase tracking-tight mb-2">
+                                                <h3 className="text-base sm:text-xl md:text-2xl font-black text-gray-900 group-hover:text-brand-600 transition-colors uppercase tracking-tight mb-1.5 sm:mb-2">
                                                     {step.title}
                                                 </h3>
-                                                <p className="text-gray-600 font-medium text-sm md:text-base leading-relaxed">
+                                                <p className="text-gray-600 font-medium text-xs sm:text-sm md:text-base leading-relaxed">
                                                     {step.desc}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        {/* Center Badge Icon */}
-                                        <div className="w-full md:w-[10%] flex justify-center shrink-0">
-                                            <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br ${step.badgeColor} text-white flex items-center justify-center font-black text-xl shadow-xl border-4 border-white transform group-hover:scale-110 transition-transform duration-300 z-10`}>
+                                        {/* DESKTOP: Center Badge Icon */}
+                                        <div className="hidden md:flex w-[10%] justify-center shrink-0">
+                                            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${step.badgeColor} text-white flex items-center justify-center font-black text-xl shadow-xl border-4 border-white transform group-hover:scale-110 transition-transform duration-300 z-10`}>
                                                 <step.Icon className="w-7 h-7 text-white" />
                                             </div>
                                         </div>
 
-                                        {/* Spacer for 2-column alternating layout */}
+                                        {/* DESKTOP: Spacer for 2-column alternating layout */}
                                         <div className="hidden md:block w-[45%]"></div>
                                     </motion.div>
                                 );
@@ -853,15 +869,15 @@ export default function LandingPage() {
                     </div>
                     
                     {/* Bottom CTA */}
-                    <div className="text-center mt-20">
+                    <div className="text-center mt-12 md:mt-20">
                         <Link 
                             to="/payment" 
-                            className="btn-shine inline-flex items-center justify-center bg-brand-600 hover:bg-brand-700 text-white px-10 py-5 rounded-full font-black text-base md:text-lg tracking-wider uppercase shadow-[0_10px_30px_rgba(192,57,43,0.4)] transition-all hover:-translate-y-1 gap-3"
+                            className="btn-shine inline-flex items-center justify-center bg-brand-600 hover:bg-brand-700 text-white px-6 sm:px-10 py-4 sm:py-5 rounded-full font-black text-sm sm:text-base md:text-lg tracking-wider uppercase shadow-[0_10px_30px_rgba(192,57,43,0.4)] transition-all hover:-translate-y-1 gap-2 sm:gap-3 w-full sm:w-auto"
                         >
                             <span>👉 REGISTER FOR ₹1,000 & SECURE YOUR SEAT</span>
-                            <ArrowRight className="w-5 h-5" />
+                            <ArrowRight className="w-5 h-5 shrink-0" />
                         </Link>
-                        <div className="text-xs font-extrabold text-red-600 uppercase tracking-widest mt-3 animate-pulse">
+                        <div className="text-[11px] sm:text-xs font-extrabold text-red-600 uppercase tracking-widest mt-3 animate-pulse">
                             🔥 Limited Slots Remaining for Next Batch!
                         </div>
                     </div>
