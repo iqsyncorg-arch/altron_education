@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CreditCard, Landmark, ShieldCheck, Copy, Check, QrCode, ArrowRight, ArrowLeft, CheckCircle, Smartphone, Lock, Award, XCircle } from 'lucide-react';
+import { CreditCard, Landmark, ShieldCheck, Copy, Check, QrCode, ArrowRight, ArrowLeft, CheckCircle, Smartphone, Lock, XCircle, Sparkles } from 'lucide-react';
 import { API_BASE } from '../config/api';
+import { loadRazorpayScript } from '../utils/razorpay';
 
 export default function PaymentPage() {
     const [copiedField, setCopiedField] = useState<string | null>(null);
-    const [paymentMethod, setPaymentMethod] = useState<'upi' | 'bank'>('upi');
+    const [paymentMethod, setPaymentMethod] = useState<'online' | 'upi' | 'bank'>('online');
     const [form, setForm] = useState({
         name: '',
         phone: '',
@@ -15,6 +16,7 @@ export default function PaymentPage() {
     });
     const [loading, setLoading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [paymentDetails, setPaymentDetails] = useState<{ paymentId?: string; orderId?: string } | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const bankInfo = {
@@ -37,8 +39,126 @@ export default function PaymentPage() {
         if (error) setError(null);
     };
 
+    // Razorpay Online Payment Flow
+    const handleRazorpayPayment = async () => {
+        if (!form.name.trim() || !form.phone.trim()) {
+            setError('Please enter your full name and phone number to proceed.');
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            // 1. Create order on backend
+            const orderRes = await fetch(`${API_BASE}/payment/create-order`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    amount: 1000,
+                    name: form.name,
+                    email: form.email,
+                    phone: form.phone
+                })
+            });
+
+            const orderData = await orderRes.json();
+
+            if (!orderRes.ok || !orderData.success) {
+                throw new Error(orderData.message || 'Failed to initialize Razorpay payment order');
+            }
+
+            // 2. Load Razorpay script
+            const isLoaded = await loadRazorpayScript();
+            if (!isLoaded) {
+                throw new Error('Razorpay SDK failed to load. Please check your internet connection.');
+            }
+
+            // 3. Configure Razorpay modal options
+            const options = {
+                key: orderData.key,
+                amount: orderData.amount,
+                currency: orderData.currency,
+                name: 'ALTRON SAFETY & SECURITY ACADEMY',
+                description: 'Seat Reservation Fee (₹1,000)',
+                image: 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773043568/altronaccodemy_pxgw2x.png',
+                order_id: orderData.order_id,
+                prefill: {
+                    name: form.name,
+                    email: form.email || '',
+                    contact: form.phone
+                },
+                theme: {
+                    color: '#c0392b'
+                },
+                handler: async function (response: any) {
+                    try {
+                        setLoading(true);
+                        // 4. Verify signature on backend
+                        const verifyRes = await fetch(`${API_BASE}/payment/verify`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                                name: form.name,
+                                email: form.email,
+                                phone: form.phone,
+                                notes: form.notes || 'Online Seat Reservation'
+                            })
+                        });
+
+                        const verifyData = await verifyRes.json();
+
+                        if (verifyData.success) {
+                            setPaymentDetails({
+                                paymentId: response.razorpay_payment_id,
+                                orderId: response.razorpay_order_id
+                            });
+                            setSubmitted(true);
+                        } else {
+                            setError(verifyData.message || 'Payment signature verification failed.');
+                        }
+                    } catch (err: any) {
+                        console.error('Payment verification error:', err);
+                        setError('Payment was received, but verification encountered an error. Our team will verify manually.');
+                        setSubmitted(true);
+                    } finally {
+                        setLoading(false);
+                    }
+                },
+                modal: {
+                    ondismiss: function () {
+                        setLoading(false);
+                    }
+                }
+            };
+
+            const rzp = new (window as any).Razorpay(options);
+            rzp.on('payment.failed', function (response: any) {
+                console.error('Razorpay payment failed:', response.error);
+                setError(response.error.description || 'Payment process failed or was cancelled.');
+                setLoading(false);
+            });
+
+            rzp.open();
+        } catch (err: any) {
+            console.error('Razorpay initialization error:', err);
+            setError(err.message || 'Unable to connect to payment gateway. Please try again or use direct UPI/Bank transfer.');
+            setLoading(false);
+        }
+    };
+
+    // Manual Form Submit (For UPI QR or Bank Transfer)
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (paymentMethod === 'online') {
+            await handleRazorpayPayment();
+            return;
+        }
+
         setLoading(true);
         setError(null);
 
@@ -62,21 +182,21 @@ export default function PaymentPage() {
             }
         } catch (err) {
             console.error('Registration failed:', err);
-            // Fallback so user experience is not blocked even if offline
             setSubmitted(true);
         }
         setLoading(false);
     };
 
     const handleWhatsAppSubmit = () => {
-        const message = `Hello Altron Academy! I have completed seat reservation payment of ₹1,000.%0A%0A*Student Name:* ${form.name || 'Not provided'}%0A*Phone:* ${form.phone || 'Not provided'}%0A*Email:* ${form.email || 'Not provided'}%0A*Payment Method:* ${paymentMethod.toUpperCase()}%0A*UTR/Ref No:* ${form.utr || 'Pending verification'}%0A%0APlease confirm my seat for the upcoming batch!`;
+        const payIdInfo = paymentDetails?.paymentId ? `%0A*Razorpay Payment ID:* ${paymentDetails.paymentId}` : '';
+        const message = `Hello Altron Academy! I have completed seat reservation payment of ₹1,000.%0A%0A*Student Name:* ${form.name || 'Not provided'}%0A*Phone:* ${form.phone || 'Not provided'}%0A*Email:* ${form.email || 'Not provided'}%0A*Payment Method:* ${paymentMethod.toUpperCase()}${payIdInfo}%0A*UTR/Ref No:* ${form.utr || 'Pending verification'}%0A%0APlease confirm my seat for the upcoming batch!`;
         window.open(`https://wa.me/919841014328?text=${message}`, '_blank');
     };
 
     return (
         <div className="bg-slate-50 min-h-screen pb-20 selection:bg-brand-500/20 text-gray-900">
             
-            {/* Minimal Header (No main Navbar) */}
+            {/* Minimal Header */}
             <header className="bg-white border-b border-slate-200 py-3.5 px-6 sticky top-0 z-50 shadow-sm">
                 <div className="max-w-7xl mx-auto flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-3">
@@ -109,7 +229,7 @@ export default function PaymentPage() {
                         RESERVE YOUR SEAT <span className="text-brand-600">FOR ₹1,000</span>
                     </h2>
                     <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto mt-2 font-medium">
-                        Pay ₹1,000 today to lock your seat in the next batch. Balance fee (₹32,000) is payable on your course start date.
+                        Pay ₹1,000 today via Razorpay to instantly lock your seat in the next batch. Balance fee (₹32,000) is payable on your course start date.
                     </p>
                 </div>
 
@@ -174,9 +294,9 @@ export default function PaymentPage() {
                                 <Lock className="w-7 h-7 text-white" />
                             </div>
                             <div>
-                                <h4 className="font-bold text-base text-white">Safe & Secure Payment</h4>
+                                <h4 className="font-bold text-base text-white">100% Safe & Secure Payment</h4>
                                 <p className="text-xs text-gray-400 mt-0.5 leading-relaxed">
-                                    Direct official bank transfer or UPI ID to Altron Academy. Immediate confirmation provided.
+                                    Secured by Razorpay. Accepts GPay, PhonePe, Cards, UPI & NetBanking with instant confirmation.
                                 </p>
                             </div>
                         </div>
@@ -193,18 +313,38 @@ export default function PaymentPage() {
                                     <CheckCircle className="w-12 h-12" />
                                 </div>
                                 <div>
+                                    <div className="inline-block bg-green-100 text-green-800 font-extrabold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider mb-2">
+                                        Payment Verified
+                                    </div>
                                     <h3 className="text-2xl sm:text-3xl font-black text-gray-900 uppercase tracking-tight">
-                                        REGISTRATION SUBMITTED!
+                                        SEAT RESERVED SUCCESSFULLY!
                                     </h3>
                                     <p className="text-gray-600 text-sm md:text-base max-w-md mx-auto mt-2 font-medium">
-                                        Thank you, <strong className="text-gray-900">{form.name || 'Student'}</strong>! Your seat reservation details for ₹1,000 have been received.
+                                        Thank you, <strong className="text-gray-900">{form.name || 'Student'}</strong>! Your seat reservation for ₹1,000 is locked for the upcoming batch.
                                     </p>
                                 </div>
 
+                                {paymentDetails?.paymentId && (
+                                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 max-w-md mx-auto text-xs space-y-1.5 text-left">
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-500">Razorpay Payment ID:</span>
+                                            <span className="font-mono font-bold text-gray-900">{paymentDetails.paymentId}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-500">Order ID:</span>
+                                            <span className="font-mono font-semibold text-gray-700">{paymentDetails.orderId}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-500">Amount Paid:</span>
+                                            <span className="font-bold text-green-700">₹1,000 (Reserved)</span>
+                                        </div>
+                                    </div>
+                                )}
+
                                 <div className="bg-green-50 border border-green-200 rounded-2xl p-6 text-left max-w-lg mx-auto text-sm space-y-2">
-                                    <div className="font-bold text-green-900 text-base mb-2">Next Steps to Confirm Your Seat:</div>
-                                    <p className="text-green-800">
-                                        Send your payment screenshot or UTR number to our admission counselor via WhatsApp for instant seat verification.
+                                    <div className="font-bold text-green-900 text-base mb-1">What Happens Next:</div>
+                                    <p className="text-green-800 text-xs sm:text-sm leading-relaxed">
+                                        Our admissions counselor will contact you via WhatsApp/Phone with your batch schedule, orientation guide, and enrollment receipt.
                                     </p>
                                 </div>
 
@@ -215,12 +355,12 @@ export default function PaymentPage() {
                                     >
                                         <span>💬 Send Receipt on WhatsApp</span>
                                     </button>
-                                    <button
-                                        onClick={() => setSubmitted(false)}
-                                        className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold py-3.5 px-6 rounded-full text-sm transition-colors"
+                                    <Link
+                                        to="/"
+                                        className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold py-3.5 px-6 rounded-full text-sm transition-colors text-center"
                                     >
-                                        Submit Another Details
-                                    </button>
+                                        Return to Home
+                                    </Link>
                                 </div>
                             </div>
                         ) : (
@@ -229,32 +369,74 @@ export default function PaymentPage() {
                                 <div className="flex bg-slate-100 p-1.5 rounded-2xl mb-8">
                                     <button
                                         type="button"
+                                        onClick={() => setPaymentMethod('online')}
+                                        className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 ${
+                                            paymentMethod === 'online'
+                                                ? 'bg-brand-600 text-white shadow-md'
+                                                : 'text-gray-600 hover:text-gray-900'
+                                        }`}
+                                    >
+                                        <CreditCard className="w-4 h-4" />
+                                        <span>Razorpay Online</span>
+                                        <span className="bg-amber-400 text-gray-900 text-[9px] font-black px-1.5 py-0.5 rounded uppercase">Instant</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
                                         onClick={() => setPaymentMethod('upi')}
-                                        className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 ${
+                                        className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 ${
                                             paymentMethod === 'upi'
                                                 ? 'bg-brand-600 text-white shadow-md'
                                                 : 'text-gray-600 hover:text-gray-900'
                                         }`}
                                     >
                                         <Smartphone className="w-4 h-4" />
-                                        UPI / GPay / PhonePe
+                                        <span>UPI QR</span>
                                     </button>
+
                                     <button
                                         type="button"
                                         onClick={() => setPaymentMethod('bank')}
-                                        className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 ${
+                                        className={`flex-1 py-3 px-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-1.5 ${
                                             paymentMethod === 'bank'
                                                 ? 'bg-brand-600 text-white shadow-md'
                                                 : 'text-gray-600 hover:text-gray-900'
                                         }`}
                                     >
                                         <Landmark className="w-4 h-4" />
-                                        Bank Transfer (NEFT/IMPS)
+                                        <span>Bank Transfer</span>
                                     </button>
                                 </div>
 
-                                {/* METHOD 1: UPI DISPLAY */}
-                                {paymentMethod === 'upi' ? (
+                                {/* METHOD 1: RAZORPAY ONLINE METHOD */}
+                                {paymentMethod === 'online' && (
+                                    <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-5 sm:p-6 border border-red-100 mb-8 space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2 text-brand-700 font-extrabold text-sm">
+                                                <Sparkles className="w-4 h-4 text-brand-600" />
+                                                <span>Instant Online Payment Gateway</span>
+                                            </div>
+                                            <span className="bg-brand-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                                Recommended
+                                            </span>
+                                        </div>
+
+                                        <p className="text-xs text-gray-600 font-medium leading-relaxed">
+                                            Pay ₹1,000 instantly using Google Pay, PhonePe, Paytm, Credit/Debit Cards, NetBanking or Wallets. Your seat will be confirmed immediately!
+                                        </p>
+
+                                        <div className="flex items-center gap-3 pt-2 text-[11px] font-bold text-gray-500 flex-wrap">
+                                            <span className="bg-white px-2.5 py-1 rounded-lg border border-slate-200">GPay</span>
+                                            <span className="bg-white px-2.5 py-1 rounded-lg border border-slate-200">PhonePe</span>
+                                            <span className="bg-white px-2.5 py-1 rounded-lg border border-slate-200">Paytm</span>
+                                            <span className="bg-white px-2.5 py-1 rounded-lg border border-slate-200">Cards (Visa/Master/Rupay)</span>
+                                            <span className="bg-white px-2.5 py-1 rounded-lg border border-slate-200">NetBanking</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* METHOD 2: UPI DISPLAY */}
+                                {paymentMethod === 'upi' && (
                                     <div className="bg-slate-50 rounded-2xl p-5 sm:p-6 border border-slate-200 mb-8 space-y-4">
                                         <div className="flex items-center justify-between">
                                             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Official UPI ID</span>
@@ -293,8 +475,10 @@ export default function PaymentPage() {
                                             </p>
                                         </div>
                                     </div>
-                                ) : (
-                                    /* METHOD 2: BANK TRANSFER DISPLAY */
+                                )}
+
+                                {/* METHOD 3: BANK TRANSFER DISPLAY */}
+                                {paymentMethod === 'bank' && (
                                     <div className="bg-slate-50 rounded-2xl p-5 sm:p-6 border border-slate-200 mb-8 space-y-4">
                                         <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">HDFC Bank Account Details</div>
                                         
@@ -340,13 +524,15 @@ export default function PaymentPage() {
                                     </div>
                                 )}
 
-                                {/* REGISTRATION & PAYMENT VERIFICATION FORM */}
+                                {/* REGISTRATION & PAYMENT FORM */}
                                 <div>
                                     <h4 className="text-lg font-black text-gray-900 mb-1 uppercase tracking-tight">
                                         Complete Your Seat Registration
                                     </h4>
                                     <p className="text-xs text-gray-500 font-medium mb-4">
-                                        Fill in your details below after paying ₹1,000 to confirm your seat immediately.
+                                        {paymentMethod === 'online'
+                                            ? 'Enter your name and phone number below to open Razorpay payment gateway.'
+                                            : 'Fill in your details after paying ₹1,000 to confirm your seat.'}
                                     </p>
 
                                     {error && (
@@ -396,25 +582,37 @@ export default function PaymentPage() {
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <label className="text-gray-700 font-extrabold text-xs mb-1 block uppercase">UPI Transaction UTR / Ref Number (Optional)</label>
-                                            <input
-                                                type="text"
-                                                name="utr"
-                                                value={form.utr}
-                                                onChange={handleChange}
-                                                placeholder="e.g. 425612349012 or GPay Ref No"
-                                                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-gray-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
-                                            />
-                                        </div>
+                                        {paymentMethod !== 'online' && (
+                                            <div>
+                                                <label className="text-gray-700 font-extrabold text-xs mb-1 block uppercase">UPI Transaction UTR / Ref Number (Optional)</label>
+                                                <input
+                                                    type="text"
+                                                    name="utr"
+                                                    value={form.utr}
+                                                    onChange={handleChange}
+                                                    placeholder="e.g. 425612349012 or GPay Ref No"
+                                                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-gray-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
+                                                />
+                                            </div>
+                                        )}
 
                                         <button
                                             type="submit"
                                             disabled={loading}
                                             className="btn-shine w-full bg-brand-600 hover:bg-brand-700 text-white font-black py-4 px-6 rounded-full text-sm md:text-base uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 transition-transform hover:-translate-y-0.5 disabled:opacity-50 mt-2"
                                         >
-                                            <span>{loading ? 'Submitting...' : 'CONFIRM SEAT RESERVATION (₹1,000)'}</span>
-                                            <ArrowRight className="w-5 h-5" />
+                                            {paymentMethod === 'online' ? (
+                                                <>
+                                                    <CreditCard className="w-5 h-5" />
+                                                    <span>{loading ? 'Processing Razorpay...' : 'PAY ₹1,000 VIA RAZORPAY & SECURE SLOT'}</span>
+                                                    <ArrowRight className="w-5 h-5" />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span>{loading ? 'Submitting...' : 'CONFIRM SEAT RESERVATION (₹1,000)'}</span>
+                                                    <ArrowRight className="w-5 h-5" />
+                                                </>
+                                            )}
                                         </button>
 
                                         <button

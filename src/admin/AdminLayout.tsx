@@ -15,7 +15,8 @@ import {
     Menu,
     X,
     FileText,
-    Building2
+    Building2,
+    CreditCard
 } from 'lucide-react';
 
 
@@ -34,6 +35,7 @@ export default function AdminLayout({ activeTab, setActiveTab, onLogout, onAdd, 
 
     const allTabs = [
         { id: 'inquiries', label: 'Inquiries', icon: MessageSquare, roles: ['admin'] },
+        { id: 'payments', label: 'Payments', icon: CreditCard, roles: ['admin'] },
         { id: 'courses', label: 'Courses', icon: BookOpen, roles: ['admin'] },
         { id: 'stories', label: 'Success Stories', icon: Video, roles: ['admin'] },
         { id: 'testimonials', label: 'Testimonials', icon: Users, roles: ['admin'] },

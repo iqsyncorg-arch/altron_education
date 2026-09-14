@@ -11,6 +11,7 @@ import CentersManagement from '../admin/CentersManagement';
 import Students from '../admin/Students';
 import Admissions from '../admin/Admissions';
 import FranchiseManagement from '../admin/FranchiseManagement';
+import Payments from '../admin/Payments';
 import { NotificationProvider, useNotification } from '../components/AdminUI/NotificationProvider';
 
 
@@ -49,7 +50,7 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
     const fetchData = useCallback(async () => {
         setLoading(true);
         try {
-            const isPaginated = ['inquiries', 'franchise', 'recruitment'].includes(activeTab);
+            const isPaginated = ['inquiries', 'franchise', 'recruitment', 'payments'].includes(activeTab);
             const url = isPaginated
                 ? `${API_BASE}/${activeTab}?page=${page}&limit=10`
                 : `${API_BASE}/${activeTab}`;
@@ -396,10 +397,11 @@ function AdminContent({ token, onLogout, role }: { token: string; onLogout: () =
             activeTab={activeTab}
             setActiveTab={(tab) => { setActiveTab(tab); setShowForm(false); setPrefillStudent(null); }}
             onLogout={onLogout}
-            onAdd={!['inquiries', 'recruitment', 'franchise-accounts'].includes(activeTab) ? () => setShowForm(true) : undefined}
+            onAdd={!['inquiries', 'recruitment', 'franchise-accounts', 'payments'].includes(activeTab) ? () => setShowForm(true) : undefined}
             role={role}
         >
             {activeTab === 'inquiries' && <Inquiries data={data} loading={loading} onDelete={handleDelete} page={page} totalPages={totalPages} onPageChange={setPage} />}
+            {activeTab === 'payments' && <Payments data={data} loading={loading} onDelete={handleDelete} page={page} totalPages={totalPages} onPageChange={setPage} />}
             {activeTab === 'franchise' && <Inquiries data={data} loading={loading} onDelete={handleDelete} page={page} totalPages={totalPages} onPageChange={setPage} />}
             {activeTab === 'centers' && <CentersManagement data={data} loading={loading} onDelete={handleDelete} onSave={handleSaveCenter} />}
             {activeTab === 'franchise-accounts' && <FranchiseManagement data={data} loading={loading} onSave={handleSaveFranchise} onDelete={handleDeleteFranchise} />}

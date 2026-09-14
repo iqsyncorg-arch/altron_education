@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useApi } from '../hooks/useApi';
-import { 
+import {
     CheckCircle, ShieldCheck, Briefcase, GraduationCap, ArrowRight,
     Star, ChevronDown, ChevronUp, AlertCircle, PlayCircle, Clock,
-    Users, Settings, BadgeCheck, Building2,
+    Users, Settings, BadgeCheck, Building2, ChevronLeft,
     ChevronRight, BookOpen, Wrench, UserCheck, PhoneCall, CalendarCheck, Sparkles,
     Calendar, Siren
 } from 'lucide-react';
@@ -13,6 +13,7 @@ import { Lottie } from 'lottie-react';
 import moneyAnimation from '../assets/MoneyIcon.json';
 import cctvAnimation from '../assets/cctv.json';
 import { getYoutubeEmbedUrl } from '../utils/youtube';
+import PaymentModal from '../components/PaymentModal';
 
 const FAQ_DATA = [
     {
@@ -50,14 +51,25 @@ export default function LandingPage() {
     const { data: storiesData } = useApi<any>('/stories', []);
     const [openFaq, setOpenFaq] = useState<number | null>(0);
     const [timeLeft, setTimeLeft] = useState(48 * 60 * 60 - 3500); // 47 hours, 1 minute
-    const [errorLottieData, setErrorLottieData] = useState<any>(null);
+    const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+    const testimonialScrollRef = useRef<HTMLDivElement>(null);
+    const [isTestimonialHovered, setIsTestimonialHovered] = useState(false);
+
+    const ABOUT_IMAGES = [
+        'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774726413/43094343-ec21-4be9-bc3e-1b0f053ab2cc_v9yzvb.jpg',
+        'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774726368/0560e602-03f5-4a07-9370-7e412e9c5ea5_cpxplw.jpg',
+        'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774726363/7fd81e80-9af0-46c5-895d-223b88b456ad_rqwfhf.jpg',
+        'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1774726745/27edc2b0-288e-4078-bbce-71f72695443b_wplacj.jpg'
+    ];
+
+    const [aboutImgIndex, setAboutImgIndex] = useState(0);
 
     useEffect(() => {
-        fetch('/error.json')
-            .then((res) => res.json())
-            .then((data) => setErrorLottieData(data))
-            .catch((err) => console.error('Failed to load error.json:', err));
-    }, []);
+        const timer = setInterval(() => {
+            setAboutImgIndex((prev) => (prev + 1) % ABOUT_IMAGES.length);
+        }, 3500);
+        return () => clearInterval(timer);
+    }, [ABOUT_IMAGES.length]);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -65,6 +77,42 @@ export default function LandingPage() {
         }, 1000);
         return () => clearInterval(timer);
     }, []);
+
+    // Automatic smooth horizontal scrolling for Testimonials Carousel
+    useEffect(() => {
+        const el = testimonialScrollRef.current;
+        if (!el) return;
+
+        let animationFrameId: number;
+        const scrollSpeed = 0.75; // Smooth 60fps scrolling speed
+
+        const scroll = () => {
+            if (!isTestimonialHovered && el) {
+                if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 4) {
+                    el.scrollLeft = 0; // Wrap around to start seamlessly
+                } else {
+                    el.scrollLeft += scrollSpeed;
+                }
+            }
+            animationFrameId = requestAnimationFrame(scroll);
+        };
+
+        animationFrameId = requestAnimationFrame(scroll);
+
+        return () => cancelAnimationFrame(animationFrameId);
+    }, [isTestimonialHovered]);
+
+    const scrollTestimonials = (direction: 'left' | 'right') => {
+        if (testimonialScrollRef.current) {
+            setIsTestimonialHovered(true);
+            const scrollAmount = testimonialScrollRef.current.clientWidth * 0.85;
+            testimonialScrollRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth'
+            });
+            setTimeout(() => setIsTestimonialHovered(false), 3000);
+        }
+    };
 
     const formatTime = (timeInSeconds: number) => {
         const d = Math.floor(timeInSeconds / (3600 * 24));
@@ -79,71 +127,77 @@ export default function LandingPage() {
     return (
         <div className="bg-zinc-50 min-h-screen font-sans selection:bg-brand-500/20 text-gray-900">
 
-            {/* 1. HERO BANNER SECTION (FITS SINGLE SCREEN WINDOW WITH STACKED CARDS) */}
-            <section className="min-h-screen lg:h-screen lg:max-h-[920px] pt-12 md:pt-14 pb-4 md:pb-6 bg-[#0d0d0d] text-white relative overflow-hidden flex flex-col justify-between">
-                {/* Bottom-Right Red Fluid Curve */}
-                <div className="absolute bottom-16 right-0 w-72 md:w-[480px] h-72 md:h-[480px] bg-gradient-to-tl from-[#e61c24] via-red-700 to-transparent rounded-tl-[16rem] opacity-80 mix-blend-screen pointer-events-none"></div>
-
-                {/* Bottom White Background Curve Layer */}
-                <div className="absolute bottom-0 left-0 right-0 h-44 md:h-52 bg-white pointer-events-none z-0" style={{ borderTopLeftRadius: '100% 45px' }}></div>
+            {/* 1. HERO BANNER SECTION (LIGHT WHITE THEME WITH VIBRANT MATCHING CARDS) */}
+            <section className="min-h-screen lg:h-screen lg:max-h-[920px] pt-12 md:pt-14 pb-4 md:pb-6 bg-gradient-to-b from-slate-50 via-white to-gray-50 text-gray-900 relative overflow-hidden flex flex-col justify-between border-b border-gray-200">
+                {/* Background Fluid Glow Accents */}
+                <div className="absolute top-10 right-0 w-80 md:w-[500px] h-80 md:h-[500px] bg-gradient-to-br from-red-100/60 via-brand-100/40 to-transparent rounded-full blur-3xl pointer-events-none"></div>
+                <div className="absolute bottom-10 left-0 w-80 md:w-[500px] h-80 md:h-[500px] bg-gradient-to-tr from-sky-100/60 via-blue-50/30 to-transparent rounded-full blur-3xl pointer-events-none"></div>
 
                 <div className="max-w-7xl mx-auto px-3 sm:px-6 relative z-10 text-center w-full my-auto flex flex-col justify-between h-full py-1">
-                    
+
                     {/* Header Block */}
                     <div className="pt-1 sm:pt-2">
                         {/* Top Pill Badge */}
-                        <div className="inline-flex items-center gap-2 bg-[#250a0a]/90 backdrop-blur-md border border-red-600/50 text-white px-3.5 sm:px-4 py-1.5 sm:py-1 rounded-full shadow-[0_0_20px_rgba(230,28,36,0.3)] mb-2 max-w-full">
-                            <span className="w-2 h-2 rounded-full bg-red-500 animate-ping shrink-0"></span>
-                            <span className="w-2 h-2 rounded-full bg-red-500 -ml-4 shrink-0"></span>
-                            <span className="text-white font-extrabold text-[9px] sm:text-xs tracking-wider sm:tracking-[0.16em] uppercase truncate">
+                        <div className="inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-4 sm:px-5 py-2 sm:py-1.5 rounded-full shadow-sm mb-2 max-w-full">
+                            <span className="w-2 h-2 rounded-full bg-red-600 animate-ping shrink-0"></span>
+                            <span className="w-2 h-2 rounded-full bg-red-600 -ml-4 shrink-0"></span>
+                            <span className="font-extrabold text-xs sm:text-sm tracking-wider sm:tracking-[0.16em] uppercase truncate">
                                 LIMITED SEATS AVAILABLE FOR NEXT BATCH
                             </span>
                         </div>
 
-                        {/* Lottie Animation from public/error.json starting this text */}
-                        {errorLottieData && (
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 mx-auto -mb-1 flex items-center justify-center">
-                                <Lottie src={errorLottieData} loop autoplay />
-                            </div>
-                        )}
-
                         {/* Headline */}
-                        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[0.95] mb-0.5 text-white" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}>
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[0.95] mb-0.5 text-gray-900">
                             READY FOR A
                         </h1>
-                        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-[0.95] mb-2 text-[#ff2b2b]" style={{ textShadow: '0 4px 30px rgba(255,43,43,0.4)' }}>
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-[0.95] mb-2 text-brand-600">
                             BETTER CAREER?
                         </h1>
 
                         {/* Sub-headlines */}
-                        <p className="text-xs sm:text-base md:text-xl text-gray-200 font-medium tracking-tight mb-0.5 leading-snug sm:leading-normal">
-                            Learn Professional Security Systems Skills in Just <strong className="text-white font-black">4 Weeks.</strong>
+                        <p className="text-sm sm:text-base md:text-xl text-gray-700 font-semibold tracking-tight mb-0.5 leading-snug sm:leading-normal">
+                            Learn Professional Security Systems Skills in Just <strong className="text-gray-900 font-black">4 Weeks.</strong>
                         </p>
-                        <p className="text-xs sm:text-base md:text-xl text-[#ff4d4d] font-extrabold tracking-tight mb-3 md:mb-4 leading-snug sm:leading-normal">
+                        <p className="text-sm sm:text-base md:text-xl text-red-600 font-extrabold tracking-tight mb-2 md:mb-3 leading-snug sm:leading-normal">
                             Start Exploring Job Opportunities From Week 5.
                         </p>
+
+                        {/* Video Practical Training Preview */}
+                        <div className="my-3 max-w-2xl lg:max-w-3xl mx-auto w-full relative z-20">
+                            <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_15px_45px_rgba(0,0,0,0.15)] border-2 border-red-500/30 bg-black aspect-video group">
+                                <video
+                                    src="https://res.cloudinary.com/dq6gr5zjc/video/upload/v1775895249/Safety_Security_Engineering_Course_Video_kcjmnw.mp4"
+                                    controls
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                        </div>
                     </div>
 
-                    {/* 5 Category Cards */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3 md:gap-4 text-center relative z-20 my-1">
-                        
-                        {/* Card 1: CCTV Systems */}
-                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#fff0f0] flex items-center justify-center mb-1.5 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform overflow-hidden shrink-0">
-                                <div className="relative w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center">
+                    {/* 5 Category Cards (Different Vibrant Light Color Themes) */}
+                    <div className="grid grid-cols-5 gap-1 sm:gap-2.5 md:gap-4 text-center relative z-20 my-1">
+
+                        {/* Card 1: CCTV Systems (Rose / Red Theme) */}
+                        <div className="bg-gradient-to-b from-rose-50 via-white to-red-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(244,63,94,0.12)] border border-rose-200/90 hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-rose-100/80 border border-rose-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform overflow-hidden shrink-0">
+                                <div className="relative w-6 h-6 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center">
                                     <Lottie src={cctvAnimation} loop autoplay className="w-full h-full object-contain" />
                                 </div>
                             </div>
-                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
+                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-rose-950 leading-tight tracking-tight">
                                 CCTV<br />Systems
                             </h3>
                         </div>
 
-                        {/* Card 2: Biometrics Systems */}
-                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#eef6ff] flex items-center justify-center mb-1.5 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
-                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        {/* Card 2: Biometrics Systems (Sky / Blue Theme) */}
+                        <div className="bg-gradient-to-b from-sky-50 via-white to-blue-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(14,165,233,0.12)] border border-sky-200/90 hover:border-sky-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-sky-100/80 border border-sky-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-5 h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="12" y="8" width="40" height="48" rx="6" fill="#1E293B" stroke="#334155" strokeWidth="2" />
                                         <rect x="17" y="13" width="30" height="16" rx="2" fill="#0F172A" />
                                         <rect x="20" y="16" width="16" height="4" rx="1" fill="#38BDF8" />
@@ -160,16 +214,16 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
+                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-sky-950 leading-tight tracking-tight">
                                 Biometrics<br />Systems
                             </h3>
                         </div>
 
-                        {/* Card 3: Fire Alarm Systems */}
-                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#ffebee] flex items-center justify-center mb-1.5 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
-                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        {/* Card 3: Fire Alarm Systems (Amber / Orange Theme) */}
+                        <div className="bg-gradient-to-b from-amber-50 via-white to-orange-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(245,158,11,0.12)] border border-amber-200/90 hover:border-amber-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-amber-100/80 border border-amber-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-5 h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="32" cy="26" r="18" fill="#DC2626" stroke="#B91C1C" strokeWidth="2" />
                                         <circle cx="32" cy="26" r="14" fill="#EF4444" />
                                         <circle cx="32" cy="26" r="4" fill="#991B1B" />
@@ -180,16 +234,16 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
+                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-amber-950 leading-tight tracking-tight">
                                 Fire Alarm<br />Systems
                             </h3>
                         </div>
 
-                        {/* Card 4: Burglar Alarm Systems */}
-                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#eef6ff] flex items-center justify-center mb-1.5 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
-                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        {/* Card 4: Burglar Alarm Systems (Indigo / Purple Theme) */}
+                        <div className="bg-gradient-to-b from-indigo-50 via-white to-purple-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(99,102,241,0.12)] border border-indigo-200/90 hover:border-indigo-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-indigo-100/80 border border-indigo-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-5 h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <line x1="16" y1="18" x2="16" y2="8" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
                                         <line x1="48" y1="18" x2="48" y2="8" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
                                         <path d="M28 8 Q32 4 36 8" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" fill="none" />
@@ -210,16 +264,16 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight">
+                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-indigo-950 leading-tight tracking-tight">
                                 Burglar Alarm<br />Systems
                             </h3>
                         </div>
 
-                        {/* Card 5: Home Security & Automation */}
-                        <div className="bg-white rounded-2xl sm:rounded-[2rem] p-3 sm:p-3.5 md:p-4 flex flex-row sm:flex-col items-center justify-center text-center shadow-[0_12px_35px_rgba(0,0,0,0.12)] border border-gray-100 hover:-translate-y-1 transition-transform duration-300 group col-span-2 sm:col-span-1 lg:col-span-1 gap-2.5 sm:gap-0">
-                            <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-[#e6f7ed] flex items-center justify-center mb-0 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
-                                <div className="relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        {/* Card 5: Home Security & Automation (Emerald / Teal Theme) */}
+                        <div className="bg-gradient-to-b from-emerald-50 via-white to-teal-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(16,185,129,0.12)] border border-emerald-200/90 hover:border-emerald-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-emerald-100/80 border border-emerald-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-5 h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 28 L32 12 L52 28 L46 28 L46 50 L18 50 L18 28 Z" stroke="#0F172A" strokeWidth="4" strokeLinejoin="round" fill="none" />
                                         <path d="M26 26 Q32 20 38 26" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" fill="none" />
                                         <path d="M29 30 Q32 26 35 30" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" fill="none" />
@@ -230,8 +284,8 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-xs sm:text-base md:text-lg font-black text-gray-900 leading-tight tracking-tight text-left sm:text-center">
-                                Home Security<br className="hidden sm:inline" /> & Automation
+                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-emerald-950 leading-tight tracking-tight text-center">
+                                Home Security<br />& Automation
                             </h3>
                         </div>
 
@@ -239,8 +293,40 @@ export default function LandingPage() {
 
                     {/* Bottom Features & Fee Bar Container */}
                     <div className="pb-1">
-                        {/* Row 2: 4 Feature Badges */}
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3 mb-2.5 relative z-20">
+                        {/* Row 2: Action & Fee Bar */}
+                        <div className="bg-white rounded-2xl md:rounded-[1.8rem] p-4 sm:p-5 md:p-6 border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] text-gray-900 grid md:grid-cols-12 gap-3.5 sm:gap-4 items-center relative z-20 mb-2.5">
+                            {/* Left Fee Column */}
+                            <div className="md:col-span-3 flex md:flex-col items-center justify-between md:justify-start text-left border-b md:border-b-0 border-gray-100 pb-2.5 md:pb-0">
+                                <div className="text-gray-500 font-semibold text-xs sm:text-xs md:text-xs mb-0.5">Course Fee:</div>
+                                <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-600 tracking-tight leading-none">
+                                    ₹33,000
+                                </div>
+                            </div>
+
+                            {/* Center Register Button Column */}
+                            <div className="md:col-span-5 text-center flex flex-col items-center">
+                                <button onClick={() => setIsPaymentModalOpen(true)} className="btn-shine bg-brand-600 hover:bg-brand-700 text-white rounded-full py-3 sm:py-3 px-5 sm:px-7 font-black text-xs sm:text-sm uppercase inline-flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(192,57,43,0.35)] w-full transition-transform hover:-translate-y-0.5">
+                                    REGISTER NOW FOR ₹1,000 <ArrowRight className="w-4 h-4 shrink-0" />
+                                </button>
+                                <div className="text-[10px] sm:text-[11px] text-gray-500 font-medium mt-1.5 text-center">
+                                    Take the first step towards a secure and successful career.
+                                </div>
+                            </div>
+
+                            {/* Right Commitment Column */}
+                            <div className="md:col-span-4 flex items-center justify-center md:justify-end gap-2.5 md:border-l border-gray-200 md:pl-5 pt-2.5 md:pt-0 border-t md:border-t-0 border-gray-100">
+                                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center shrink-0 shadow-md">
+                                    <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                                </div>
+                                <div className="text-left leading-tight">
+                                    <div className="font-extrabold text-gray-900 text-xs">Your Career Our Commitment</div>
+                                    <div className="text-[9px] font-extrabold tracking-widest text-gray-400 uppercase mt-0.5">SKILLS TODAY A SAFER TOMORROW</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Row 3: 4 Feature Badges (Placed below Action & Fee Bar) */}
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3 relative z-20">
                             <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2 md:py-2 px-2.5 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
                                 <GraduationCap className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-600 shrink-0" />
                                 <span>No prior experience required</span>
@@ -258,43 +344,11 @@ export default function LandingPage() {
                                 <span>Job Opportunities from Week 5</span>
                             </div>
                         </div>
-
-                        {/* Row 3: Action & Fee Bar */}
-                        <div className="bg-white rounded-2xl md:rounded-[1.8rem] p-4 sm:p-5 md:p-6 border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] text-gray-900 grid md:grid-cols-12 gap-3.5 sm:gap-4 items-center relative z-20">
-                            {/* Left Fee Column */}
-                            <div className="md:col-span-3 flex md:flex-col items-center justify-between md:justify-start text-left border-b md:border-b-0 border-gray-100 pb-2.5 md:pb-0">
-                                <div className="text-gray-500 font-semibold text-xs sm:text-xs md:text-xs mb-0.5">Course Fee:</div>
-                                <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-600 tracking-tight leading-none">
-                                    ₹33,000
-                                </div>
-                            </div>
-
-                            {/* Center Register Button Column */}
-                            <div className="md:col-span-5 text-center flex flex-col items-center">
-                                <Link to="/payment" className="btn-shine bg-brand-600 hover:bg-brand-700 text-white rounded-full py-3 sm:py-3 px-5 sm:px-7 font-black text-xs sm:text-sm uppercase inline-flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(192,57,43,0.35)] w-full transition-transform hover:-translate-y-0.5">
-                                    REGISTER NOW FOR ₹1,000 <ArrowRight className="w-4 h-4 shrink-0" />
-                                </Link>
-                                <div className="text-[10px] sm:text-[11px] text-gray-500 font-medium mt-1.5 text-center">
-                                    Take the first step towards a secure and successful career.
-                                </div>
-                            </div>
-
-                            {/* Right Commitment Column */}
-                            <div className="md:col-span-4 flex items-center justify-center md:justify-end gap-2.5 md:border-l border-gray-200 md:pl-5 pt-2.5 md:pt-0 border-t md:border-t-0 border-gray-100">
-                                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center shrink-0 shadow-md">
-                                    <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                                </div>
-                                <div className="text-left leading-tight">
-                                    <div className="font-extrabold text-gray-900 text-xs">Your Career Our Commitment</div>
-                                    <div className="text-[9px] font-extrabold tracking-widest text-gray-400 uppercase mt-0.5">SKILLS TODAY A SAFER TOMORROW</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
             </section>
-            
+
             {/* White spacing block below cards so next section transitions cleanly */}
             <div className="h-10 md:h-16 bg-white"></div>
 
@@ -304,7 +358,7 @@ export default function LandingPage() {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
                 <div className="max-w-7xl mx-auto px-4 relative z-10">
-                    
+
                     {/* Header */}
                     <div className="text-center mb-10 md:mb-12">
                         <div className="inline-flex items-center gap-2 bg-red-950/80 border border-red-600/40 text-red-400 px-4 py-1.5 rounded-full text-xs font-extrabold tracking-widest uppercase mb-3">
@@ -483,7 +537,7 @@ export default function LandingPage() {
                                             <div className="absolute top-5 left-[50%] w-full h-[3px] z-0 overflow-hidden pointer-events-none px-2">
                                                 {/* Light background track line */}
                                                 <div className="w-full h-full bg-brand-100 rounded-full"></div>
-                                                
+
                                                 {/* Animated red line filling sequentially towards next box */}
                                                 <motion.div
                                                     initial={{ scaleX: 0 }}
@@ -521,36 +575,67 @@ export default function LandingPage() {
                             </div>
                         </div>
 
-                        {/* RIGHT: Building image with camera overlay & JOIN NOW button */}
+                        {/* RIGHT: Image Carousel Slider & JOIN NOW button */}
                         <div className="flex flex-col space-y-5">
-                            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl min-h-[380px] bg-zinc-900">
-                                {/* Building background */}
+                            <div className="relative rounded-[2rem] overflow-hidden shadow-2xl min-h-[380px] bg-zinc-900 group">
+                                {/* Active Image with smooth transition */}
                                 <img
-                                    src="https://res.cloudinary.com/dq6gr5zjc/image/upload/v1788888931/e90b99dd-662c-4526-bef5-5b299ebcf9c0_nfdflg.png"
-                                    alt="Altron Academy Building"
-                                    className="w-full h-full object-cover opacity-80"
-                                    style={{ minHeight: '380px' }}
+                                    key={aboutImgIndex}
+                                    src={ABOUT_IMAGES[aboutImgIndex]}
+                                    alt={`Altron Academy Practical Training ${aboutImgIndex + 1}`}
+                                    className="w-full h-[380px] object-cover opacity-90 transition-opacity duration-700"
                                 />
-                                {/* Dark overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/60 via-transparent to-brand-900/40"></div>
+
+                                {/* Gradient Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-black/30 pointer-events-none"></div>
+
+                                {/* Left Arrow Button */}
+                                <button
+                                    onClick={() => setAboutImgIndex((prev) => (prev - 1 + ABOUT_IMAGES.length) % ABOUT_IMAGES.length)}
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 text-white w-9 h-9 rounded-full backdrop-blur-sm border border-white/20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95"
+                                    aria-label="Previous Image"
+                                >
+                                    <ChevronLeft className="w-5 h-5 text-white" />
+                                </button>
+
+                                {/* Right Arrow Button */}
+                                <button
+                                    onClick={() => setAboutImgIndex((prev) => (prev + 1) % ABOUT_IMAGES.length)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 z-30 bg-black/60 hover:bg-black/80 text-white w-9 h-9 rounded-full backdrop-blur-sm border border-white/20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95"
+                                    aria-label="Next Image"
+                                >
+                                    <ChevronRight className="w-5 h-5 text-white" />
+                                </button>
+
+                                {/* Indicator Dots */}
+                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
+                                    {ABOUT_IMAGES.map((_, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setAboutImgIndex(idx)}
+                                            className={`h-2 rounded-full transition-all ${aboutImgIndex === idx ? 'w-6 bg-brand-500' : 'w-2 bg-white/50 hover:bg-white'}`}
+                                            aria-label={`Go to slide ${idx + 1}`}
+                                        />
+                                    ))}
+                                </div>
 
                                 {/* CCTV Camera cutout overlapping the card */}
                                 <img
                                     src="https://res.cloudinary.com/dq6gr5zjc/image/upload/v1788883513/d8a27830-4429-4f86-a26a-0326007f9d0e_sqgmbw.png"
                                     alt="CCTV Camera"
-                                    className="absolute -bottom-6 -left-10 w-[200px] md:w-[280px] object-contain z-20 drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
+                                    className="absolute -bottom-6 -left-10 w-[180px] md:w-[240px] object-contain z-20 drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] pointer-events-none"
                                 />
                             </div>
 
                             {/* PAY ₹1,000 & SECURE YOUR SLOT BUTTON BELOW IMAGE */}
                             <div className="space-y-2.5 text-center">
-                                <Link 
-                                    to="/payment" 
+                                <button
+                                    onClick={() => setIsPaymentModalOpen(true)}
                                     className="btn-shine bg-brand-600 hover:bg-brand-700 text-white rounded-full py-4 px-8 font-black text-base md:text-lg uppercase tracking-wider shadow-[0_8px_25px_rgba(192,57,43,0.4)] flex items-center justify-center gap-3 transition-transform hover:-translate-y-0.5 w-full text-center"
                                 >
                                     <span>PAY ₹1,000 & SECURE YOUR SLOT</span>
                                     <ArrowRight className="w-5 h-5" />
-                                </Link>
+                                </button>
                                 <div className="flex items-center justify-center gap-2 text-xs font-black text-red-600 uppercase tracking-widest pt-1">
                                     <span className="relative flex h-2.5 w-2.5">
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -574,26 +659,26 @@ export default function LandingPage() {
                 {/* Red Abstract Layers on Bottom Left */}
                 <div className="absolute bottom-0 -left-20 w-[500px] h-[500px] bg-brand-700 rounded-full mix-blend-multiply filter blur-3xl opacity-60 z-0"></div>
                 <div className="absolute -bottom-20 -left-20 w-[520px] h-[520px] bg-brand-600 rounded-[8rem] rotate-12 z-0 shadow-2xl"></div>
-                
-                
+
+
                 {/* CCTV Camera Cutout - BIG and prominent */}
-                <img 
-                    src="https://res.cloudinary.com/dq6gr5zjc/image/upload/v1788883513/d8a27830-4429-4f86-a26a-0326007f9d0e_sqgmbw.png" 
+                <img
+                    src="https://res.cloudinary.com/dq6gr5zjc/image/upload/v1788883513/d8a27830-4429-4f86-a26a-0326007f9d0e_sqgmbw.png"
                     alt="CCTV Camera"
                     className="absolute bottom-0 left-0 w-[160px] md:w-[220px] lg:w-[280px] object-contain object-bottom z-30 drop-shadow-[0_20px_30px_rgba(0,0,0,0.4)]"
                 />
 
                 <div className="max-w-[1500px] mx-auto px-4 relative z-10 flex justify-end">
-                    
+
                     {/* Main White Container — shifted right to give room to camera */}
                     <div className="bg-white rounded-[3rem] shadow-[0_20px_60px_rgba(0,0,0,0.08)] border border-gray-100 p-8 md:p-12 lg:p-16 w-full lg:w-[88%] relative z-10 mr-0 lg:mr-[4%]">
                         {/* Header */}
                         <div className="text-center mb-16 relative">
                             {/* Learn Build Get Placed — top right of white card */}
                             <div className="absolute -top-6 md:-top-10 right-0 font-bold italic text-xl md:text-2xl text-gray-400 rotate-[-8deg] z-20 opacity-70 leading-snug text-right" style={{ fontFamily: 'Georgia, serif' }}>
-                                Learn<br/>Build<br/>Get Placed
+                                Learn<br />Build<br />Get Placed
                             </div>
-                            <motion.h2 
+                            <motion.h2
                                 animate={{ opacity: [1, 0.3, 1] }}
                                 transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
                                 className="text-5xl md:text-6xl font-black text-gray-900 tracking-tight mb-4"
@@ -656,7 +741,7 @@ export default function LandingPage() {
                                 <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-brand-600 flex items-center justify-center shadow-[0_8px_20px_rgba(192,57,43,0.3)] mb-3 sm:mb-6 text-white shrink-0">
                                     <BookOpen className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                                 </div>
-                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Theory + Practical<br/>Training</h3>
+                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Theory + Practical<br />Training</h3>
                                 <p className="text-gray-600 mb-4 sm:mb-8 font-medium text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-relaxed">Learn the basics and practise how real security systems work.</p>
                                 <div className="w-6 sm:w-8 h-1 bg-brand-600 rounded-full mt-auto"></div>
                             </div>
@@ -666,7 +751,7 @@ export default function LandingPage() {
                                 <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-blue-500 flex items-center justify-center shadow-[0_8px_20px_rgba(59,130,246,0.3)] mb-3 sm:mb-6 text-white shrink-0">
                                     <Wrench className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                                 </div>
-                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Professional<br/>Training</h3>
+                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Professional<br />Training</h3>
                                 <p className="text-gray-600 mb-4 sm:mb-8 font-medium text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-relaxed">Build practical technical skills across multiple security systems.</p>
                                 <div className="w-6 sm:w-8 h-1 bg-blue-500 rounded-full mt-auto"></div>
                             </div>
@@ -676,7 +761,7 @@ export default function LandingPage() {
                                 <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-emerald-500 flex items-center justify-center shadow-[0_8px_20px_rgba(16,185,129,0.3)] mb-3 sm:mb-6 text-white shrink-0">
                                     <Briefcase className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                                 </div>
-                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Job<br/>Opportunities</h3>
+                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Job<br />Opportunities</h3>
                                 <p className="text-gray-600 mb-4 sm:mb-8 font-medium text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-relaxed">After completing the 4-week training, job opportunities start from the 5th week.</p>
                                 <div className="w-6 sm:w-8 h-1 bg-emerald-500 rounded-full mt-auto"></div>
                             </div>
@@ -686,7 +771,7 @@ export default function LandingPage() {
                                 <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-orange-400 flex items-center justify-center shadow-[0_8px_20px_rgba(251,146,60,0.3)] mb-3 sm:mb-6 text-white shrink-0">
                                     <ShieldCheck className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10" />
                                 </div>
-                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Placement<br/>Money-Back Commitment</h3>
+                                <h3 className="text-xs sm:text-lg md:text-xl font-extrabold text-gray-900 mb-1.5 sm:mb-3 leading-tight tracking-tight">Placement<br />Money-Back Commitment</h3>
                                 <p className="text-gray-600 mb-4 sm:mb-8 font-medium text-[11px] sm:text-xs md:text-sm leading-snug sm:leading-relaxed">If you don't get placement, your course fee is returned, subject to applicable terms and conditions.</p>
                                 <div className="w-6 sm:w-8 h-1 bg-orange-400 rounded-full mt-auto"></div>
                             </div>
@@ -705,7 +790,7 @@ export default function LandingPage() {
                             {/* Center CTA Button */}
                             <div className="flex flex-col items-center text-center flex-1 max-w-lg">
                                 <Link to="/contact" className="btn-shine w-full bg-brand-700 hover:bg-brand-800 text-white rounded-full py-4 px-8 font-black text-xl md:text-2xl tracking-wide uppercase transition-transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(192,57,43,0.3)] flex items-center justify-center gap-3">
-                                    GET COURSE DETAILS 
+                                    GET COURSE DETAILS
                                     <div className="bg-white text-brand-700 rounded-full p-1">
                                         <ChevronRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={3} />
                                     </div>
@@ -750,12 +835,12 @@ export default function LandingPage() {
                             From seat reservation to your first career opportunity — transparent, simple, and practical.
                         </p>
                     </div>
-                    
+
                     {/* Steps Timeline Grid */}
                     <div className="max-w-5xl mx-auto relative">
                         {/* Connecting vertical line for mobile */}
                         <div className="md:hidden absolute left-[23px] top-6 bottom-6 w-1 bg-gray-200 rounded-full z-0 overflow-hidden">
-                            <motion.div 
+                            <motion.div
                                 initial={{ height: 0 }}
                                 whileInView={{ height: '100%' }}
                                 viewport={{ once: true }}
@@ -766,7 +851,7 @@ export default function LandingPage() {
 
                         {/* Connecting center line for desktop */}
                         <div className="hidden md:block absolute left-1/2 top-10 bottom-10 w-1 -translate-x-1/2 bg-gray-200 rounded-full z-0 overflow-hidden">
-                            <motion.div 
+                            <motion.div
                                 initial={{ height: 0 }}
                                 whileInView={{ height: '100%' }}
                                 viewport={{ once: true }}
@@ -777,41 +862,41 @@ export default function LandingPage() {
 
                         <div className="space-y-8 md:space-y-16 relative z-10">
                             {[
-                                { 
-                                    num: '01', 
-                                    title: 'REGISTER', 
+                                {
+                                    num: '01',
+                                    title: 'REGISTER',
                                     subtitle: 'Quick & Instant Reservation',
                                     desc: 'Reserve your seat with just ₹1,000.',
                                     Icon: UserCheck,
                                     badgeColor: 'from-brand-600 to-red-600'
                                 },
-                                { 
-                                    num: '02', 
-                                    title: 'GET A CALL', 
+                                {
+                                    num: '02',
+                                    title: 'GET A CALL',
                                     subtitle: 'Personalized Guidance',
                                     desc: 'Our team will contact you and explain the course structure and next steps.',
                                     Icon: PhoneCall,
                                     badgeColor: 'from-zinc-800 to-zinc-900'
                                 },
-                                { 
-                                    num: '03', 
-                                    title: 'CHOOSE YOUR START DATE', 
+                                {
+                                    num: '03',
+                                    title: 'CHOOSE YOUR START DATE',
                                     subtitle: 'Flexible Batch Selection',
                                     desc: 'Pay the remaining course fee and select your convenient start date.',
                                     Icon: CalendarCheck,
                                     badgeColor: 'from-brand-600 to-red-600'
                                 },
-                                { 
-                                    num: '04', 
-                                    title: 'LEARN + PRACTISE', 
+                                {
+                                    num: '04',
+                                    title: 'LEARN + PRACTISE',
                                     subtitle: '100% Practical Exposure',
                                     desc: 'Complete 4 weeks of professional theory + hands-on lab practical training.',
                                     Icon: GraduationCap,
                                     badgeColor: 'from-zinc-800 to-zinc-900'
                                 },
-                                { 
-                                    num: '05', 
-                                    title: 'EXPLORE JOB OPPORTUNITIES', 
+                                {
+                                    num: '05',
+                                    title: 'EXPLORE JOB OPPORTUNITIES',
                                     subtitle: 'Placement Assistance',
                                     desc: 'From the 5th week, start receiving relevant job opportunities through our placement network.',
                                     Icon: Briefcase,
@@ -820,8 +905,8 @@ export default function LandingPage() {
                             ].map((step, idx) => {
                                 const isEven = idx % 2 === 1;
                                 return (
-                                    <motion.div 
-                                        key={idx} 
+                                    <motion.div
+                                        key={idx}
                                         initial={{ opacity: 0, y: 30 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true, margin: "-50px" }}
@@ -867,16 +952,16 @@ export default function LandingPage() {
                             })}
                         </div>
                     </div>
-                    
+
                     {/* Bottom CTA */}
                     <div className="text-center mt-12 md:mt-20">
-                        <Link 
-                            to="/payment" 
+                        <button
+                            onClick={() => setIsPaymentModalOpen(true)}
                             className="btn-shine inline-flex items-center justify-center bg-brand-600 hover:bg-brand-700 text-white px-6 sm:px-10 py-4 sm:py-5 rounded-full font-black text-sm sm:text-base md:text-lg tracking-wider uppercase shadow-[0_10px_30px_rgba(192,57,43,0.4)] transition-all hover:-translate-y-1 gap-2 sm:gap-3 w-full sm:w-auto"
                         >
                             <span>👉 REGISTER FOR ₹1,000 & SECURE YOUR SEAT</span>
                             <ArrowRight className="w-5 h-5 shrink-0" />
-                        </Link>
+                        </button>
                         <div className="text-[11px] sm:text-xs font-extrabold text-red-600 uppercase tracking-widest mt-3 animate-pulse">
                             🔥 Limited Slots Remaining for Next Batch!
                         </div>
@@ -885,181 +970,322 @@ export default function LandingPage() {
             </section>
 
             {/* 7 & 8. WHY ALTRON ACADEMY? */}
-            <section className="py-24 bg-zinc-900 text-white border-t border-zinc-800">
+            <section className="py-12 md:py-24 bg-zinc-900 text-white border-t border-zinc-800">
                 <div className="max-w-7xl mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-black mb-6 uppercase text-brand-500">🏆 WHY ALTRON ACADEMY?</h2>
-                        <h3 className="text-2xl font-bold uppercase tracking-widest text-gray-300">25+ YEARS OF INDUSTRY EXPERIENCE</h3>
-                    </div>
-                    
-                    <div className="max-w-4xl mx-auto text-center mb-16 space-y-6 text-lg text-gray-400">
-                        <p>Altron started in <strong className="text-white">2000</strong> as a manufacturer and distributor of CCTV cameras and electronic security systems.</p>
-                        <p>In <strong className="text-white">2008</strong>, Altron Academy was started to address the growing need for trained professionals in the security systems industry.</p>
+                    {/* Header */}
+                    <div className="text-center mb-8 md:mb-16">
+                        <h2 className="text-2xl sm:text-4xl md:text-5xl font-black mb-2 sm:mb-4 uppercase text-brand-500 tracking-tight">
+                            🏆 WHY ALTRON ACADEMY?
+                        </h2>
+                        <h3 className="text-xs sm:text-lg md:text-2xl font-extrabold uppercase tracking-widest text-gray-300">
+                            25+ YEARS OF INDUSTRY EXPERIENCE
+                        </h3>
                     </div>
 
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+                    {/* Paragraph description */}
+                    <div className="max-w-4xl mx-auto text-center mb-10 md:mb-16 space-y-3 sm:space-y-6 text-xs sm:text-base md:text-lg text-gray-400 font-medium leading-relaxed">
+                        <p>
+                            Altron started in <strong className="text-white font-bold">2000</strong> as a manufacturer and distributor of CCTV cameras and electronic security systems.
+                        </p>
+                        <p>
+                            In <strong className="text-white font-bold">2008</strong>, Altron Academy was started to address the growing need for trained professionals in the security systems industry.
+                        </p>
+                    </div>
+
+                    {/* 4 Stats Grid (2 columns on mobile, 4 on desktop) */}
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-10 md:mb-20">
                         {[
                             { stat: '1,000+', label: 'Students & Entrepreneurs Trained' },
                             { stat: '10+', label: 'Professional Courses' },
                             { stat: '25+ Years', label: 'Industry Experience' },
                             { stat: '100%', label: 'Practical Focus (Theory + Hands-On)' }
                         ].map((box, i) => (
-                            <div key={i} className="bg-zinc-800 p-8 rounded-3xl border border-zinc-700 text-center flex flex-col justify-center">
-                                <div className="text-4xl font-black text-white mb-4">{box.stat}</div>
-                                <div className="text-brand-400 font-bold uppercase tracking-wider text-sm">{box.label}</div>
+                            <div key={i} className="bg-zinc-800/90 p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-zinc-700/80 text-center flex flex-col justify-center shadow-lg hover:border-brand-500/50 transition-colors">
+                                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-1.5 sm:mb-3 tracking-tight">{box.stat}</div>
+                                <div className="text-brand-400 font-bold uppercase tracking-wider text-[10px] sm:text-xs md:text-sm leading-tight">{box.label}</div>
                             </div>
                         ))}
                     </div>
 
-                    <div className="bg-brand-600 rounded-[3rem] p-10 md:p-16 text-center shadow-2xl relative overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')] opacity-20"></div>
-                        <div className="relative z-10">
-                            <h2 className="text-3xl md:text-4xl font-black mb-8 uppercase tracking-tight">
-                                🔧 LEARN FROM PEOPLE WHO KNOW THE INDUSTRY
-                            </h2>
-                            <p className="text-xl md:text-2xl text-red-100 font-medium mb-8 max-w-3xl mx-auto">
-                                You're not learning a random skill. You're learning from an organisation that has been working in the <strong className="text-white">electronic security systems industry since 2000.</strong>
-                            </p>
-                            <div className="inline-block bg-black/30 backdrop-blur-sm border border-white/20 text-white font-bold px-6 py-4 rounded-2xl uppercase tracking-widest text-sm md:text-base">
-                                LEARN → PRACTISE → BUILD SKILLS → EXPLORE OPPORTUNITIES
+                    {/* High-Urgency Countdown Timer & Pay Now Callout Card */}
+                    <div className="bg-gradient-to-r from-red-950 via-brand-700 to-red-900 rounded-2xl sm:rounded-[2.5rem] md:rounded-[3rem] p-5 sm:p-8 md:p-14 text-center shadow-2xl relative overflow-hidden border border-red-500/30">
+                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')] opacity-15 pointer-events-none"></div>
+                        <div className="relative z-10 max-w-4xl mx-auto">
+                            
+                            {/* Top Urgency Badge */}
+                            <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-black/40 backdrop-blur-md border border-red-400/40 text-red-200 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full text-[9px] sm:text-xs md:text-sm font-black tracking-wider uppercase mb-4 sm:mb-6 shadow-lg max-w-full">
+                                <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-red-400 animate-ping shrink-0"></span>
+                                <span className="truncate">⚡ LIMITED SEATS AVAILABLE FOR UPCOMING BATCH</span>
                             </div>
+
+                            <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-white mb-2 sm:mb-3 uppercase tracking-tight leading-tight">
+                                ADMISSION CLOSING SOON!
+                            </h2>
+                            <p className="text-xs sm:text-base md:text-xl text-red-100 font-medium mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
+                                Reserve your seat now for <strong className="text-white font-black underline decoration-red-400 underline-offset-4">₹1,000</strong> before the timer runs out and slots are full.
+                            </p>
+
+                            {/* Real-time Countdown Timer */}
+                            <div className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 mb-6 sm:mb-9">
+                                <div className="bg-black/60 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 md:p-5 min-w-[60px] sm:min-w-[85px] md:min-w-[100px] shadow-inner">
+                                    <div className="text-xl sm:text-3xl md:text-5xl font-black text-white font-mono leading-none">
+                                        {String(h).padStart(2, '0')}
+                                    </div>
+                                    <div className="text-[9px] sm:text-xs font-bold text-red-300 uppercase tracking-widest mt-1">Hours</div>
+                                </div>
+                                <div className="text-xl sm:text-3xl font-black text-white/50 mb-3 sm:mb-4">:</div>
+                                <div className="bg-black/60 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 md:p-5 min-w-[60px] sm:min-w-[85px] md:min-w-[100px] shadow-inner">
+                                    <div className="text-xl sm:text-3xl md:text-5xl font-black text-white font-mono leading-none">
+                                        {String(m).padStart(2, '0')}
+                                    </div>
+                                    <div className="text-[9px] sm:text-xs font-bold text-red-300 uppercase tracking-widest mt-1">Mins</div>
+                                </div>
+                                <div className="text-xl sm:text-3xl font-black text-white/50 mb-3 sm:mb-4">:</div>
+                                <div className="bg-black/60 backdrop-blur-md border border-white/10 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 md:p-5 min-w-[60px] sm:min-w-[85px] md:min-w-[100px] shadow-inner">
+                                    <div className="text-xl sm:text-3xl md:text-5xl font-black text-yellow-400 font-mono leading-none">
+                                        {String(s).padStart(2, '0')}
+                                    </div>
+                                    <div className="text-[9px] sm:text-xs font-bold text-red-300 uppercase tracking-widest mt-1">Secs</div>
+                                </div>
+                            </div>
+
+                            {/* CTA PAY NOW BUTTON */}
+                            <div className="flex flex-col items-center justify-center gap-2.5">
+                                <button
+                                    onClick={() => setIsPaymentModalOpen(true)}
+                                    className="btn-shine bg-white hover:bg-gray-100 text-brand-700 font-black text-xs sm:text-base md:text-xl py-3.5 sm:py-4 md:py-5 px-5 sm:px-8 md:px-12 rounded-full uppercase tracking-wider shadow-[0_10px_35px_rgba(0,0,0,0.5)] transition-all hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto"
+                                >
+                                    <span>🔒 SECURE YOUR SEAT FOR ₹1,000 NOW</span>
+                                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 shrink-0 text-brand-600" />
+                                </button>
+                                <p className="text-[10px] sm:text-xs text-red-200 font-semibold flex items-center gap-1.5 mt-0.5 text-center">
+                                    <span>✅ Instant Razorpay Receipt & Registration Confirmation via WhatsApp</span>
+                                </p>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* 9. TESTIMONIALS (WHATSAPP CHAT UI SCREENSHOT CARDS) */}
-            <section className="py-24 max-w-7xl mx-auto px-4">
-                <div className="text-center mb-16">
+            {/* 9. TESTIMONIALS (WHATSAPP CHAT UI CARDS — AUTOMATIC & MANUAL HORIZONTAL SCROLL) */}
+            <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 overflow-hidden">
+                <div className="text-center mb-10 md:mb-16">
                     <div className="inline-flex items-center gap-2 bg-emerald-100 border border-emerald-200 text-emerald-800 px-4 py-1.5 rounded-full text-xs font-black tracking-widest uppercase mb-3 shadow-sm">
                         <span className="text-base">💬</span> VERIFIED WHATSAPP FEEDBACK
                     </div>
-                    <h2 className="text-3xl md:text-5xl font-black mb-3 uppercase tracking-tight text-gray-900">
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-black mb-2 sm:mb-3 uppercase tracking-tight text-gray-900">
                         ⭐ REAL STUDENTS. REAL TRAINING. REAL EXPERIENCES.
                     </h2>
-                    <h3 className="text-xl md:text-2xl font-black text-brand-600 uppercase tracking-wider mb-4">
+                    <h3 className="text-base sm:text-xl md:text-2xl font-black text-brand-600 uppercase tracking-wider mb-3">
                         DON'T TAKE OUR WORD FOR IT.
                     </h3>
-                    <p className="text-base md:text-lg text-gray-600 font-medium max-w-2xl mx-auto">
+                    <p className="text-xs sm:text-base md:text-lg text-gray-600 font-medium max-w-2xl mx-auto">
                         See what our students have to say about their experience at Altron Academy.
                     </p>
                 </div>
-                
-                {/* 4 WhatsApp Chat Mockup Cards Grid */}
-                <div className="grid md:grid-cols-2 gap-8 mb-14">
-                    {[
-                        {
-                            name: "Vivek Rajan",
-                            initial: "V",
-                            bgColor: "bg-emerald-600",
-                            course: "Professional Course in Safety & Security Engineering",
-                            time: "10:42 AM",
-                            text: "I recently completed the CCTV and Biometric Access Control course at Altron Academy, and it was a fantastic experience. The training is highly focused on hands-on practicals rather than just theory. I learned how to do complete cabling, configure DVR/NVR systems, and properly set up biometric attendance software with EM locks. The instructors are incredibly knowledgeable, supportive, and patiently cleared all my doubts. This course gives you real-world, industry-ready skills. Highly recommended for anyone looking to build a career in safety and security systems!"
-                        },
-                        {
-                            name: "Janagiraman Boss",
-                            initial: "J",
-                            bgColor: "bg-blue-600",
-                            course: "Professional Course in Safety & Security Systems",
-                            time: "02:15 PM",
-                            text: "Altron Academy – My Life Changing Experience Altron Academy provides excellent teaching with a strong focus on practical training. The on-site training is handled by highly experienced senior professionals who guide us step by step. The entire team is very supportive—from training to office assistance—and they also help with placement opportunities. Because of Altron Academy, my life has truly changed in a positive way. Special Thanks to: Gajendran Mari Mahesh Thank you so much to everyone for your support and guidance. I’m truly grateful and send my love to the entire team!"
-                        },
-                        {
-                            name: "Ajith Kumar",
-                            initial: "A",
-                            bgColor: "bg-indigo-600",
-                            course: "Professional Course in Safety & Security Engineering",
-                            time: "05:30 PM",
-                            text: "This Altron Company and altrox Cctv is perfectly run in the institute. All teaching staff is very excellent.. I am go through in( professional course) Had completed... Techincal teaching staff : 1.Gajendran 2.Marri 3.mahesh 4.shamim very thanks to all Staff....."
-                        },
-                        {
-                            name: "Kaviarasan",
-                            initial: "K",
-                            bgColor: "bg-teal-600",
-                            course: "Professional Course in Safety & Security Systems",
-                            time: "07:18 PM",
-                            text: "I am Kaviarasan from Thanjavur, I have completed Access control and biometric, video door phone, CCTV course, the course is worth for every penny, thanks to Gaja sir, and Mari, I recommend to everyone if you want to learn CCTV and security systems."
-                        }
-                    ].map((chat, i) => (
-                        <div key={i} className="rounded-3xl overflow-hidden border border-emerald-200/80 shadow-[0_15px_40px_rgba(0,0,0,0.08)] bg-white flex flex-col hover:-translate-y-1 transition-transform duration-300">
-                            {/* WhatsApp Header Bar */}
-                            <div className="bg-[#075e54] text-white p-4 flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className={`w-10 h-10 rounded-full ${chat.bgColor} flex items-center justify-center font-black text-white text-lg shadow-md border-2 border-white/20`}>
-                                        {chat.initial}
-                                    </div>
-                                    <div>
-                                        <div className="font-bold text-base leading-tight flex items-center gap-1.5">
-                                            {chat.name}
-                                            <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                                        </div>
-                                        <div className="text-[11px] text-emerald-100 font-medium">
-                                            Online • Verified Altron Student
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div className="flex items-center gap-2">
-                                    <span className="bg-emerald-700/80 text-emerald-100 text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
-                                        WhatsApp Chat
-                                    </span>
-                                </div>
-                            </div>
+                {/* Carousel Navigation Bar (Visible on Mobile & Desktop) */}
+                <div className="flex items-center justify-center gap-3 mb-6">
+                    <button
+                        onClick={() => scrollTestimonials('left')}
+                        className="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold px-4 py-2 rounded-full text-xs sm:text-sm shadow-md flex items-center gap-1.5 transition-all"
+                        aria-label="Previous Testimonial"
+                    >
+                        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span>PREV</span>
+                    </button>
 
-                            {/* WhatsApp Chat Body Wallpaper */}
-                            <div className="bg-[#efeae2] p-5 sm:p-6 flex-grow relative" style={{ backgroundImage: "radial-gradient(#cbd5e1 1px, transparent 1px)", backgroundSize: "16px 16px" }}>
-                                
-                                {/* Date Divider */}
-                                <div className="text-center mb-4">
-                                    <span className="bg-white/90 backdrop-blur-sm text-gray-500 font-semibold text-[10px] uppercase px-3 py-1 rounded-md shadow-2xs border border-gray-200/60">
-                                        Verified WhatsApp Review
-                                    </span>
-                                </div>
-
-                                {/* Incoming Message Bubble */}
-                                <div className="bg-white rounded-2xl rounded-tl-xs p-4 sm:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-emerald-100/60 max-w-[95%] relative">
-                                    {/* Star Rating Header */}
-                                    <div className="flex items-center gap-1 text-yellow-400 mb-2">
-                                        {[...Array(5)].map((_, s) => (
-                                            <Star key={s} className="w-4 h-4 fill-current" />
-                                        ))}
-                                    </div>
-
-                                    {/* Message Text */}
-                                    <p className="text-gray-800 text-xs sm:text-sm font-medium leading-relaxed mb-3">
-                                        "{chat.text}"
-                                    </p>
-
-                                    {/* Timestamp & Double Blue Ticks */}
-                                    <div className="flex items-center justify-end gap-1 text-[10px] text-gray-400 font-semibold pt-1 border-t border-gray-100">
-                                        <span>{chat.time}</span>
-                                        <span className="text-sky-500 font-bold">✓✓</span>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            {/* Card Footer: Student Course Info */}
-                            <div className="bg-white p-4 border-t border-gray-100 flex items-center justify-between">
-                                <div>
-                                    <div className="text-xs font-extrabold text-gray-900">{chat.name}</div>
-                                    <div className="text-[11px] text-gray-500 font-medium">{chat.course}</div>
-                                </div>
-                                <span className="bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase px-3 py-1 rounded-full border border-emerald-200 shrink-0">
-                                    Verified Course
-                                </span>
-                            </div>
-
-                        </div>
-                    ))}
+                    <button
+                        onClick={() => scrollTestimonials('right')}
+                        className="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold px-4 py-2 rounded-full text-xs sm:text-sm shadow-md flex items-center gap-1.5 transition-all"
+                        aria-label="Next Testimonial"
+                    >
+                        <span>NEXT</span>
+                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </button>
                 </div>
-                
+
+                {/* Horizontal Auto & Manual Carousel Container */}
+                <div className="relative mb-10 md:mb-14">
+                    {/* Floating Left Scroll Button */}
+                    <button
+                        onClick={() => scrollTestimonials('left')}
+                        className="absolute -left-1 sm:left-2 top-1/2 -translate-y-1/2 z-30 bg-white/95 hover:bg-white text-gray-900 w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-[0_8px_25px_rgba(0,0,0,0.25)] border border-gray-200 transition-all hover:scale-110 flex items-center justify-center active:scale-95"
+                        aria-label="Previous Testimonial"
+                    >
+                        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-900" />
+                    </button>
+
+                    {/* Floating Right Scroll Button */}
+                    <button
+                        onClick={() => scrollTestimonials('right')}
+                        className="absolute -right-1 sm:right-2 top-1/2 -translate-y-1/2 z-30 bg-white/95 hover:bg-white text-gray-900 w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-[0_8px_25px_rgba(0,0,0,0.25)] border border-gray-200 transition-all hover:scale-110 flex items-center justify-center active:scale-95"
+                        aria-label="Next Testimonial"
+                    >
+                        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-900" />
+                    </button>
+
+                    {/* Horizontal Scroll Track */}
+                    <div
+                        ref={testimonialScrollRef}
+                        onMouseEnter={() => setIsTestimonialHovered(true)}
+                        onMouseLeave={() => setIsTestimonialHovered(false)}
+                        onTouchStart={() => setIsTestimonialHovered(true)}
+                        onTouchEnd={() => setIsTestimonialHovered(false)}
+                        className="flex gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 pt-2 px-2 no-scrollbar"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    >
+                        {[
+                            {
+                                name: "Vivek Rajan",
+                                initial: "V",
+                                bgColor: "bg-emerald-600",
+                                course: "Professional Course in Safety & Security Engineering",
+                                time: "10:42 AM",
+                                text: "I recently completed the CCTV and Biometric Access Control course at Altron Academy, and it was a fantastic experience. The training is highly focused on hands-on practicals rather than just theory. I learned how to do complete cabling, configure DVR/NVR systems, and properly set up biometric attendance software with EM locks. The instructors are incredibly knowledgeable, supportive, and patiently cleared all my doubts. This course gives you real-world, industry-ready skills. Highly recommended for anyone looking to build a career in safety and security systems!"
+                            },
+                            {
+                                name: "Janagiraman Boss",
+                                initial: "J",
+                                bgColor: "bg-blue-600",
+                                course: "Professional Course in Safety & Security Systems",
+                                time: "02:15 PM",
+                                text: "Altron Academy – My Life Changing Experience Altron Academy provides excellent teaching with a strong focus on practical training. The on-site training is handled by highly experienced senior professionals who guide us step by step. The entire team is very supportive—from training to office assistance—and they also help with placement opportunities. Because of Altron Academy, my life has truly changed in a positive way. Special Thanks to: Gajendran Mari Mahesh Thank you so much to everyone for your support and guidance. I’m truly grateful and send my love to the entire team!"
+                            },
+                            {
+                                name: "Ajith Kumar",
+                                initial: "A",
+                                bgColor: "bg-indigo-600",
+                                course: "Professional Course in Safety & Security Engineering",
+                                time: "05:30 PM",
+                                text: "This Altron Company and altrox Cctv is perfectly run in the institute. All teaching staff is very excellent.. I am go through in( professional course) Had completed... Techincal teaching staff : 1.Gajendran 2.Marri 3.mahesh 4.shamim very thanks to all Staff....."
+                            },
+                            {
+                                name: "Kaviarasan",
+                                initial: "K",
+                                bgColor: "bg-teal-600",
+                                course: "Professional Course in Safety & Security Systems",
+                                time: "07:18 PM",
+                                text: "I am Kaviarasan from Thanjavur, I have completed Access control and biometric, video door phone, CCTV course, the course is worth for every penny, thanks to Gaja sir, and Mari, I recommend to everyone if you want to learn CCTV and security systems."
+                            },
+                            // Duplicate cards for seamless looping marquee horizontal scroll
+                            {
+                                name: "Vivek Rajan",
+                                initial: "V",
+                                bgColor: "bg-emerald-600",
+                                course: "Professional Course in Safety & Security Engineering",
+                                time: "10:42 AM",
+                                text: "I recently completed the CCTV and Biometric Access Control course at Altron Academy, and it was a fantastic experience. The training is highly focused on hands-on practicals rather than just theory. I learned how to do complete cabling, configure DVR/NVR systems, and properly set up biometric attendance software with EM locks. The instructors are incredibly knowledgeable, supportive, and patiently cleared all my doubts. This course gives you real-world, industry-ready skills. Highly recommended for anyone looking to build a career in safety and security systems!"
+                            },
+                            {
+                                name: "Janagiraman Boss",
+                                initial: "J",
+                                bgColor: "bg-blue-600",
+                                course: "Professional Course in Safety & Security Systems",
+                                time: "02:15 PM",
+                                text: "Altron Academy – My Life Changing Experience Altron Academy provides excellent teaching with a strong focus on practical training. The on-site training is handled by highly experienced senior professionals who guide us step by step. The entire team is very supportive—from training to office assistance—and they also help with placement opportunities. Because of Altron Academy, my life has truly changed in a positive way. Special Thanks to: Gajendran Mari Mahesh Thank you so much to everyone for your support and guidance. I’m truly grateful and send my love to the entire team!"
+                            },
+                            {
+                                name: "Ajith Kumar",
+                                initial: "A",
+                                bgColor: "bg-indigo-600",
+                                course: "Professional Course in Safety & Security Engineering",
+                                time: "05:30 PM",
+                                text: "This Altron Company and altrox Cctv is perfectly run in the institute. All teaching staff is very excellent.. I am go through in( professional course) Had completed... Techincal teaching staff : 1.Gajendran 2.Marri 3.mahesh 4.shamim very thanks to all Staff....."
+                            },
+                            {
+                                name: "Kaviarasan",
+                                initial: "K",
+                                bgColor: "bg-teal-600",
+                                course: "Professional Course in Safety & Security Systems",
+                                time: "07:18 PM",
+                                text: "I am Kaviarasan from Thanjavur, I have completed Access control and biometric, video door phone, CCTV course, the course is worth for every penny, thanks to Gaja sir, and Mari, I recommend to everyone if you want to learn CCTV and security systems."
+                            }
+                        ].map((chat, i) => (
+                            <div
+                                key={i}
+                                className="w-[88vw] sm:w-[420px] md:w-[460px] shrink-0 snap-center rounded-3xl overflow-hidden border border-emerald-200/80 shadow-[0_12px_35px_rgba(0,0,0,0.08)] bg-white flex flex-col hover:-translate-y-1 transition-transform duration-300"
+                            >
+                                {/* WhatsApp Header Bar */}
+                                <div className="bg-[#075e54] text-white p-3.5 sm:p-4 flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full ${chat.bgColor} flex items-center justify-center font-black text-white text-base sm:text-lg shadow-md border-2 border-white/20`}>
+                                            {chat.initial}
+                                        </div>
+                                        <div>
+                                            <div className="font-bold text-sm sm:text-base leading-tight flex items-center gap-1.5">
+                                                {chat.name}
+                                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                            </div>
+                                            <div className="text-[10px] sm:text-[11px] text-emerald-100 font-medium">
+                                                Online • Verified Altron Student
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        <span className="bg-emerald-700/80 text-emerald-100 text-[9px] sm:text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                                            WhatsApp Chat
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* WhatsApp Chat Body Wallpaper */}
+                                <div className="bg-[#efeae2] p-4 sm:p-6 flex-grow relative" style={{ backgroundImage: "radial-gradient(#cbd5e1 1px, transparent 1px)", backgroundSize: "16px 16px" }}>
+
+                                    {/* Date Divider */}
+                                    <div className="text-center mb-3 sm:mb-4">
+                                        <span className="bg-white/90 backdrop-blur-sm text-gray-500 font-semibold text-[9px] sm:text-[10px] uppercase px-3 py-1 rounded-md shadow-2xs border border-gray-200/60">
+                                            Verified WhatsApp Review
+                                        </span>
+                                    </div>
+
+                                    {/* Incoming Message Bubble */}
+                                    <div className="bg-white rounded-2xl rounded-tl-xs p-3.5 sm:p-5 shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-emerald-100/60 max-w-[98%] relative">
+                                        {/* Star Rating Header */}
+                                        <div className="flex items-center gap-1 text-yellow-400 mb-2">
+                                            {[...Array(5)].map((_, s) => (
+                                                <Star key={s} className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
+                                            ))}
+                                        </div>
+
+                                        {/* Message Text */}
+                                        <p className="text-gray-800 text-xs sm:text-sm font-medium leading-relaxed mb-3">
+                                            "{chat.text}"
+                                        </p>
+
+                                        {/* Timestamp & Double Blue Ticks */}
+                                        <div className="flex items-center justify-end gap-1 text-[10px] text-gray-400 font-semibold pt-1 border-t border-gray-100">
+                                            <span>{chat.time}</span>
+                                            <span className="text-sky-500 font-bold">✓✓</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                {/* Card Footer: Student Course Info */}
+                                <div className="bg-white p-3.5 sm:p-4 border-t border-gray-100 flex items-center justify-between gap-2">
+                                    <div className="overflow-hidden">
+                                        <div className="text-xs sm:text-sm font-extrabold text-gray-900 truncate">{chat.name}</div>
+                                        <div className="text-[10px] sm:text-[11px] text-gray-500 font-medium truncate">{chat.course}</div>
+                                    </div>
+                                    <span className="bg-emerald-50 text-emerald-700 text-[9px] sm:text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-emerald-200 shrink-0">
+                                        Verified Course
+                                    </span>
+                                </div>
+
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Bottom Action Links */}
-                <div className="flex flex-wrap justify-center gap-4">
-                    <Link to="/testimonials" className="bg-white border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 font-black px-6 py-3 rounded-full uppercase text-xs sm:text-sm tracking-wider transition-all shadow-sm flex items-center gap-2">
+                <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+                    <Link to="/testimonials" className="bg-white border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 font-black px-5 sm:px-6 py-2.5 sm:py-3 rounded-full uppercase text-xs sm:text-sm tracking-wider transition-all shadow-sm flex items-center gap-2">
                         <span>💬 MORE WHATSAPP REVIEWS</span>
                     </Link>
-                    <a href="https://www.google.com/maps/place/ALTRON+CCTV,+SAFETY+%26+SECURITY+INSTITUTE/@13.0548357,80.229833,17z/data=!4m8!3m7!1s0x3a5266f51b52007d:0x946b29cd6757348c!8m2!3d13.0548357!4d80.229833!9m1!1b1!16s%2Fg%2F11bxgnpm50" target="_blank" rel="noreferrer" className="bg-white border-2 border-blue-600 text-blue-700 hover:bg-blue-50 font-black px-6 py-3 rounded-full uppercase text-xs sm:text-sm tracking-wider transition-all shadow-sm flex items-center gap-2">
+                    <a href="https://www.google.com/maps/place/ALTRON+CCTV,+SAFETY+%26+SECURITY+INSTITUTE/@13.0548357,80.229833,17z/data=!4m8!3m7!1s0x3a5266f51b52007d:0x946b29cd6757348c!8m2!3d13.0548357!4d80.229833!9m1!1b1!16s%2Fg%2F11bxgnpm50" target="_blank" rel="noreferrer" className="bg-white border-2 border-blue-600 text-blue-700 hover:bg-blue-50 font-black px-5 sm:px-6 py-2.5 sm:py-3 rounded-full uppercase text-xs sm:text-sm tracking-wider transition-all shadow-sm flex items-center gap-2">
                         <span>⭐ GOOGLE REVIEWS (4.9/5)</span>
                     </a>
                 </div>
@@ -1072,7 +1298,7 @@ export default function LandingPage() {
                     <div className="space-y-4">
                         {FAQ_DATA.map((faq, idx) => (
                             <div key={idx} className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm transition-all">
-                                <button 
+                                <button
                                     className="w-full text-left px-8 py-6 font-bold text-lg text-gray-900 flex justify-between items-center focus:outline-none"
                                     onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                                 >
@@ -1102,7 +1328,7 @@ export default function LandingPage() {
                 <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-red-600/10 filter blur-[120px] rounded-full pointer-events-none z-0"></div>
 
                 <div className="max-w-6xl mx-auto px-4 relative z-10">
-                    
+
                     {/* Top Siren & Title Header */}
                     <div className="text-center max-w-3xl mx-auto mb-14">
                         {/* Siren Icon with rays */}
@@ -1114,10 +1340,10 @@ export default function LandingPage() {
 
                         {/* Title: STOP WAITING FOR THE "RIGHT TIME" */}
                         <h2 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-white leading-none">
-                            STOP WAITING FOR<br/>
+                            STOP WAITING FOR<br />
                             <span className="text-red-500 drop-shadow-[0_0_20px_rgba(239,68,68,0.5)]">THE "RIGHT TIME"</span>
                         </h2>
-                        
+
                         <p className="text-gray-400 font-medium text-base md:text-lg mt-4">
                             Start building a skill that can open new career opportunities.
                         </p>
@@ -1128,7 +1354,7 @@ export default function LandingPage() {
 
                     {/* 3 Step Cards Grid with Flow Arrows */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-4 mb-8 items-center">
-                        
+
                         {/* Card 01 */}
                         <div className="bg-[#121216]/90 border border-red-500/20 hover:border-red-500/50 rounded-2xl p-6 text-center shadow-[0_10px_30px_rgba(0,0,0,0.5)] relative group transition-all duration-300">
                             <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-red-600/30 to-red-950/80 border border-red-500/60 flex items-center justify-center shadow-[0_0_20px_rgba(239,68,68,0.3)] mb-2 group-hover:scale-110 transition-transform">
@@ -1181,7 +1407,7 @@ export default function LandingPage() {
                     {/* Bottom Dark Box with Price & REGISTER NOW Button */}
                     <div className="bg-[#121216]/90 border border-red-500/30 rounded-3xl p-6 md:p-8 shadow-[0_15px_40px_rgba(0,0,0,0.7)] backdrop-blur-md">
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                            
+
                             {/* Column 1: Course Fee */}
                             <div className="md:col-span-4 flex items-center gap-4 justify-center md:justify-start border-b md:border-b-0 md:border-r border-zinc-800 pb-4 md:pb-0 pr-0 md:pr-4">
                                 <span className="text-4xl shrink-0">💰</span>
@@ -1210,15 +1436,15 @@ export default function LandingPage() {
 
                             {/* Column 3: REGISTER NOW Button */}
                             <div className="md:col-span-4 text-center">
-                                <Link 
-                                    to="/payment" 
+                                <button
+                                    onClick={() => setIsPaymentModalOpen(true)}
                                     className="btn-shine bg-gradient-to-r from-red-600 via-red-500 to-red-600 hover:from-red-500 hover:to-red-600 text-white rounded-2xl py-4 px-6 font-black text-base md:text-lg uppercase tracking-wider shadow-[0_0_30px_rgba(239,68,68,0.5)] flex items-center justify-center gap-3 transition-transform hover:-translate-y-0.5 w-full text-center group"
                                 >
                                     <span>REGISTER NOW</span>
                                     <div className="w-8 h-8 rounded-full bg-red-950/60 border border-white/20 flex items-center justify-center text-white shrink-0 group-hover:translate-x-1 transition-transform">
                                         <ArrowRight className="w-4 h-4 text-white" />
                                     </div>
-                                </Link>
+                                </button>
                                 <div className="text-[11px] text-gray-400 font-medium italic mt-2.5">
                                     Take the first step towards a brighter future
                                 </div>
@@ -1243,6 +1469,12 @@ export default function LandingPage() {
 
                 </div>
             </section>
+
+            {/* In-Page Direct Razorpay Payment Modal */}
+            <PaymentModal
+                isOpen={isPaymentModalOpen}
+                onClose={() => setIsPaymentModalOpen(false)}
+            />
 
         </div>
     );
