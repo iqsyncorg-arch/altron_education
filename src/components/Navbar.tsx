@@ -111,6 +111,8 @@ export default function Navbar() {
 
     const isLandingPage = location.pathname.toLowerCase() === '/landingpage';
 
+    if (isLandingPage) return null;
+
     return (
 
         <nav className="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm">
@@ -144,10 +146,8 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Main Navbar & Mobile Menu (Hidden on /landingpage) */}
-            {!isLandingPage && (
-                <>
-                    <div className="max-w-7xl mx-auto px-6">
+            {/* Main Navbar & Mobile Menu */}
+            <div className="max-w-7xl mx-auto px-6">
 
                         <div className="flex items-center justify-between h-24">
 
@@ -329,9 +329,6 @@ export default function Navbar() {
                         </div>
 
                     )}
-                </>
-            )}
-
         </nav>
 
     )

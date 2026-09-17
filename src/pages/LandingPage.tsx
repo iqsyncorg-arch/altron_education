@@ -128,42 +128,42 @@ export default function LandingPage() {
         <div className="bg-zinc-50 min-h-screen font-sans selection:bg-brand-500/20 text-gray-900">
 
             {/* 1. HERO BANNER SECTION (LIGHT WHITE THEME WITH VIBRANT MATCHING CARDS) */}
-            <section className="min-h-screen lg:h-screen lg:max-h-[920px] pt-12 md:pt-14 pb-4 md:pb-6 bg-gradient-to-b from-slate-50 via-white to-gray-50 text-gray-900 relative overflow-hidden flex flex-col justify-between border-b border-gray-200">
+            <section className="py-8 sm:py-12 md:py-14 bg-gradient-to-b from-slate-50 via-white to-gray-50 text-gray-900 relative overflow-hidden border-b border-gray-200">
                 {/* Background Fluid Glow Accents */}
                 <div className="absolute top-10 right-0 w-80 md:w-[500px] h-80 md:h-[500px] bg-gradient-to-br from-red-100/60 via-brand-100/40 to-transparent rounded-full blur-3xl pointer-events-none"></div>
                 <div className="absolute bottom-10 left-0 w-80 md:w-[500px] h-80 md:h-[500px] bg-gradient-to-tr from-sky-100/60 via-blue-50/30 to-transparent rounded-full blur-3xl pointer-events-none"></div>
 
-                <div className="max-w-7xl mx-auto px-3 sm:px-6 relative z-10 text-center w-full my-auto flex flex-col justify-between h-full py-1">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center w-full">
 
                     {/* Header Block */}
-                    <div className="pt-1 sm:pt-2">
+                    <div className="pt-2 sm:pt-4">
                         {/* Top Pill Badge */}
-                        <div className="inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-4 sm:px-5 py-2 sm:py-1.5 rounded-full shadow-sm mb-2 max-w-full">
+                        <div className="inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full shadow-sm mb-3 max-w-full">
                             <span className="w-2 h-2 rounded-full bg-red-600 animate-ping shrink-0"></span>
                             <span className="w-2 h-2 rounded-full bg-red-600 -ml-4 shrink-0"></span>
-                            <span className="font-extrabold text-xs sm:text-sm tracking-wider sm:tracking-[0.16em] uppercase truncate">
+                            <span className="font-extrabold text-[10px] xs:text-xs sm:text-sm tracking-wider sm:tracking-[0.16em] uppercase truncate">
                                 LIMITED SEATS AVAILABLE FOR NEXT BATCH
                             </span>
                         </div>
 
                         {/* Headline */}
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-[0.95] mb-0.5 text-gray-900">
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-tight mb-1 text-gray-900">
                             READY FOR A
                         </h1>
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-[0.95] mb-2 text-brand-600">
+                        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight uppercase leading-tight mb-3 text-brand-600">
                             BETTER CAREER?
                         </h1>
 
                         {/* Sub-headlines */}
-                        <p className="text-sm sm:text-base md:text-xl text-gray-700 font-semibold tracking-tight mb-0.5 leading-snug sm:leading-normal">
+                        <p className="text-xs sm:text-base md:text-xl text-gray-700 font-semibold tracking-tight mb-1 leading-snug">
                             Learn Professional Security Systems Skills in Just <strong className="text-gray-900 font-black">4 Weeks.</strong>
                         </p>
-                        <p className="text-sm sm:text-base md:text-xl text-red-600 font-extrabold tracking-tight mb-2 md:mb-3 leading-snug sm:leading-normal">
+                        <p className="text-xs sm:text-base md:text-xl text-red-600 font-extrabold tracking-tight mb-4 md:mb-6 leading-snug">
                             Start Exploring Job Opportunities From Week 5.
                         </p>
 
                         {/* Video Practical Training Preview */}
-                        <div className="my-3 max-w-2xl lg:max-w-3xl mx-auto w-full relative z-20">
+                        <div className="my-4 md:my-6 max-w-2xl lg:max-w-3xl mx-auto w-full relative z-20">
                             <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_15px_45px_rgba(0,0,0,0.15)] border-2 border-red-500/30 bg-black aspect-video group">
                                 <video
                                     src="https://res.cloudinary.com/dq6gr5zjc/video/upload/v1775895249/Safety_Security_Engineering_Course_Video_kcjmnw.mp4"
@@ -178,26 +178,26 @@ export default function LandingPage() {
                         </div>
                     </div>
 
-                    {/* 5 Category Cards (Different Vibrant Light Color Themes) */}
-                    <div className="grid grid-cols-5 gap-1 sm:gap-2.5 md:gap-4 text-center relative z-20 my-1">
+                    {/* 5 Category Cards (Single Row on Mobile) */}
+                    <div className="grid grid-cols-5 gap-1 sm:gap-4 text-center relative z-20 my-4 sm:my-6">
 
                         {/* Card 1: CCTV Systems (Rose / Red Theme) */}
-                        <div className="bg-gradient-to-b from-rose-50 via-white to-red-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(244,63,94,0.12)] border border-rose-200/90 hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 group">
-                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-rose-100/80 border border-rose-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform overflow-hidden shrink-0">
-                                <div className="relative w-6 h-6 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center">
+                        <div className="bg-gradient-to-b from-rose-50 via-white to-red-50/50 rounded-xl sm:rounded-2xl p-1.5 sm:p-4 flex flex-col items-center justify-center text-center shadow-sm border border-rose-200/90 hover:border-rose-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-8 h-8 xs:w-10 xs:h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-rose-100/80 border border-rose-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform overflow-hidden shrink-0">
+                                <div className="relative w-5 h-5 xs:w-7 xs:h-7 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center">
                                     <Lottie src={cctvAnimation} loop autoplay className="w-full h-full object-contain" />
                                 </div>
                             </div>
-                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-rose-950 leading-tight tracking-tight">
+                            <h3 className="text-[8px] xs:text-[10px] sm:text-base md:text-lg font-black text-rose-950 leading-tight tracking-tight">
                                 CCTV<br />Systems
                             </h3>
                         </div>
 
                         {/* Card 2: Biometrics Systems (Sky / Blue Theme) */}
-                        <div className="bg-gradient-to-b from-sky-50 via-white to-blue-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(14,165,233,0.12)] border border-sky-200/90 hover:border-sky-400 hover:-translate-y-1 transition-all duration-300 group">
-                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-sky-100/80 border border-sky-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
-                                <div className="relative w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-5 h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="bg-gradient-to-b from-sky-50 via-white to-blue-50/50 rounded-xl sm:rounded-2xl p-1.5 sm:p-4 flex flex-col items-center justify-center text-center shadow-sm border border-sky-200/90 hover:border-sky-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-8 h-8 xs:w-10 xs:h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-sky-100/80 border border-sky-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-5 h-5 xs:w-6 xs:h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-4 h-4 xs:w-5 xs:h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="12" y="8" width="40" height="48" rx="6" fill="#1E293B" stroke="#334155" strokeWidth="2" />
                                         <rect x="17" y="13" width="30" height="16" rx="2" fill="#0F172A" />
                                         <rect x="20" y="16" width="16" height="4" rx="1" fill="#38BDF8" />
@@ -214,16 +214,16 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-sky-950 leading-tight tracking-tight">
+                            <h3 className="text-[8px] xs:text-[10px] sm:text-base md:text-lg font-black text-sky-950 leading-tight tracking-tight">
                                 Biometrics<br />Systems
                             </h3>
                         </div>
 
                         {/* Card 3: Fire Alarm Systems (Amber / Orange Theme) */}
-                        <div className="bg-gradient-to-b from-amber-50 via-white to-orange-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(245,158,11,0.12)] border border-amber-200/90 hover:border-amber-400 hover:-translate-y-1 transition-all duration-300 group">
-                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-amber-100/80 border border-amber-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
-                                <div className="relative w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-5 h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="bg-gradient-to-b from-amber-50 via-white to-orange-50/50 rounded-xl sm:rounded-2xl p-1.5 sm:p-4 flex flex-col items-center justify-center text-center shadow-sm border border-amber-200/90 hover:border-amber-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-8 h-8 xs:w-10 xs:h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-amber-100/80 border border-amber-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-5 h-5 xs:w-6 xs:h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-4 h-4 xs:w-5 xs:h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="32" cy="26" r="18" fill="#DC2626" stroke="#B91C1C" strokeWidth="2" />
                                         <circle cx="32" cy="26" r="14" fill="#EF4444" />
                                         <circle cx="32" cy="26" r="4" fill="#991B1B" />
@@ -234,16 +234,16 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-amber-950 leading-tight tracking-tight">
+                            <h3 className="text-[8px] xs:text-[10px] sm:text-base md:text-lg font-black text-amber-950 leading-tight tracking-tight">
                                 Fire Alarm<br />Systems
                             </h3>
                         </div>
 
                         {/* Card 4: Burglar Alarm Systems (Indigo / Purple Theme) */}
-                        <div className="bg-gradient-to-b from-indigo-50 via-white to-purple-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(99,102,241,0.12)] border border-indigo-200/90 hover:border-indigo-400 hover:-translate-y-1 transition-all duration-300 group">
-                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-indigo-100/80 border border-indigo-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
-                                <div className="relative w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-5 h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="bg-gradient-to-b from-indigo-50 via-white to-purple-50/50 rounded-xl sm:rounded-2xl p-1.5 sm:p-4 flex flex-col items-center justify-center text-center shadow-sm border border-indigo-200/90 hover:border-indigo-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-8 h-8 xs:w-10 xs:h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-indigo-100/80 border border-indigo-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-5 h-5 xs:w-6 xs:h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-4 h-4 xs:w-5 xs:h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <line x1="16" y1="18" x2="16" y2="8" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
                                         <line x1="48" y1="18" x2="48" y2="8" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" />
                                         <path d="M28 8 Q32 4 36 8" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" fill="none" />
@@ -264,16 +264,16 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-indigo-950 leading-tight tracking-tight">
+                            <h3 className="text-[8px] xs:text-[10px] sm:text-base md:text-lg font-black text-indigo-950 leading-tight tracking-tight">
                                 Burglar Alarm<br />Systems
                             </h3>
                         </div>
 
                         {/* Card 5: Home Security & Automation (Emerald / Teal Theme) */}
-                        <div className="bg-gradient-to-b from-emerald-50 via-white to-teal-50/50 rounded-xl sm:rounded-[2rem] p-1.5 sm:p-3.5 md:p-4 flex flex-col items-center justify-center text-center shadow-[0_8px_25px_rgba(16,185,129,0.12)] border border-emerald-200/90 hover:border-emerald-400 hover:-translate-y-1 transition-all duration-300 group">
-                            <div className="w-9 h-9 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-emerald-100/80 border border-emerald-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
-                                <div className="relative w-6 h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
-                                    <svg className="w-5 h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="bg-gradient-to-b from-emerald-50 via-white to-teal-50/50 rounded-xl sm:rounded-2xl p-1.5 sm:p-4 flex flex-col items-center justify-center text-center shadow-sm border border-emerald-200/90 hover:border-emerald-400 hover:-translate-y-1 transition-all duration-300 group">
+                            <div className="w-8 h-8 xs:w-10 xs:h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-emerald-100/80 border border-emerald-200 flex items-center justify-center mb-1 sm:mb-2 shadow-inner group-hover:scale-105 transition-transform shrink-0">
+                                <div className="relative w-5 h-5 xs:w-6 xs:h-6 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center">
+                                    <svg className="w-4 h-4 xs:w-5 xs:h-5 sm:w-9 sm:h-9 md:w-10 md:h-10" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 28 L32 12 L52 28 L46 28 L46 50 L18 50 L18 28 Z" stroke="#0F172A" strokeWidth="4" strokeLinejoin="round" fill="none" />
                                         <path d="M26 26 Q32 20 38 26" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" fill="none" />
                                         <path d="M29 30 Q32 26 35 30" stroke="#0284C7" strokeWidth="2.5" strokeLinecap="round" fill="none" />
@@ -284,7 +284,7 @@ export default function LandingPage() {
                                     </svg>
                                 </div>
                             </div>
-                            <h3 className="text-[8px] xs:text-[9px] sm:text-base md:text-lg font-black text-emerald-950 leading-tight tracking-tight text-center">
+                            <h3 className="text-[8px] xs:text-[10px] sm:text-base md:text-lg font-black text-emerald-950 leading-tight tracking-tight text-center">
                                 Home Security<br />& Automation
                             </h3>
                         </div>
@@ -292,12 +292,12 @@ export default function LandingPage() {
                     </div>
 
                     {/* Bottom Features & Fee Bar Container */}
-                    <div className="pb-1">
+                    <div className="pt-2">
                         {/* Row 2: Action & Fee Bar */}
-                        <div className="bg-white rounded-2xl md:rounded-[1.8rem] p-4 sm:p-5 md:p-6 border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] text-gray-900 grid md:grid-cols-12 gap-3.5 sm:gap-4 items-center relative z-20 mb-2.5">
+                        <div className="bg-white rounded-2xl md:rounded-[1.8rem] p-4 sm:p-5 md:p-6 border border-gray-100 shadow-[0_12px_40px_rgba(0,0,0,0.12)] text-gray-900 grid grid-cols-1 md:grid-cols-12 gap-4 items-center relative z-20 mb-4">
                             {/* Left Fee Column */}
-                            <div className="md:col-span-3 flex md:flex-col items-center justify-between md:justify-start text-left border-b md:border-b-0 border-gray-100 pb-2.5 md:pb-0">
-                                <div className="text-gray-500 font-semibold text-xs sm:text-xs md:text-xs mb-0.5">Course Fee:</div>
+                            <div className="md:col-span-3 flex md:flex-col items-center justify-between md:justify-start text-left border-b md:border-b-0 border-gray-100 pb-3 md:pb-0">
+                                <div className="text-gray-500 font-semibold text-xs mb-0.5">Course Fee:</div>
                                 <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-brand-600 tracking-tight leading-none">
                                     ₹33,000
                                 </div>
@@ -305,42 +305,42 @@ export default function LandingPage() {
 
                             {/* Center Register Button Column */}
                             <div className="md:col-span-5 text-center flex flex-col items-center">
-                                <button onClick={() => setIsPaymentModalOpen(true)} className="btn-shine bg-brand-600 hover:bg-brand-700 text-white rounded-full py-3 sm:py-3 px-5 sm:px-7 font-black text-xs sm:text-sm uppercase inline-flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(192,57,43,0.35)] w-full transition-transform hover:-translate-y-0.5">
+                                <button onClick={() => setIsPaymentModalOpen(true)} className="btn-shine bg-brand-600 hover:bg-brand-700 text-white rounded-full py-3 sm:py-3.5 px-6 font-black text-xs sm:text-sm uppercase inline-flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(192,57,43,0.35)] w-full transition-transform hover:-translate-y-0.5">
                                     REGISTER NOW FOR ₹1,000 <ArrowRight className="w-4 h-4 shrink-0" />
                                 </button>
-                                <div className="text-[10px] sm:text-[11px] text-gray-500 font-medium mt-1.5 text-center">
+                                <div className="text-[11px] text-gray-500 font-medium mt-1.5 text-center">
                                     Take the first step towards a secure and successful career.
                                 </div>
                             </div>
 
                             {/* Right Commitment Column */}
-                            <div className="md:col-span-4 flex items-center justify-center md:justify-end gap-2.5 md:border-l border-gray-200 md:pl-5 pt-2.5 md:pt-0 border-t md:border-t-0 border-gray-100">
-                                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center shrink-0 shadow-md">
-                                    <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                            <div className="md:col-span-4 flex items-center justify-center md:justify-end gap-3 md:border-l border-gray-200 md:pl-5 pt-3 md:pt-0 border-t md:border-t-0 border-gray-100">
+                                <div className="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center shrink-0 shadow-md">
+                                    <ShieldCheck className="w-6 h-6 text-white" />
                                 </div>
                                 <div className="text-left leading-tight">
-                                    <div className="font-extrabold text-gray-900 text-xs">Your Career Our Commitment</div>
-                                    <div className="text-[9px] font-extrabold tracking-widest text-gray-400 uppercase mt-0.5">SKILLS TODAY A SAFER TOMORROW</div>
+                                    <div className="font-extrabold text-gray-900 text-xs sm:text-sm">Your Career Our Commitment</div>
+                                    <div className="text-[9px] sm:text-[10px] font-extrabold tracking-widest text-gray-400 uppercase mt-0.5">SKILLS TODAY A SAFER TOMORROW</div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Row 3: 4 Feature Badges (Placed below Action & Fee Bar) */}
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3 relative z-20">
-                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2 md:py-2 px-2.5 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
-                                <GraduationCap className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-600 shrink-0" />
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-3 relative z-20">
+                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2.5 px-3.5 sm:px-4 flex items-center justify-center gap-2 text-gray-900 text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
+                                <GraduationCap className="w-4 h-4 text-brand-600 shrink-0" />
                                 <span>No prior experience required</span>
                             </div>
-                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2 md:py-2 px-2.5 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
-                                <BookOpen className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-600 shrink-0" />
+                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2.5 px-3.5 sm:px-4 flex items-center justify-center gap-2 text-gray-900 text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
+                                <BookOpen className="w-4 h-4 text-brand-600 shrink-0" />
                                 <span>8th Standard to Any Degree can learn</span>
                             </div>
-                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2 md:py-2 px-2.5 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
-                                <Wrench className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-600 shrink-0" />
+                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2.5 px-3.5 sm:px-4 flex items-center justify-center gap-2 text-gray-900 text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
+                                <Wrench className="w-4 h-4 text-brand-600 shrink-0" />
                                 <span>100% Practical Training</span>
                             </div>
-                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2 md:py-2 px-2.5 sm:px-4 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-900 text-[10px] sm:text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
-                                <Briefcase className="w-3.5 h-3.5 md:w-4 md:h-4 text-brand-600 shrink-0" />
+                            <div className="bg-[#fff5f5] border border-red-100/90 rounded-xl sm:rounded-full py-2.5 px-3.5 sm:px-4 flex items-center justify-center gap-2 text-gray-900 text-xs font-extrabold shadow-sm hover:shadow-md transition-shadow leading-tight">
+                                <Briefcase className="w-4 h-4 text-brand-600 shrink-0" />
                                 <span>Job Opportunities from Week 5</span>
                             </div>
                         </div>
@@ -789,12 +789,12 @@ export default function LandingPage() {
 
                             {/* Center CTA Button */}
                             <div className="flex flex-col items-center text-center flex-1 max-w-lg">
-                                <Link to="/contact" className="btn-shine w-full bg-brand-700 hover:bg-brand-800 text-white rounded-full py-4 px-8 font-black text-xl md:text-2xl tracking-wide uppercase transition-transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(192,57,43,0.3)] flex items-center justify-center gap-3">
+                                <button onClick={() => setIsPaymentModalOpen(true)} className="btn-shine w-full bg-brand-700 hover:bg-brand-800 text-white rounded-full py-4 px-8 font-black text-xl md:text-2xl tracking-wide uppercase transition-transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(192,57,43,0.3)] flex items-center justify-center gap-3 cursor-pointer">
                                     GET COURSE DETAILS
                                     <div className="bg-white text-brand-700 rounded-full p-1">
                                         <ChevronRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={3} />
                                     </div>
-                                </Link>
+                                </button>
                                 <p className="text-gray-500 font-medium text-xs md:text-sm mt-3">Take the first step towards a secure and successful career.</p>
                             </div>
 
