@@ -166,7 +166,7 @@ export default function Payments({ data, loading, onDelete }: PaymentsProps) {
                     <p className="text-sm text-gray-400 max-w-md mx-auto">
                         {searchTerm || dateFilter !== 'all' 
                             ? 'No transactions match your current search or date filters.' 
-                            : 'When students complete ₹1 / ₹1,000 seat reservations via Razorpay, their payments will automatically appear here.'}
+                            : 'When students complete ₹500 seat reservations via Razorpay, their payments will automatically appear here.'}
                     </p>
                     {(searchTerm || dateFilter !== 'all') && (
                         <button

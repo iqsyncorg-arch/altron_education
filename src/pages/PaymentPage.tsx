@@ -55,7 +55,7 @@ export default function PaymentPage() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    amount: 1000,
+                    amount: 500,
                     name: form.name,
                     email: form.email,
                     phone: form.phone
@@ -80,7 +80,7 @@ export default function PaymentPage() {
                 amount: orderData.amount,
                 currency: orderData.currency,
                 name: 'ALTRON SAFETY & SECURITY ACADEMY',
-                description: 'Seat Reservation Fee (₹1,000)',
+                description: 'Seat Reservation Fee (₹500)',
                 image: 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773043568/altronaccodemy_pxgw2x.png',
                 order_id: orderData.order_id,
                 prefill: {
@@ -170,7 +170,7 @@ export default function PaymentPage() {
                     name: form.name,
                     mobile: form.phone,
                     email: form.email,
-                    message: `[SEAT REGISTRATION ₹1,000] Payment Method: ${paymentMethod.toUpperCase()} | UTR/Ref: ${form.utr || 'Not provided'} | Notes: ${form.notes || 'Seat Reservation'}`
+                    message: `[SEAT REGISTRATION ₹500] Payment Method: ${paymentMethod.toUpperCase()} | UTR/Ref: ${form.utr || 'Not provided'} | Notes: ${form.notes || 'Seat Reservation'}`
                 }),
             });
 
@@ -189,7 +189,7 @@ export default function PaymentPage() {
 
     const handleWhatsAppSubmit = () => {
         const payIdInfo = paymentDetails?.paymentId ? `%0A*Razorpay Payment ID:* ${paymentDetails.paymentId}` : '';
-        const message = `Hello Altron Academy! I have completed seat reservation payment of ₹1,000.%0A%0A*Student Name:* ${form.name || 'Not provided'}%0A*Phone:* ${form.phone || 'Not provided'}%0A*Email:* ${form.email || 'Not provided'}%0A*Payment Method:* ${paymentMethod.toUpperCase()}${payIdInfo}%0A*UTR/Ref No:* ${form.utr || 'Pending verification'}%0A%0APlease confirm my seat for the upcoming batch!`;
+        const message = `Hello Altron Academy! I have completed seat reservation payment of ₹500.%0A%0A*Student Name:* ${form.name || 'Not provided'}%0A*Phone:* ${form.phone || 'Not provided'}%0A*Email:* ${form.email || 'Not provided'}%0A*Payment Method:* ${paymentMethod.toUpperCase()}${payIdInfo}%0A*UTR/Ref No:* ${form.utr || 'Pending verification'}%0A%0APlease confirm my seat for the upcoming batch!`;
         window.open(`https://wa.me/919841014328?text=${message}`, '_blank');
     };
 
@@ -226,10 +226,10 @@ export default function PaymentPage() {
                         INSTANT SEAT RESERVATION
                     </div>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 tracking-tight uppercase">
-                        RESERVE YOUR SEAT <span className="text-brand-600">FOR ₹1,000</span>
+                        RESERVE YOUR SEAT <span className="text-brand-600">FOR ₹500</span>
                     </h2>
                     <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto mt-2 font-medium">
-                        Pay ₹1,000 today via Razorpay to instantly lock your seat in the next batch. Balance fee (₹32,000) is payable on your course start date.
+                        Pay ₹500 today via Razorpay to instantly lock your seat in the next batch. Balance fee (₹32,500) is payable on your course start date.
                     </p>
                 </div>
 
@@ -263,11 +263,11 @@ export default function PaymentPage() {
                                 </div>
                                 <div className="flex justify-between items-center text-brand-600 font-bold text-base pt-2 border-t border-slate-200">
                                     <span>Reservation Amount Now:</span>
-                                    <span className="text-2xl font-black text-brand-600">₹1,000</span>
+                                    <span className="text-2xl font-black text-brand-600">₹500</span>
                                 </div>
                                 <div className="flex justify-between items-center text-gray-500 text-xs pt-1">
                                     <span>Remaining Balance:</span>
-                                    <span className="font-semibold text-gray-700">₹32,000 (at course start)</span>
+                                    <span className="font-semibold text-gray-700">₹32,500 (at course start)</span>
                                 </div>
                             </div>
 
@@ -320,7 +320,7 @@ export default function PaymentPage() {
                                         SEAT RESERVED SUCCESSFULLY!
                                     </h3>
                                     <p className="text-gray-600 text-sm md:text-base max-w-md mx-auto mt-2 font-medium">
-                                        Thank you, <strong className="text-gray-900">{form.name || 'Student'}</strong>! Your seat reservation for ₹1,000 is locked for the upcoming batch.
+                                        Thank you, <strong className="text-gray-900">{form.name || 'Student'}</strong>! Your seat reservation for ₹500 is locked for the upcoming batch.
                                     </p>
                                 </div>
 
@@ -336,7 +336,7 @@ export default function PaymentPage() {
                                         </div>
                                         <div className="flex justify-between">
                                             <span className="text-gray-500">Amount Paid:</span>
-                                            <span className="font-bold text-green-700">₹1,000 (Reserved)</span>
+                                            <span className="font-bold text-green-700">₹500 (Reserved)</span>
                                         </div>
                                     </div>
                                 )}
@@ -422,7 +422,7 @@ export default function PaymentPage() {
                                         </div>
 
                                         <p className="text-xs text-gray-600 font-medium leading-relaxed">
-                                            Pay ₹1,000 instantly using Google Pay, PhonePe, Paytm, Credit/Debit Cards, NetBanking or Wallets. Your seat will be confirmed immediately!
+                                            Pay ₹500 instantly using Google Pay, PhonePe, Paytm, Credit/Debit Cards, NetBanking or Wallets. Your seat will be confirmed immediately!
                                         </p>
 
                                         <div className="flex items-center gap-3 pt-2 text-[11px] font-bold text-gray-500 flex-wrap">
@@ -471,7 +471,7 @@ export default function PaymentPage() {
                                                 </span>
                                             </div>
                                             <p className="text-xs text-gray-500 font-semibold mt-3">
-                                                Scan & Pay <strong className="text-brand-600 font-black">₹1,000</strong> using Google Pay, PhonePe, Paytm or BHIM
+                                                Scan & Pay <strong className="text-brand-600 font-black">₹500</strong> using Google Pay, PhonePe, Paytm or BHIM
                                             </p>
                                         </div>
                                     </div>
@@ -532,7 +532,7 @@ export default function PaymentPage() {
                                     <p className="text-xs text-gray-500 font-medium mb-4">
                                         {paymentMethod === 'online'
                                             ? 'Enter your name and phone number below to open Razorpay payment gateway.'
-                                            : 'Fill in your details after paying ₹1,000 to confirm your seat.'}
+                                            : 'Fill in your details after paying ₹500 to confirm your seat.'}
                                     </p>
 
                                     {error && (
@@ -604,12 +604,12 @@ export default function PaymentPage() {
                                             {paymentMethod === 'online' ? (
                                                 <>
                                                     <CreditCard className="w-5 h-5" />
-                                                    <span>{loading ? 'Processing Razorpay...' : 'PAY ₹1,000 VIA RAZORPAY & SECURE SLOT'}</span>
+                                                    <span>{loading ? 'Processing Razorpay...' : 'PAY ₹500 VIA RAZORPAY & SECURE SLOT'}</span>
                                                     <ArrowRight className="w-5 h-5" />
                                                 </>
                                             ) : (
                                                 <>
-                                                    <span>{loading ? 'Submitting...' : 'CONFIRM SEAT RESERVATION (₹1,000)'}</span>
+                                                    <span>{loading ? 'Submitting...' : 'CONFIRM SEAT RESERVATION (₹500)'}</span>
                                                     <ArrowRight className="w-5 h-5" />
                                                 </>
                                             )}

@@ -220,7 +220,7 @@ export default function Footer() {
                             to="/payment"
                             className="btn-shine bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider shadow-[0_0_12px_rgba(220,38,38,0.6)] inline-flex items-center gap-1.5 transition-transform hover:scale-105"
                         >
-                            <span>PAY ₹1,000 & SECURE SLOT</span>
+                            <span>PAY ₹500 & SECURE SLOT</span>
                             <ArrowRight className="w-3 h-3" />
                         </Link>
 

@@ -38,12 +38,12 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
         setError(null);
 
         try {
-            // 1. Create order on backend (₹1 for testing)
+            // 1. Create order on backend (₹500)
             const orderRes = await fetch(`${API_BASE}/payment/create-order`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    amount: 1,
+                    amount: 500,
                     name: form.name,
                     email: form.email,
                     phone: form.phone
@@ -68,7 +68,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
                 amount: orderData.amount,
                 currency: orderData.currency,
                 name: 'ALTRON SAFETY & SECURITY ACADEMY',
-                description: 'Seat Reservation Fee (₹1)',
+                description: 'Seat Reservation Fee (₹500)',
                 image: 'https://res.cloudinary.com/dq6gr5zjc/image/upload/v1773043568/altronaccodemy_pxgw2x.png',
                 order_id: orderData.order_id,
                 prefill: {
@@ -93,7 +93,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
                                 name: form.name,
                                 email: form.email,
                                 phone: form.phone,
-                                notes: 'Online Seat Reservation Test (₹1)'
+                                notes: 'Online Seat Reservation (₹500)'
                             })
                         });
 
@@ -140,7 +140,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
 
     const handleWhatsAppSubmit = () => {
         const payIdInfo = paymentDetails?.paymentId ? `%0A*Razorpay Payment ID:* ${paymentDetails.paymentId}` : '';
-        const message = `Hello Altron Academy! I have reserved my seat by paying ₹1 online test payment.%0A%0A*Name:* ${form.name || 'Not provided'}%0A*Phone:* ${form.phone || 'Not provided'}%0A*Email:* ${form.email || 'Not provided'}${payIdInfo}%0A%0APlease send my batch schedule and confirmation!`;
+        const message = `Hello Altron Academy! I have reserved my seat by paying ₹500 online payment.%0A%0A*Name:* ${form.name || 'Not provided'}%0A*Phone:* ${form.phone || 'Not provided'}%0A*Email:* ${form.email || 'Not provided'}${payIdInfo}%0A%0APlease send my batch schedule and confirmation!`;
         window.open(`https://wa.me/919841014328?text=${message}`, '_blank');
     };
 
@@ -177,7 +177,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
                             </div>
 
                             <h3 className="text-2xl sm:text-3xl font-black tracking-tight uppercase">
-                                RESERVE SEAT FOR <span className="text-amber-300">₹1</span>
+                                RESERVE SEAT FOR <span className="text-amber-300">₹500</span>
                             </h3>
                             <p className="text-xs sm:text-sm text-red-100 mt-1 font-medium">
                                 Lock your seat for the next batch. Balance fee payable at course start.
@@ -211,7 +211,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
                                             </div>
                                             <div className="flex justify-between">
                                                 <span className="text-gray-500">Amount Paid:</span>
-                                                <span className="font-bold text-green-700">₹1</span>
+                                                <span className="font-bold text-green-700">₹500</span>
                                             </div>
                                         </div>
                                     )}
@@ -293,7 +293,7 @@ export default function PaymentModal({ isOpen, onClose }: PaymentModalProps) {
                                         className="btn-shine w-full bg-brand-600 hover:bg-brand-700 text-white font-black py-4 px-6 rounded-full text-sm uppercase tracking-wider shadow-lg flex items-center justify-center gap-2 transition-transform hover:-translate-y-0.5 disabled:opacity-50 mt-2"
                                     >
                                         <CreditCard className="w-5 h-5" />
-                                        <span>{loading ? 'Opening Razorpay...' : 'PAY ₹1 & SECURE YOUR SLOT'}</span>
+                                        <span>{loading ? 'Opening Razorpay...' : 'PAY ₹500 & SECURE YOUR SLOT'}</span>
                                         <ArrowRight className="w-5 h-5" />
                                     </button>
 

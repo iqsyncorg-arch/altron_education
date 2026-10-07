@@ -30,7 +30,7 @@ const FAQ_DATA = [
     },
     {
         q: "How much is the course fee?",
-        a: "The total course fee is ₹33,000. You can reserve your seat with ₹1,000. The remaining ₹32,000 is payable after registration."
+        a: "The total course fee is ₹33,000. You can reserve your seat with ₹500. The remaining ₹32,500 is payable after registration."
     },
     {
         q: "Is the training practical?",
@@ -306,7 +306,7 @@ export default function LandingPage() {
                             {/* Center Register Button Column */}
                             <div className="md:col-span-5 text-center flex flex-col items-center">
                                 <button onClick={() => setIsPaymentModalOpen(true)} className="btn-shine bg-brand-600 hover:bg-brand-700 text-white rounded-full py-3 sm:py-3.5 px-6 font-black text-xs sm:text-sm uppercase inline-flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(192,57,43,0.35)] w-full transition-transform hover:-translate-y-0.5">
-                                    REGISTER NOW FOR ₹1,000 <ArrowRight className="w-4 h-4 shrink-0" />
+                                    REGISTER NOW FOR ₹500 <ArrowRight className="w-4 h-4 shrink-0" />
                                 </button>
                                 <div className="text-[11px] text-gray-500 font-medium mt-1.5 text-center">
                                     Take the first step towards a secure and successful career.
@@ -416,28 +416,27 @@ export default function LandingPage() {
                             {[
                                 {
                                     title: "Altron Institute Feedback — Mr. Vallarasu",
-                                    youtubeUrl: "https://www.youtube.com/watch?v=UscfS3Dk_p8",
+                                    youtubeUrl: "https://youtu.be/LbLRWt5kUxE",
                                     tag: "STUDENT FEEDBACK",
                                     tagColor: "bg-red-500/10 border-red-500/30 text-red-400",
                                     desc: "Hear directly from our student about their learning experience and career transformation."
                                 },
                                 {
                                     title: "Security Engineering Hands-on Training",
-                                    youtubeUrl: "https://www.youtube.com/watch?v=Q8_v6qj3_xk",
+                                    youtubeUrl: "https://youtu.be/1BMe7Ci-d1E",
                                     tag: "PRACTICAL LAB",
                                     tagColor: "bg-blue-500/10 border-blue-500/30 text-blue-400",
                                     desc: "Real-world security engineering installation, wiring, and panel configuration."
                                 },
                                 {
                                     title: "Fire Alarm & Access Control Systems",
-                                    youtubeUrl: "https://www.youtube.com/watch?v=vV7YyG1V6P4",
+                                    youtubeUrl: "https://youtu.be/-eQAc53bxNI",
                                     tag: "FIRE & ALARM",
                                     tagColor: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400",
                                     desc: "Practical training on fire alarm panels, detector wiring, and biometric access setup."
                                 }
                             ].map((vid, idx) => {
-                                const storyItem = (Array.isArray(storiesData) && storiesData[idx]) ? storiesData[idx] : vid;
-                                const embedUrl = getYoutubeEmbedUrl(storyItem.youtubeUrl || vid.youtubeUrl);
+                                const embedUrl = getYoutubeEmbedUrl(vid.youtubeUrl);
 
                                 return (
                                     <div key={idx} className="bg-zinc-800/80 rounded-2xl p-4 border border-zinc-700/60 hover:border-brand-500/50 transition-all duration-300 shadow-lg group">
@@ -445,7 +444,7 @@ export default function LandingPage() {
                                             <iframe
                                                 src={embedUrl}
                                                 className="w-full h-full border-0"
-                                                title={storyItem.title || vid.title}
+                                                title={vid.title}
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                                 allowFullScreen
                                             />
@@ -454,10 +453,10 @@ export default function LandingPage() {
                                             {vid.tag}
                                         </div>
                                         <h4 className="text-base font-bold text-white leading-snug group-hover:text-brand-400 transition-colors">
-                                            {storyItem.title || vid.title}
+                                            {vid.title}
                                         </h4>
                                         <p className="text-xs text-gray-400 mt-1 line-clamp-2">
-                                            {storyItem.description || vid.desc}
+                                            {vid.desc}
                                         </p>
                                     </div>
                                 );
@@ -633,7 +632,7 @@ export default function LandingPage() {
                                     onClick={() => setIsPaymentModalOpen(true)}
                                     className="btn-shine bg-brand-600 hover:bg-brand-700 text-white rounded-full py-4 px-8 font-black text-base md:text-lg uppercase tracking-wider shadow-[0_8px_25px_rgba(192,57,43,0.4)] flex items-center justify-center gap-3 transition-transform hover:-translate-y-0.5 w-full text-center"
                                 >
-                                    <span>PAY ₹1,000 & SECURE YOUR SLOT</span>
+                                    <span>PAY ₹500 & SECURE YOUR SLOT</span>
                                     <ArrowRight className="w-5 h-5" />
                                 </button>
                                 <div className="flex items-center justify-center gap-2 text-xs font-black text-red-600 uppercase tracking-widest pt-1">
@@ -866,7 +865,7 @@ export default function LandingPage() {
                                     num: '01',
                                     title: 'REGISTER',
                                     subtitle: 'Quick & Instant Reservation',
-                                    desc: 'Reserve your seat with just ₹1,000.',
+                                    desc: 'Reserve your seat with just ₹500.',
                                     Icon: UserCheck,
                                     badgeColor: 'from-brand-600 to-red-600'
                                 },
@@ -959,7 +958,7 @@ export default function LandingPage() {
                             onClick={() => setIsPaymentModalOpen(true)}
                             className="btn-shine inline-flex items-center justify-center bg-brand-600 hover:bg-brand-700 text-white px-6 sm:px-10 py-4 sm:py-5 rounded-full font-black text-sm sm:text-base md:text-lg tracking-wider uppercase shadow-[0_10px_30px_rgba(192,57,43,0.4)] transition-all hover:-translate-y-1 gap-2 sm:gap-3 w-full sm:w-auto"
                         >
-                            <span>👉 REGISTER FOR ₹1,000 & SECURE YOUR SEAT</span>
+                            <span>👉 REGISTER FOR ₹500 & SECURE YOUR SEAT</span>
                             <ArrowRight className="w-5 h-5 shrink-0" />
                         </button>
                         <div className="text-[11px] sm:text-xs font-extrabold text-red-600 uppercase tracking-widest mt-3 animate-pulse">
@@ -1022,7 +1021,7 @@ export default function LandingPage() {
                                 ADMISSION CLOSING SOON!
                             </h2>
                             <p className="text-xs sm:text-base md:text-xl text-red-100 font-medium mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed">
-                                Reserve your seat now for <strong className="text-white font-black underline decoration-red-400 underline-offset-4">₹1,000</strong> before the timer runs out and slots are full.
+                                Reserve your seat now for <strong className="text-white font-black underline decoration-red-400 underline-offset-4">₹500</strong> before the timer runs out and slots are full.
                             </p>
 
                             {/* Real-time Countdown Timer */}
@@ -1055,7 +1054,7 @@ export default function LandingPage() {
                                     onClick={() => setIsPaymentModalOpen(true)}
                                     className="btn-shine bg-white hover:bg-gray-100 text-brand-700 font-black text-xs sm:text-base md:text-xl py-3.5 sm:py-4 md:py-5 px-5 sm:px-8 md:px-12 rounded-full uppercase tracking-wider shadow-[0_10px_35px_rgba(0,0,0,0.5)] transition-all hover:scale-105 flex items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto"
                                 >
-                                    <span>🔒 SECURE YOUR SEAT FOR ₹1,000 NOW</span>
+                                    <span>🔒 SECURE YOUR SEAT FOR ₹500 NOW</span>
                                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 shrink-0 text-brand-600" />
                                 </button>
                                 <p className="text-[10px] sm:text-xs text-red-200 font-semibold flex items-center gap-1.5 mt-0.5 text-center">
@@ -1429,7 +1428,7 @@ export default function LandingPage() {
                                         RESERVE YOUR SEAT FOR JUST
                                     </div>
                                     <div className="text-3xl md:text-4xl font-black text-red-500 tracking-tight">
-                                        ₹1,000
+                                        ₹500
                                     </div>
                                 </div>
                             </div>

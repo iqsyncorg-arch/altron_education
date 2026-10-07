@@ -74,20 +74,20 @@ const FALLBACK_STORIES = [
     },
     {
         id: 'f2',
-        title: "Altron Institute Feedback - Mr. Vallarasu",
-        youtubeUrl: "https://www.youtube.com/watch?v=UscfS3Dk_p8",
+        title: "Altron Institute Feedback — Mr. Vallarasu",
+        youtubeUrl: "https://youtu.be/LbLRWt5kUxE",
         category: "Testimonial"
     },
     {
         id: 'f3',
-        title: "Security Engineering Training Excellence",
-        youtubeUrl: "https://www.youtube.com/watch?v=Q8_v6qj3_xk",
+        title: "Security Engineering Hands-on Training",
+        youtubeUrl: "https://youtu.be/1BMe7Ci-d1E",
         category: "Success Story"
     },
     {
         id: 'f4',
-        title: "Practical Fire Alarm System Training",
-        youtubeUrl: "https://www.youtube.com/watch?v=vV7YyG1V6P4",
+        title: "Fire Alarm & Access Control Systems",
+        youtubeUrl: "https://youtu.be/-eQAc53bxNI",
         category: "Training"
     }
 ];
